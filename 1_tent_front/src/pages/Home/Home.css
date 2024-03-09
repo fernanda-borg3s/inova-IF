@@ -1,0 +1,15 @@
+.box-container{
+    
+}
+.pastas-inicio{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    max-width: 93%;
+    height: 250px;
+    max-height: 500px;
+    background-color: #ffff;
+    border-radius: 10px;
+    flex-wrap: wrap;
+}
+.bi-folder-fill{
+    font-size: 100px;
+}
