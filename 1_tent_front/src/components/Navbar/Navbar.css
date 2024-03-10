@@ -1,4 +1,4 @@
-.bg-body-tertiary{
+.bg-body-tertiary, .offcanvas{
     background-color: #004D2A !important;
     /* margin-bottom: 0; */
 }
@@ -14,10 +14,11 @@
 .navbar-toggler:focus{
     box-shadow: none;
 }
-.logo-inova{
+
+/* .logo-inova{
 padding-left: 9px;
 
-}
+} */
 /* .navLink{
     padding-right: 130px;
    
