@@ -1,20 +1,17 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+// import Row from 'react-bootstrap/Row';
+// import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup'
+// import { encontros } from '../../Data';
 
-
-export default function CardHome(){
+export default function CardHome({encontros}){
     return(
         <>
-         <Row xs={1} md={3} className="g-4">
-      {Array.from({ length: 6 }).map((_, idx) => (
-        <Col key={idx}>
           <Card style={{width: '20rem'}}>
-          <Card.Header className='d-flex justify-content-end'>#ID</Card.Header>
+          <Card.Header className='d-flex justify-content-end'>{encontros.id}</Card.Header>
             <Card.Body>
-              <Card.Title>Nome do Encotro</Card.Title>
+              <Card.Title>{encontros.tituloEncontro}</Card.Title>
               <Card.Text>
                 This is a longer card with supporting text below as a natural
                 lead-in to additional content.
@@ -31,19 +28,7 @@ export default function CardHome(){
               Cancelar Inscrição</Button>
             </Card.Body>
           </Card>
-        </Col>
-      ))}
-    </Row>
-        {/* <Card>
-      <Card.Header>Featured</Card.Header>
-      <Card.Body>
-        <Card.Title>Special title treatment</Card.Title>
-        <Card.Text>
-          With supporting text below as a natural lead-in to additional content.
-        </Card.Text>
-        <Button variant="primary">Go somewhere</Button>
-      </Card.Body>
-    </Card> */}
+
         
         </>
     )

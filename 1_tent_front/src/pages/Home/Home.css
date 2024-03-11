@@ -1,6 +1,6 @@
-.box-container{
+/* .box-container{
     
-}
+} */
 .pastas-inicio{
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     max-width: 93%;
@@ -12,4 +12,8 @@
 }
 .bi-folder-fill{
     font-size: 100px;
+}
+h2{
+    color: #004d2a;
+    font-weight: bold;
 }

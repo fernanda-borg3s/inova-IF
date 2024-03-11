@@ -14,11 +14,13 @@
 .navbar-toggler:focus{
     box-shadow: none;
 }
-
-/* .logo-inova{
+.navStyle{
+    padding: 0;
+}
+.logo-inova{
 padding-left: 9px;
 
-} */
+}
 /* .navLink{
     padding-right: 130px;
    

@@ -8,6 +8,7 @@ export const encontros = [
         horaFim: "11:00",
         dataCadastro: "20/05/2024",
         matProfessora: 1234567,
+        nomeProfessora: "Professora1",
         tituloEncontro: "Lorem ipsum 1",
         bolRepete: true,
         descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididun"
@@ -21,6 +22,7 @@ export const encontros = [
         horaFim: "12:00",
         dataCadastro: "20/05/2024",
         matProfessora: 6789001,
+        nomeProfessora: "Professora2",
         tituloEncontro: "Lorem ipsum Dolor",
         bolRepete: false,
         descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididun"
@@ -34,6 +36,7 @@ export const encontros = [
         horaFim: "11:40",
         dataCadastro: "20/05/2024",
         matProfessora: 2222338,
+        nomeProfessora: "Professora3",
         tituloEncontro: "Lorem ipsum 2",
         bolRepete: true,
         descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididun"
@@ -47,6 +50,7 @@ export const encontros = [
         horaFim: "12:10",
         dataCadastro: "12/03/2024",
         matProfessora: 1234567,
+        nomeProfessora: "Professora4",
         tituloEncontro: "Lorem ipsum 3",
         bolRepete: false,
         descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididun"
