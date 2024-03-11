@@ -1,0 +1,35 @@
+h1, .h1{
+    color:#004d2a;
+    text-align: center;
+    margin:35px;
+}
+.imgCadastrar{
+    /* padding:50px 0; */
+}
+.container-cadastrar{
+    background-color: #fff;
+    width: 500px;
+    height: auto;
+    padding: 30px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    border-radius: 10px;
+}
+h2{
+    font-size: 20px;
+}
+.componentImg{
+    width:500px;
+}
+.box-my-encontros{
+    background-color: #fff;
+    width: 90%;
+}
+@media (max-width: 500px){
+    .componentImg{
+        width:350px;
+    }
+    .container-cadastrar{
+      
+        width: 360px;
+    }
+}

@@ -10,7 +10,7 @@ import { encontros } from "../../Data.js";
 
 
 export default function Home(){
-  console.log(encontros);
+  // console.log(encontros);
 
     return (
     <>

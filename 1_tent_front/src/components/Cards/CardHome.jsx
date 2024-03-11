@@ -1,13 +1,16 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 // import Row from 'react-bootstrap/Row';
-// import Col from 'react-bootstrap/Col';
+import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup'
 // import { encontros } from '../../Data';
 
-export default function CardHome({encontros}){
+export default function CardHome(encontros){
+  console.log(encontros.lenght)
     return(
         <>
+        {Array.from({ length: encontros }).map((_, idx) => (
+        <Col key={idx}>
           <Card style={{width: '20rem'}}>
           <Card.Header className='d-flex justify-content-end'>{encontros.id}</Card.Header>
             <Card.Body>
@@ -28,8 +31,9 @@ export default function CardHome({encontros}){
               Cancelar Inscrição</Button>
             </Card.Body>
           </Card>
+          </Col>
+      ))}
 
-        
         </>
     )
 }
