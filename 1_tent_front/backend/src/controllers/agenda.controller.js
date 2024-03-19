@@ -31,7 +31,7 @@ const AgendaController = {
                 num_vagas,
                 data_inicio,
                 hora_inicio,
-                mat_professora,
+                id_professora,
                 id_area_conhecimento,
                 id_componente_curricular,
                 num_repeticoes,
@@ -40,9 +40,9 @@ const AgendaController = {
                 data_fim,
                 hora_fim } = req.body
 
-            const sql = 'INSERT INTO encontro(tema, id_objetivos_aprendizagem, criterios_avaliacao, id_sala, num_vagas, data_inicio, hora_inicio, mat_professora, id_area_conhecimento, id_componente_curricular, num_repeticoes, repete, titulo_encontro, data_fim, hora_fim) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING *'
+            const sql = 'INSERT INTO encontro(tema, id_objetivos_aprendizagem, criterios_avaliacao, id_sala, num_vagas, data_inicio, hora_inicio, id_professora, id_area_conhecimento, id_componente_curricular, num_repeticoes, repete, titulo_encontro, data_fim, hora_fim) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING *'
 
-            const { rows } = await postgre.query(sql, [tema, id_objetivos_aprendizagem, criterios_avaliacao, id_sala, num_vagas, data_inicio, hora_inicio, mat_professora, id_area_conhecimento, id_componente_curricular, num_repeticoes, repete, titulo_encontro, data_fim, hora_fim])
+            const { rows } = await postgre.query(sql, [tema, id_objetivos_aprendizagem, criterios_avaliacao, id_sala, num_vagas, data_inicio, hora_inicio, id_professora, id_area_conhecimento, id_componente_curricular, num_repeticoes, repete, titulo_encontro, data_fim, hora_fim])
 
             res.json({msg: "OK", data: rows[0]})
 

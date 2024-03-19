@@ -4,9 +4,9 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 // import Card from 'react-bootstrap/Card';
 import './Home.css'
-import CardHome from "../../components/Cards/CardHome";
+// import CardHome from "../../components/Cards/CardHome";
 import Welcome from "../../components/Welcome/Welcome";
-import { encontros } from "../../Data.js";
+// import { encontros } from "../../Data.js";
 
 
 export default function Home(){
@@ -18,13 +18,14 @@ export default function Home(){
         <Container className="box-container mt-5">
           <Welcome/>
             <h2 className="mt-5 mb-4">Agenda para Hoje</h2>
-          <Row>
+          <Row xs={1} md={2} className="g-4">
             <Col>
-              {encontros.map((item, index) =>{<CardHome key={index} encontros={item}/>})}
+            {/* {encontros.map((item, index) =>{<CardHome key={index} encontros={item}/>})} */}
+              {/* <CardHome/> */}
             </Col>
           </Row>
         </Container>
-       
+        
     </>
     
     )
