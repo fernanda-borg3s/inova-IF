@@ -1,13 +1,13 @@
-h1{
+.welcome-titulo{
     font-size: 80px;
     color: #004d2a;
     font-weight: bold;
     line-height: 50px;
 }
-h5{
+.h5-welcome{
     font-weight: bold;
 }
-p{font-size: 18px;}
+.p-welcome{font-size: 18px;}
 .btn-home{
     font-weight: bold;
     background-color: #004d2a;

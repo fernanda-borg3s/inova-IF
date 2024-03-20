@@ -6,8 +6,8 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { Outlet } from 'react-router-dom';
-import './Navbar.css'
-export function NavbarC(){
+import '../Navbar/Navbar.css'
+export function NavbarProfessor(){
     return (
         <>
 {['sm'].map((expand) => (
@@ -34,17 +34,13 @@ export function NavbarC(){
                     title="Encontros"
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
                   >
-                    <NavDropdown.Item href="#action3">
-                    <i className="bi bi-mortarboard"></i>
-                      Meus Encontros</NavDropdown.Item>
+                     <NavDropdown.Item href="#action5">
+                    <i className="bi bi-card-text"></i>
+                      Encontros Cadastrados
+                    </NavDropdown.Item>
                     <NavDropdown.Item href="#action4">
                     <i className="bi bi-card-list"></i>
                       Encontros Disponíveis
-                    </NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href="#action5">
-                    <i className="bi bi-card-text"></i>
-                      Encontros Cadastrados
                     </NavDropdown.Item>
                   </NavDropdown>
                 </Nav>

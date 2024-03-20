@@ -13,7 +13,19 @@
 .bi-folder-fill{
     font-size: 100px;
 }
-h2{
+.h2-home, .h3-home{
     color: #004d2a;
     font-weight: bold;
+}
+
+.p-home{
+    text-align: justify;
+    max-width: 500px;
+    font-size: 20px;
+    font-weight: 300;
+}
+.btn2-home{
+    font-weight: bold;
+    background-color: #004d2a;
+    
 }

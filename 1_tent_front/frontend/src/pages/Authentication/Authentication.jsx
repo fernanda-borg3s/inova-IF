@@ -6,6 +6,7 @@ import './Authentication.css'
 import  { useRef, useState } from 'react';
 
 
+
 export default function Authentication(){
     const [isActive, setIsActive] = useState(false);
     const containerRef = useRef(null);
@@ -64,7 +65,6 @@ export default function Authentication(){
         </div>
         <Image src={LogoLogin} style={{width:'200px'}} className="mt-3"/>
         </Container>
-      
         </>
     )
 }

@@ -1,18 +1,11 @@
-// import { useState } from 'react'
+
 import 'bootstrap/dist/css/bootstrap.min.css'
-import './App.css'
-import Home from './pages/Home/Home'
-// import CadastrarEncontro from './pages/CadastrarEncontro/CadastrarEncontro'
-// import Authentication from './pages/Authentication/Authentication'
+// import './components/Navbar/Navbar.jsx'
+import { Outlet } from 'react-router-dom'
+
+
 function App() {
-
-
-  return (
-   <Home />
-  // <Authentication/>
-  
-  // <CadastrarEncontro/>
-  )
+  return <Outlet/>
 } 
 
 export default App

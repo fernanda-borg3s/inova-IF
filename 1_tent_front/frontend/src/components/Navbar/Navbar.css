@@ -1,5 +1,7 @@
-.bg-body-tertiary, .offcanvas{
+/***************** navbar ******************/
+.navStyle, .offcanvas{
     background-color: #004D2A !important;
+    color: #fff;
     /* margin-bottom: 0; */
 }
 .navbar-toggler{

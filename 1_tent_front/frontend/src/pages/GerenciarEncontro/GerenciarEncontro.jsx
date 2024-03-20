@@ -1,18 +1,16 @@
 import Container from "react-bootstrap/esm/Container";
-import { NavbarC } from "../../components/Navbar/Navbar";
 import Row from "react-bootstrap/esm/Row";
 import Col from "react-bootstrap/esm/Col";
 import Image from "react-bootstrap/esm/Image";
 import ImgCadastrar from '../../assets/Img/CadastrarEncontro.png'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import './CadastrarEncontro.css'
+import './GerenciarEncontro.css'
 import TableCadastro from "../../components/TableCadastro/TableCadastro";
 
-export default function CadastrarEncontro(){
+export default function GerenciarEncontro(){
     return (
         <>
-        <NavbarC/>
         <h1 className="h1">Gerenciar Encontros</h1>
 
         <Container className=" ">
@@ -24,7 +22,7 @@ export default function CadastrarEncontro(){
             </Col>
             <Col>
                 <div className="container-cadastrar mt-5">
-                    <h2>Cadastrar Encontro</h2>
+                    <h2 className="h2-cadastro">Cadastrar Encontro</h2>
                 <Form>
                     <Row className="mb-3">
                         <Form.Group as={Col} controlId="formGridEmail">
