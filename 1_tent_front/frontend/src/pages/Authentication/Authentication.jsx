@@ -27,8 +27,8 @@ export default function Authentication(){
             <div className="form-container sign-up-container">
             <Image src={Logoif} style={{width:'150px'}} className="p-3 mb-2"/>
 
-                <form action="#">
-                <h1 style={{color:'#004d2a'}}>Crie sua conta</h1>
+                <form action="#" className="form-login">
+                <h1 style={{color:'#004d2a'}} className="h1-login">Crie sua conta</h1>
                 <input type="text" placeholder="Nome" />
                 <input type="email" placeholder="Email" />
                 <input type="text" placeholder="Matrícula" />
@@ -38,7 +38,7 @@ export default function Authentication(){
             </div>
             <div className="form-container sign-in-container">
             <Image src={Logoif} style={{width:'150px'}} className="p-3"/>
-                <form action="#">
+                <form action="#" className="form-login">
                 <h1 style={{color:'#004d2a'}}>Login</h1>
                 <input type="email" placeholder="Email" />
                 <input type="password" placeholder="Senha" />
@@ -51,19 +51,20 @@ export default function Authentication(){
             <div className="overlay-container">
                 <div className="overlay">
                 <div className='overlay-panel overlay-left'>
-                <h1>Já tem conta?</h1>
+                <h1 className="h1-login">Já tem conta?</h1>
                 <p>Entre com suas informações cadastradas</p>
                 <button className="ghost"  onClick={SingInClick}>Entrar</button>
                 </div>
                 <div className='overlay-panel overlay-right'>
-                <h1>Não tem conta ainda?</h1>
+                <h1 className="h1-login">Não tem conta ainda?</h1>
                 <p>Registra-se e junte-se a nós</p>
                 <button className="ghost" onClick={SingUpClick}>Registrar-se</button>
                 </div>
                 </div>
             </div>
         </div>
-        <Image src={LogoLogin} style={{width:'200px'}} className="mt-3"/>
+        <Image src={LogoLogin} style={{width:'190px'}} className="mt-3"/>
+        <a href="/sobre" className="link-sobre">Saiba mais sobre o <span>INOVA IF - Módulo Agenda</span></a>
         </Container>
         </>
     )

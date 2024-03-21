@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
-// import  './Styles/global.css'
+import  './index.css'
 import Authentication from './pages/Authentication/Authentication.jsx'
 import { NavbarC } from './components/Navbar/Navbar.jsx'
 import Home from './pages/Home/Home.jsx'
