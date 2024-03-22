@@ -1,7 +1,26 @@
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Calendario from '../../components/Calendario/Calendario';
+
+
+
 export default function Agenda(){
     return (
         <>
-        <h1>Agenda</h1>
+        <Container fluid="md">
+        <h1 style={{margin:'30px 0', color:'#004d2a', fontWeight:'bold', textAlign:'center'}}>Sua Agenda</h1>
+
+    
+      <Row >
+      
+        <Col >
+        <Calendario />
+        </Col>
+       
+      </Row>
+
+    </Container>
         </>
     )
 }

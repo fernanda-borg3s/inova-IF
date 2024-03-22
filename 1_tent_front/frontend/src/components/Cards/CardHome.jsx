@@ -42,10 +42,11 @@ export default function CardHome(){
                 <Card.Body>
                   <Card.Title>{encontro.titulo_encontro}</Card.Title>
                   <ListGroup className="list-group-flush">
+                  <ListGroup.Item className="p-0">Componente Curricular: {encontro.componente_curricular}</ListGroup.Item>
                     <ListGroup.Item className="p-0">Data:{encontro.data_inicio} até {encontro.data_fim}</ListGroup.Item>
                     <ListGroup.Item className="p-0">Horários: {encontro.hora_inicio} até {encontro.hora_fim}</ListGroup.Item>
-                    <ListGroup.Item className="p-0">Sala: -precisa fazer junção de tabela</ListGroup.Item>
-                    <ListGroup.Item className="p-0">Professor-precisa fazer junção de tabela</ListGroup.Item>
+                    <ListGroup.Item className="p-0">Sala: {encontro.sala}</ListGroup.Item>
+                    <ListGroup.Item className="p-0">Professora(o): {encontro.nome_professora}</ListGroup.Item>
                     <ListGroup.Item className="p-0">Vestibulum at eros</ListGroup.Item>
                   </ListGroup>
                   <Button variant="danger" className='mt-3'>

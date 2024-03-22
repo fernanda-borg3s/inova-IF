@@ -16,7 +16,7 @@ export default function Welcome(){
             <h5 className='ps-1 mb-3 h5-welcome'>Seja Bem-vindo ao</h5>
             <h1 className='welcome-titulo'>InovaIF</h1>
             <p className='mt-4 ps-1 p-welcome'>Lorem ipsum dolor sviverra adipiscing at in tellus integer feugiat scelerisque. icitudin ac orci. Consectetur  Gravida cum sociis natoque penatibus et magnis dis. Mauris augue neque gravida in fermentum et sollicitudin ac orci</p>
-            <Button className="mt-2 btn-home p-3" variant="success">Inscrever-me nos encontros</Button>
+            <Button className="mt-2 btn-home p-3" variant="success" href='/home/encontrosDisponivel'>Inscrever-me nos encontros</Button>
         </div>
         </Col>
         <Col className='hide-img-home mt-2'>

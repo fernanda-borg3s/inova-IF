@@ -28,16 +28,16 @@ export function NavbarC(){
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 navLink">
-                  <Nav.Link href="#action1">Início</Nav.Link>
+                  <Nav.Link href="/home">Início</Nav.Link>
                
                   <NavDropdown
                     title="Encontros"
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
                   >
-                    <NavDropdown.Item href="#action3">
+                    <NavDropdown.Item href="/home/encontrosInscritos">
                     <i className="bi bi-mortarboard"></i>
                       Meus Encontros</NavDropdown.Item>
-                    <NavDropdown.Item href="#action4">
+                    <NavDropdown.Item href="/home/encontrosDisponivel">
                     <i className="bi bi-card-list"></i>
                       Encontros Disponíveis
                     </NavDropdown.Item>
