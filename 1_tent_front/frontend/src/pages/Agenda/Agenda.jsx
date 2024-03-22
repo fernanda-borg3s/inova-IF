@@ -2,6 +2,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Calendario from '../../components/Calendario/Calendario';
+import Footer from '../../components/Footer/Footer';
 
 
 
@@ -21,6 +22,7 @@ export default function Agenda(){
       </Row>
 
     </Container>
+    <Footer/>
         </>
     )
 }

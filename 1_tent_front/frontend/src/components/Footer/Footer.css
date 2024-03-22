@@ -1,0 +1,10 @@
+
+.footer{
+    background-color: #004d2a;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    color:#fff;
+    font-weight: bold;
+    margin-top: 20px;
+}

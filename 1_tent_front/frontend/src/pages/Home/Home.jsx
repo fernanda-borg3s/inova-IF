@@ -10,6 +10,7 @@ import './Home.css'
 import Welcome from "../../components/Welcome/Welcome";
 // import { encontros } from "../../Data.js";
 import CalenderHome from '../../assets/Img/CalenderHome.png'
+import Footer from '../../components/Footer/Footer';
 
 
 
@@ -48,6 +49,7 @@ export default function Home(){
         </Col>
       </Row>
         </Container>
+        <Footer/>
     </>
     
     )

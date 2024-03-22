@@ -11,6 +11,7 @@ import { useEffect, useState} from 'react';
 
 import axios from 'axios';
 
+
 const baseURL = 'http://localhost:3000'
 
 export default function EncontrosInscritos(){
@@ -51,7 +52,7 @@ export default function EncontrosInscritos(){
             </Col>
           </Row>
         </Container>
-      
+     
     </>
     
     )
