@@ -33,6 +33,7 @@ export function NavbarC(){
                   <NavDropdown
                     title="Encontros"
                     id={`offcanvasNavbarDropdown-expand-${expand}`}
+                    className="dropdown-left"
                   >
                     <NavDropdown.Item href="/home/encontrosInscritos">
                     <i className="bi bi-mortarboard"></i>

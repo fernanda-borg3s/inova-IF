@@ -18,7 +18,7 @@ const inscricaoController ={
     },
     getEncontroInscritoById: async(req, res) => {
         try {
-            const { rows } = await postgre.query("select * from books where book_id = $1", [req.params.id])
+            const { rows } = await postgre.query("SELECT I.data_inscricao, E.id_encontro, E.titulo_encontro, E.descricao_encontro, E.criterios_avaliacao, E.sala, E.num_vagas, E.data_inicio, E.hora_inicio, E.data_fim, E.hora_fim, P.nome_professora, AC.area, CC.componente_curricular, OA.tipo_objetivo, OA.objetivos_aprendizagem, OA.etapa FROM inscricao AS I INNER JOIN encontro AS E ON I.id_encontro = E.id_encontro INNER JOIN professora AS P ON E.id_professora = P.id_professora INNER JOIN area_conhecimento AS AC ON E.id_area_conhecimento = AC.id_area_conhecimento INNER JOIN componente_curricular AS CC ON E.id_componente_curricular = CC.id_componente_curricular INNER JOIN objetivos_aprendizagem AS OA ON E.id_objetivos_aprendizagem = OA.id_objetivos_aprendizagem WHERE I.id_aluna = $1", [req.params.id])
 
             if (rows[0]) {
                 return res.json({msg: "OK", data: rows})
@@ -31,7 +31,7 @@ const inscricaoController ={
     },
     deleteInscricao: async(req, res) => {
         try {
-            const sql = 'DELETE FROM inscricao where id_inscricao = $1 RETURNING *'
+            const sql = 'DELETE FROM inscricao WHERE id_inscricao = $1 RETURNING *'
 
             const { rows } = await postgre.query(sql, [req.params.id])
 

@@ -10,10 +10,12 @@ export default function TableCadastro(){
             <thead>
                 <tr>
                 <th>#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Some</th>
-                <th>Lista de incritos</th>
+                <th>Título Encontro</th>
+                <th>Descrição</th>
+                <th>Sala</th>
+                <th>Data Início</th>
+                <th>Data Fim</th>
+                <th>Lista de inscritos</th>
                 <th>Editar</th>
                 <th>Excluir</th>
                 </tr>
@@ -24,6 +26,8 @@ export default function TableCadastro(){
                     <td>Mark</td>
                     <td>Otto</td>
                     <td>@mdo</td>
+                    <td>@mdo</td>
+                    <td>@mdo</td>
                     <td><i className="bi bi-person-check-fill"></i></td>
                     <td><i className="bi bi-pencil-square"></i></td>
                     <td><i className="bi bi-trash-fill"></i></td>
@@ -33,6 +37,8 @@ export default function TableCadastro(){
                     <td>Jacob</td>
                     <td>Thornton</td>
                     <td>@fat</td>
+                    <td>@fat</td>
+                    <td>@fat</td>
                     <td><i className="bi bi-person-check-fill"></i></td>
                     <td><i className="bi bi-pencil-square"></i></td>
                     <td><i className="bi bi-trash-fill"></i></td>
@@ -40,6 +46,8 @@ export default function TableCadastro(){
                 <tr>
                     <td>3</td>
                     <td >Larry the Bird</td>
+                    <td>@twitter</td>
+                    <td>@twitter</td>
                     <td>@twitter</td>
                     <td>@twitter</td>
                     <td><i className="bi bi-person-check-fill"></i></td>

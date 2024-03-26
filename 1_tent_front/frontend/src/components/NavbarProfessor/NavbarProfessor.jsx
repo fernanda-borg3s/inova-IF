@@ -3,7 +3,7 @@ import '../../App.jsx'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+// import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { Outlet } from 'react-router-dom';
 import '../Navbar/Navbar.css'
@@ -29,20 +29,10 @@ export function NavbarProfessor(){
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 navLink">
                   <Nav.Link href="#action1">Início</Nav.Link>
+                  <Nav.Link href="#action1">Encontros Cadastrados</Nav.Link>
+                  <Nav.Link href="#action1">Encontros Disponíveis</Nav.Link>
                
-                  <NavDropdown
-                    title="Encontros"
-                    id={`offcanvasNavbarDropdown-expand-${expand}`}
-                  >
-                     <NavDropdown.Item href="#action5">
-                    <i className="bi bi-card-text"></i>
-                      Encontros Cadastrados
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="#action4">
-                    <i className="bi bi-card-list"></i>
-                      Encontros Disponíveis
-                    </NavDropdown.Item>
-                  </NavDropdown>
+               
                 </Nav>
                 
               </Offcanvas.Body>

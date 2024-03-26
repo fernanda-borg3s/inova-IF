@@ -23,6 +23,10 @@
 padding-left: 9px;
 
 }
+.dropdown-left .dropdown-menu {
+    left: auto !important;
+    right:0;
+  }
 /* .navLink{
     padding-right: 130px;
    

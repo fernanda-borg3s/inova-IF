@@ -1,9 +1,9 @@
-import aprendizagemController from '../controllers/aprendizagem.controller'
+// import aprendizagemController from '../controllers/aprendizagem.controller'
 
 
-import { Router } from 'express'
-const aprendizagemRouter = Router();
+// import { Router } from 'express'
+// const aprendizagemRouter = Router();
 
 
 
-export default aprendizagemRouter;
+// export default aprendizagemRouter;

@@ -21,7 +21,7 @@ export default function EncontrosDisponivel(){
   useEffect(() => {
     const fetchEncontros = async () => {
       try {
-        const response = await axios.get(`${baseURL}/`);
+        const response = await axios.get(`${baseURL}/encontros/encontrosDisponivel`);
         setEncontrosDisponivel(response.data.data);
         // console.log(encontros);
   

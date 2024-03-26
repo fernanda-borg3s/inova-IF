@@ -1,13 +1,13 @@
-import express from 'express';
-import { Router } from "express";
-const router = Router()
-
 import AgendaController from '../controllers/agenda.controller.js'
 
-router.get("/", AgendaController.getAllEncontros)
-router.get("/:id", AgendaController.getById)
-router.post("/", AgendaController.createEncontro)
-router.put("/:id", AgendaController.updateById)
-router.delete("/:id", AgendaController.deleteById)
+import { Router } from "express";
 
-export default router;
+const agendaRouter = Router();
+
+agendaRouter.get("/datas", AgendaController.getById)
+// router.get("/:id", AgendaController.getById)
+// router.post("/", AgendaController.createEncontro)
+// router.put("/:id", AgendaController.updateById)
+// router.delete("/:id", AgendaController.deleteById)
+
+export default agendaRouter;
