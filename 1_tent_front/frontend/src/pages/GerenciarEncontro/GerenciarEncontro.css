@@ -1,4 +1,4 @@
-.h1{
+.h1, .h1-cadastrados{
     color:#004d2a;
     text-align: center;
     margin:35px;
@@ -6,44 +6,46 @@
 
 .container-cadastrar{
     background-color: #fff;
-    /* max-width: 90%; */
+    max-width: 45%;
     height: auto;
     padding: 30px;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     border-radius: 10px;
 }
+
 .h2-cadastro{
-    font-size: 20px;
-    display: flex;
-    align-items: center;
+    font-size: 22px;
+    font-weight: bold;
+    color: #004d2a;
+    text-align: center;
+    margin-bottom: 20px;
 }
 .componentImg{
     width:500px;
 }
 .box-my-encontros{
     background-color: #fff;
-    width: 90%;
+    /* width: 90%; */
+}
+.num_vagas, .num_repeticoes, .repete, .disponivel_inscricao{
+    width: 140px;
+    min-width: 100px;
+}
+/* .disponivel_inscricao{
+    width: 140px;
+    min-width: 120px;
+
+} */
+.sala_encontro{
+    width: 220px;
+    min-width: 120px;
 }
 
-.span1-cadastro{
-    background-color: #004d2a;
-    width: 60px;
-    height: 60px;
-    text-align: center;
-    padding: 15px;
-    font-size: 25px;
- border-radius: 60px;
- color: #fff;
- margin-right: 15px;
- 
-
-}
 @media (max-width: 500px){
     .componentImg{
         width:350px;
     }
     .container-cadastrar{
-      
-        width: 360px;
+        min-width: 400px;
     }
 }

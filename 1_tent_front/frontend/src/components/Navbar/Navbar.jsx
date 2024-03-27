@@ -42,11 +42,7 @@ export function NavbarC(){
                     <i className="bi bi-card-list"></i>
                       Encontros Disponíveis
                     </NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href="#action5">
-                    <i className="bi bi-card-text"></i>
-                      Encontros Cadastrados
-                    </NavDropdown.Item>
+                 
                   </NavDropdown>
                 </Nav>
                 

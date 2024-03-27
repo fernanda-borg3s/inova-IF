@@ -2,6 +2,7 @@ import Container from "react-bootstrap/esm/Container";
 import Image from "react-bootstrap/esm/Image";
 import LogoLogin from '../../assets/Img/LogoLogin.png'
 import Logoif from '../../assets/Img/Logoif.png'
+import InputRadio from "../../components/InputRadio/InputRadio";
 import './Authentication.css'
 import  { useRef, useState } from 'react';
 
@@ -19,28 +20,35 @@ export default function Authentication(){
           containerRef.current.classList.toggle("right-panel-active");
         }
       };
-  
+     
     return (
         <>
-        <Container className="d-flex align-items-center justify-content-center flex-column" style={{height: '100vh'}}>
+        <Container className="d-flex align-items-center justify-content-center flex-column" style={{height: '100vh', marginTop:'90px'}}>
         <div  ref={containerRef} className='box'>
             <div className="form-container sign-up-container">
             <Image src={Logoif} style={{width:'150px'}} className="p-3 mb-2"/>
 
                 <form action="#" className="form-login">
-                <h1 style={{color:'#004d2a'}} className="h1-login">Crie sua conta</h1>
+                <h1 style={{color:'#004d2a', fontSize:'25px'}} className="mt-2">Crie sua conta</h1>
+                
                 <input type="text" placeholder="Nome" />
                 <input type="email" placeholder="Email" />
                 <input type="text" placeholder="Matrícula" />
                 <input type="password" placeholder="Senha" />
-                <button className="mt-3">Registrar</button>
+                <div className="d-flex flex-row justify-content-around radio-check m-3">    
+                    <InputRadio/>    
+                </div>
+                <button className="mt-2">Registrar</button>
                 </form>
             </div>
             <div className="form-container sign-in-container">
             <Image src={Logoif} style={{width:'150px'}} className="p-3"/>
                 <form action="#" className="form-login">
                 <h1 style={{color:'#004d2a'}}>Login</h1>
-                <input type="email" placeholder="Email" />
+                <div className="d-flex flex-row justify-content-around radio-check m-3">    
+                    <InputRadio/>    
+                </div>
+                <input type="text" placeholder="Matrícula" />
                 <input type="password" placeholder="Senha" />
                 {/* <a href="#">Forgot your password?</a> */}
                 <button className="mt-3">Entrar</button>

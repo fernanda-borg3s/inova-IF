@@ -30,8 +30,6 @@ export function NavbarProfessor(){
                 <Nav className="justify-content-end flex-grow-1 navLink">
                   <Nav.Link href="#action1">Início</Nav.Link>
                   <Nav.Link href="#action1">Encontros Cadastrados</Nav.Link>
-                  <Nav.Link href="#action1">Encontros Disponíveis</Nav.Link>
-               
                
                 </Nav>
                 
