@@ -31,8 +31,30 @@ padding-left: 9px;
     padding-right: 130px;
    
 } */
-.nav-link, .nav-link.show, .nav-link:hover{
+.nav-link, .nav-link.show, .nav-link:hover, .nav-link:focus{
     color: #ffff;
+}
+.btn-group{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+ 
+}
+.btn-group>.btn, .btn-group>.btn:focus{
+    background-color: transparent;
+    border: 1px solid #fff;
+}
+.user-img{
+    width: 25px;
+    margin-left:10px;
+    
+}
+.bi-box-arrow-right{
+    font-size: 18px;
+    font-weight: bold;
+    color: #004D2A;
+    margin-right: 10px;
 }
 
 button:focus:not(:focus-visible){
