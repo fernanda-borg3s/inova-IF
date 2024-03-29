@@ -120,7 +120,22 @@ button.ghost {
 	z-index: 5;
 	animation: show 0.6s;
 }
-
+.radio-check input[type="radio"]{
+	width: 0;
+    padding: 10px;
+	margin: 5px;
+	border:0.5px solid #004d2a8a;
+	background-color: transparent;
+}
+.radio-check input[type="radio"]:checked{
+	background-color: #004d2a;
+}
+.radio-check label{
+	padding: 5px 0;
+	font-weight: bold;
+	color: #004d2a;
+    
+}
 @keyframes show {
 	0%, 49.99% {
 		opacity: 0;
@@ -199,7 +214,12 @@ button.ghost {
 	transform: translateX(20%);
 }
 
-
+.verficar-mat{
+	font-size: 12px;
+	color: #ca0000;
+	text-align: left;
+	font-weight: bold;
+}
 
 
 @media (max-width: 770px){
@@ -213,6 +233,9 @@ button.ghost {
   .box{
 	min-height: 600px;
   }
+  .radio-check label{
+	font-size: 15px;
+ }
 }
 
 /* .container-form-login{

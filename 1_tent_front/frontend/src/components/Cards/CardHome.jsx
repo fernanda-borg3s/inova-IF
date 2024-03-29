@@ -3,6 +3,7 @@ import Card from 'react-bootstrap/Card';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup'
+import './CardHome.css'
 // import { encontros } from '../../Data';
 import { useEffect, useState} from 'react';
 
@@ -16,7 +17,7 @@ export default function CardHome(){
   useEffect(() => {
     const fetchEncontros = async () => {
       try {
-        const response = await axios.get(`${baseURL}/`);
+        const response = await axios.get(`${baseURL}/inscricao/inscritos/1`);
         setEncontros(response.data.data);
         // console.log(encontros);
   
@@ -27,27 +28,32 @@ export default function CardHome(){
     
     fetchEncontros();
   }, []); 
+  function formatDate(dateString) {
+    const datePart = dateString.substring(0, 10);
+    const parts = datePart.split("-")
+    return `${parts[2]}-${parts[1]}-${parts[0]}`;
+  }
     return(
       
         <>
         {/* verificar se esta vazio */}
        {encontros.length === 0 ? (
-        <p>Nenhum encontro encontrado.</p>
+        <p>Nenhum encontro encontrado para hoje.</p>
       ) : (
         <Row xs={1} md={2} className="g-4">
           {encontros.map((encontro, index) => (
             <Col key={index}>
-              <Card style={{width: '20rem'}}>
-                <Card.Header className='d-flex justify-content-end'>{encontro.id_encontro}</Card.Header>
+              <Card className='cardHome-container'>
+                <Card.Header className='d-flex justify-content-end card-header'>{index + 1}</Card.Header>
                 <Card.Body>
-                  <Card.Title>{encontro.titulo_encontro}</Card.Title>
+                  <Card.Title className='py-1 '>{encontro.titulo_encontro}</Card.Title>
                   <ListGroup className="list-group-flush">
-                  <ListGroup.Item className="p-0">Componente Curricular: {encontro.componente_curricular}</ListGroup.Item>
-                    <ListGroup.Item className="p-0">Data:{encontro.data_inicio} até {encontro.data_fim}</ListGroup.Item>
-                    <ListGroup.Item className="p-0">Horários: {encontro.hora_inicio} até {encontro.hora_fim}</ListGroup.Item>
-                    <ListGroup.Item className="p-0">Sala: {encontro.sala}</ListGroup.Item>
-                    <ListGroup.Item className="p-0">Professora(o): {encontro.nome_professora}</ListGroup.Item>
-                    <ListGroup.Item className="p-0">Vestibulum at eros</ListGroup.Item>
+                  <ListGroup.Item className="px-1">Componente Curricular: <span>{encontro.componente_curricular}</span></ListGroup.Item>
+                    <ListGroup.Item className="px-1">Data: <span>{formatDate(encontro.data_inicio)}</span> até <span>{formatDate(encontro.data_fim)}</span></ListGroup.Item>
+                    <ListGroup.Item className="px-1">Horários: <span>{encontro.hora_inicio}</span> até <span>{encontro.hora_fim}</span></ListGroup.Item>
+                    <ListGroup.Item className="px-1">Sala: <span>{encontro.sala}</span></ListGroup.Item>
+                    <ListGroup.Item className="px-1">Professora(o): <span>{encontro.nome_professora}</span></ListGroup.Item>
+
                   </ListGroup>
                   <Button variant="danger" className='mt-3'>
                     <i className="bi bi-trash p-1"></i>

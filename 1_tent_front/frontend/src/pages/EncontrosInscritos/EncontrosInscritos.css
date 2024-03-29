@@ -1,0 +1,9 @@
+.cardInscrito-container{
+    min-height:500px ;
+    width: 22rem;
+}
+.cardInscrito-container span{
+    font-weight: 500;
+    font-size: 16px;
+    color: #2051a0;
+}

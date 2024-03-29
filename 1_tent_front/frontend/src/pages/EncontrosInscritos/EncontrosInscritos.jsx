@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button';
-
+import './EncontrosInscritos.css'
 import '../EncontrosDisponiveis/EncontrosDisponivel.css'
 // import CardHome from "../../components/Cards/CardHome";
 
@@ -25,7 +25,7 @@ export default function EncontrosInscritos(){
   useEffect(() => {
     const fetchEncontros = async () => {
       try {
-        const response = await axios.get(`${baseURL}/inscricao/inscrito/1`);
+        const response = await axios.get(`${baseURL}/inscricao/inscritos/1`);
         setEncontrosInscrito(response.data.data);
         // console.log(encontros);
   
@@ -36,6 +36,11 @@ export default function EncontrosInscritos(){
     
     fetchEncontros();
   }, []); 
+  function formatDate(dateString) {
+    const datePart = dateString.substring(0, 10);
+    const parts = datePart.split("-")
+    return `${parts[2]}-${parts[1]}-${parts[0]}`;
+  }
     return (
     <>
     
@@ -48,25 +53,27 @@ export default function EncontrosInscritos(){
        {encontrosInscrito.length === 0 ? (
         <p>Não há encontros disponíveis.</p>
       ) : (
-        <Row xs={1} md={2} className="g-4">
+        <Row xs={1} md={3} className="g-4 mt-2 ">
            {encontrosInscrito.map((inscrito, index) => (
             <Col key={index}>
-              <Card style={{width: '20rem'}}>
-                <Card.Header className='d-flex justify-content-end'>{inscrito.id_encontro}</Card.Header>
+              <Card style={{}} className='cardInscrito-container'>
+              <Card.Header className='d-flex justify-content-end card-header'>{index + 1}</Card.Header>
                 <Card.Body>
-                  <Card.Title>{inscrito.titulo_encontro}</Card.Title>
+                  <Card.Title className='py-1 '>{inscrito.titulo_encontro}</Card.Title>
                   <ListGroup className="list-group-flush">
-                  <ListGroup.Item className="p-0">Componente Curricular: {inscrito.componente_curricular}</ListGroup.Item>
-                    <ListGroup.Item className="p-0">Data:{inscrito.data_inicio} até {inscrito.data_fim}</ListGroup.Item>
-                    <ListGroup.Item className="p-0">Horários: {inscrito.hora_inicio} até {inscrito.hora_fim}</ListGroup.Item>
-                    <ListGroup.Item className="p-0">Sala: {inscrito.sala}</ListGroup.Item>
-                    <ListGroup.Item className="p-0">Professora(o): {inscrito.nome_professora}</ListGroup.Item>
-                    <ListGroup.Item className="p-0">Vestibulum at eros</ListGroup.Item>
+                  <ListGroup.Item className="px-1">Componente Curricular: <span>{inscrito.componente_curricular}</span></ListGroup.Item>
+                  <ListGroup.Item className="px-1">Descrição: <span>{inscrito.descricao_encontro}</span></ListGroup.Item>
+                    <ListGroup.Item className="px-1">Data: <span>{formatDate(inscrito.data_inicio)}</span> até <span>{formatDate(inscrito.data_fim)}</span></ListGroup.Item>
+                    <ListGroup.Item className="px-1">Horários: <span>{inscrito.hora_inicio}</span> até <span>{inscrito.hora_fim}</span></ListGroup.Item>
+                    <ListGroup.Item className="px-1">Sala: <span>{inscrito.sala}</span></ListGroup.Item>
+                    <ListGroup.Item className="px-1">Professora(o): <span>{inscrito.nome_professora}</span></ListGroup.Item>
+
                   </ListGroup>
                   <Button variant="danger" className='mt-3'>
                     <i className="bi bi-trash p-1"></i>
-                    Inscrever-se
+                    Cancelar Inscrição
                   </Button>
+                
                 </Card.Body>
               </Card>
             </Col>

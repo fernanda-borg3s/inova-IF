@@ -6,7 +6,7 @@ import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
 // import Card from 'react-bootstrap/Card';
 import './Home.css'
-// import CardHome from "../../components/Cards/CardHome";
+import CardHome from "../../components/Cards/CardHome";
 import Welcome from "../../components/Welcome/Welcome";
 // import { encontros } from "../../Data.js";
 import CalenderHome from '../../assets/Img/CalenderHome.png'
@@ -26,7 +26,7 @@ export default function Home(){
           <Row xs={1} md={2} className="g-4">
             <Col>
             {/* {encontros.map((item, index) =>{<CardHome key={index} encontros={item}/>})} */}
-              {/* <CardHome/> */}
+              <CardHome/>
             </Col>
           </Row>
         </Container>

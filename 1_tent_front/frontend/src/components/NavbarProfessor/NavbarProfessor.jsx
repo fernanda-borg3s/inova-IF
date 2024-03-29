@@ -33,8 +33,8 @@ export function NavbarProfessor(){
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 navLink">
-                  <Nav.Link href="#action1">Início</Nav.Link>
-                  <Nav.Link href="#action1">Encontros Cadastrados</Nav.Link>
+                  <Nav.Link href="/gerenciarEncontro">Início</Nav.Link>
+                  <Nav.Link href="/gerenciarEncontro/encontrosCadastrados">Encontros Cadastrados</Nav.Link>
                   <Dropdown className='dropdown-left pt-1'>
                     <Dropdown.Toggle  id="dropdown-basic" style={{backgroundColor:'transparent', border:'1px solid'}} className='ps-2 pe-3'>
                     {user}

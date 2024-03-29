@@ -12,6 +12,7 @@ import { NavbarProfessor } from './components/NavbarProfessor/NavbarProfessor.js
 import GerenciarEncontro from './pages/GerenciarEncontro/GerenciarEncontro.jsx'
 import Agenda from './pages/Agenda/Agenda.jsx'
 import Sobre from './pages/Sobre/Sobre.jsx'
+import EncontrosCadastrados from './pages/EncontrosCadastrados/EncontrosCadastrados.jsx'
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
       {
         path:"/gerenciarEncontro",
         element: <GerenciarEncontro/>,
+      },
+      {
+        path:"/gerenciarEncontro/EncontrosCadastrados",
+        element: <EncontrosCadastrados/>,
       }
     ]
   }

@@ -2,10 +2,11 @@
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import ListGroup from 'react-bootstrap/ListGroup'
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import './EncontrosDisponivel.css'
+import ListGroup from 'react-bootstrap/ListGroup'
+
+
+import './EncontrosCadastrados.css'
 // import CardHome from "../../components/Cards/CardHome";
 
 // import { encontros } from "../../Data.js";
@@ -15,18 +16,20 @@ import axios from 'axios';
 
 const baseURL = 'http://localhost:3000'
 
-export default function EncontrosDisponivel(){
+export default function EncontrosCadastrados(){
   // console.log(encontros);
-  const [encontrosDisponivel, setEncontrosDisponivel] = useState([]);
+  const [encontrosCadastrados, setEncontrosCadastrados] = useState([]);
+//   const [data, setData] = useState(null);
 
 
   useEffect(() => {
     const fetchEncontros = async () => {
       try {
-        const response = await axios.get(`${baseURL}/encontros/encontrosDisponivel`);
-        setEncontrosDisponivel(response.data.data);
+        const response = await axios.get(`${baseURL}/encontros/encontrosCadastrados`);
+        setEncontrosCadastrados(response.data.data);
         // console.log(encontros);
-  
+    //    for()
+        // console.log(encontrosCadastrados.length);
       } catch (error) {
         console.error('Erro ao recuperar dados:', error);
       }
@@ -39,37 +42,39 @@ export default function EncontrosDisponivel(){
     const parts = datePart.split("-")
     return `${parts[2]}-${parts[1]}-${parts[0]}`;
   }
+
+
     return (
     <>
     
-        <Container className="box-container mt-5">
-            <h1 className='h1-encontro-disponivel'>Encontros Disponíveis para inscrição</h1>
+        <Container className="box-container mt-2">
+            <h1 className='h1-encontro-disponivel'>Todos Encontros Cadastrados</h1>
           <Row>
             <Col>
              
                 {/* verificar se esta vazio */}
-       {encontrosDisponivel.length === 0 ? (
+       {encontrosCadastrados.length === 0 ? (
         <p>Não há encontros disponíveis.</p>
       ) : (
         <Row xs={1} md={3} className="g-4 mt-2">
-            {encontrosDisponivel.map((encontro, index) => (
+           {encontrosCadastrados.map((encontro, index) => (
             <Col key={index}>
-              <Card className='cardHome-container'>
-                <Card.Header className='d-flex justify-content-end card-header'>{index + 1}</Card.Header>
+              <Card  className='card-container'>
+                
                 <Card.Body>
-                  <Card.Title className='py-1 '>{encontro.titulo_encontro}</Card.Title>
+                  <Card.Title className='card-titulo py-1'>{encontro.titulo_encontro}</Card.Title>
                   <ListGroup className="list-group-flush">
+                  <ListGroup.Item className="px-1">Área de conhecimento: <span>{encontro.area}({encontro.area_sigla})</span> </ListGroup.Item>
                   <ListGroup.Item className="px-1">Componente Curricular: <span>{encontro.componente_curricular}</span></ListGroup.Item>
+                  <ListGroup.Item className="px-1">Descrição: <span>{encontro.descricao_encontro}</span></ListGroup.Item>
                     <ListGroup.Item className="px-1">Data: <span>{formatDate(encontro.data_inicio)}</span> até <span>{formatDate(encontro.data_fim)}</span></ListGroup.Item>
                     <ListGroup.Item className="px-1">Horários: <span>{encontro.hora_inicio}</span> até <span>{encontro.hora_fim}</span></ListGroup.Item>
                     <ListGroup.Item className="px-1">Sala: <span>{encontro.sala}</span></ListGroup.Item>
                     <ListGroup.Item className="px-1">Professora(o): <span>{encontro.nome_professora}</span></ListGroup.Item>
-
+                    <ListGroup.Item className="px-1">Email professora(o): <span>{encontro.email}</span></ListGroup.Item>
                   </ListGroup>
-                    <Button variant="success" className='mt-3 px-4' style={{fontWeight:'bold'}}>
-                    Inscrever
-                  </Button>
                 </Card.Body>
+                <Card.Footer className='d-flex justify-content-end card-header'> {index + 1} </Card.Footer>
               </Card>
             </Col>
           ))}
