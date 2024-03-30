@@ -4,7 +4,8 @@ import Col from "react-bootstrap/esm/Col";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './FormCadastro.css'
-import  { useState } from 'react';
+import { useEffect, useState} from 'react';
+
 import axios from 'axios';
 
 const baseURL = 'http://localhost:3000'
@@ -30,8 +31,8 @@ export default function FormCadastro(){
       });
     
       const { titulo_encontro, descricao_encontro, criterios_avaliacao, sala, num_vagas, data_inicio, hora_inicio, data_fim, hora_fim, repete, num_repeticoes, disponivel_inscricao, id_professora, id_area_conhecimento, id_componente_curricular, id_objetivos_aprendizagem } = inputs;
-      const onChange = e =>
-        setInputs({ ...inputs, [e.target.name]: e.target.value });
+    //   const onChange = e =>
+    //     setInputs({ ...inputs, [e.target.name]: e.target.value });
     
       const CadastrarEncontro = async e =>{
         e.preventDefault();
@@ -62,11 +63,32 @@ export default function FormCadastro(){
                 console.error(err.message);
               }
 
-        
-    
-        
       }
-
+      const [selectedComponente, setSelectedComponente] = useState('17');
+      const [objAprendizagem, setObjAprendizagem] = useState([]);
+   
+         console.log(selectedComponente);
+      useEffect(() => {
+        const fetchEncontros = async () => {
+          try {
+            const response = await axios.get(`${baseURL}/aprendizagem/getObjetivo/${selectedComponente}`);
+            setObjAprendizagem(response.data.data);
+           
+      
+          } catch (error) {
+            console.error('Erro ao recuperar dados:', error);
+          }
+        };
+        
+        fetchEncontros();
+      }, [selectedComponente]); 
+      function formatText(textString){
+        if (textString.length > 110) {
+            const truncatedText = textString.slice(0, 110);
+            return truncatedText + "...";
+          }
+          return textString;
+      }
     return(
         <>
          <Container className="container-cadastrar">
@@ -86,7 +108,8 @@ export default function FormCadastro(){
                 <Row className="mb-3">                       
                     <Form.Group as={Col} controlId="id_area_conhecimento">
                       <Form.Label>Area de conhecimento:</Form.Label>
-                        <Form.Select defaultValue="Não se aplica">
+                        <Form.Select  >
+
                             <option value="1">Base de Autonomia e Emancipação</option>
                             <option value="2">Ciências da Natureza e suas Tecnologias </option>
                             <option value="3">Ciências Humanas e Sociais Aplicadas </option>
@@ -99,12 +122,17 @@ export default function FormCadastro(){
                             <option value="10">Oficinas Livres do Ensino Médio</option>
                             <option value="11">Projetos Integradores </option>
                         </Form.Select>
+
+                          
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="id_componente_curricular">
                       <Form.Label>Componente Curricular:</Form.Label>
-                        <Form.Select defaultValue="Não se aplica">
-                            <option>Não se aplica</option>
+                        <Form.Select 
+                        defaultValue="17" 
+                        value={selectedComponente}
+                        onChange={e => setSelectedComponente(e.target.value)}>
+                            <option value="17">Não se aplica</option>
                             <option value="1">Artes Cênicas</option>
                             <option value="2">Artes Visuais</option>
                             <option value="3">Biologia</option>
@@ -162,28 +190,36 @@ export default function FormCadastro(){
                     
                     <Form.Group as={Col} controlId="tipo_objetivo">
                         <Form.Label>Tipo de Objetivo:</Form.Label>
-                          <Form.Select defaultValue="Não se aplica">
-                            <option>Não se aplica</option>
+                     <Form.Select defaultValue="Objetivos Essenciais Introdutório">
                             <option value="Objetivos Essenciais Introdutórios">Objetivos Essenciais Introdutórios</option>
                             <option value="Objetivos Essenciais">Objetivos Essenciais</option>
-                            <option value="Objetivos Complementares"></option>
-                          </Form.Select>
+                            <option value="Objetivos Complementares">Objetivos Complementares</option>
+                          </Form.Select> 
                     </Form.Group>  
                  
                     <Form.Group as={Col} controlId="objetivos_aprendizagem" className="mt-3 mb-3">
                         {/* vem do banco */}
                         <Form.Label>Objetivo De aprendizagem:</Form.Label>
-                          <Form.Select defaultValue="Não se aplica">
+                        <Form.Select defaultValue="Não se aplica">
                             <option>Não se aplica</option>
-                           {/* COLOCAR PUXANDO AS OPÇÕES DO BANCO */}
+                    {objAprendizagem.map((aprendizagem) => (
+                        <option key={aprendizagem.id_objetivos_aprendizagem} value={aprendizagem.id_objetivos_aprendizagem}>
+                            {formatText(aprendizagem.objetivos_aprendizagem)}
+                        </option>
+                        ))}
                           </Form.Select>
+                   
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="etapa">
                         <Form.Label>Etapa:</Form.Label>
-                            <Form.Select defaultValue="Não se aplica">
-                                <option>Não se aplica</option>
-                                COLOCAR PUXANDO AS OPÇÕES DO BANCO
+                        <Form.Select defaultValue="Não se aplica">
+                            <option>Não se aplica</option>
+                    {objAprendizagem.map((aprendizagem) => (
+                        <option key={aprendizagem.id_objetivos_aprendizagem} value={aprendizagem.id_objetivos_aprendizagem}>
+                            {formatText(aprendizagem.etapa)}
+                        </option>
+                        ))}
                             </Form.Select>
                     </Form.Group>
             
