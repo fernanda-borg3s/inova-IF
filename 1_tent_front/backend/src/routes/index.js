@@ -13,6 +13,7 @@ router.use("/encontros", encontrosRouter);
 router.use("/aprendizagem", aprendizagemRouter);
 router.use("/agenda", agendaRouter);
 router.use("/inscricao", inscricaoRouter);
+router.use("/user", inscricaoRouter);
 
 export default router;
 
