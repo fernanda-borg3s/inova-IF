@@ -4,6 +4,6 @@ import { Router } from "express";
 
 const userRouter = Router();
 
-userRouter.get("/userAluna", userController.getUserAluna);
-userRouter.get("/userProfessora", userController.getUserProfessora);
+userRouter.get("/userAluna", authorize, userController.getUserAluna);
+userRouter.get("/userProfessora", authorize, userController.getUserProfessora);
 export default userRouter;

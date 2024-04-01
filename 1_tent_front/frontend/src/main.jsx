@@ -14,6 +14,8 @@ import Agenda from './pages/Agenda/Agenda.jsx'
 import Sobre from './pages/Sobre/Sobre.jsx'
 import EncontrosCadastrados from './pages/EncontrosCadastrados/EncontrosCadastrados.jsx'
 
+import UserProvider from './Context/UserContext.jsx'
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -71,7 +73,9 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
- 
+    <UserProvider>
     <RouterProvider router={router} />
+
+    </UserProvider>
   </React.StrictMode>,
 )

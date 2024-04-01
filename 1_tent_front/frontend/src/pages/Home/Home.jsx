@@ -26,7 +26,7 @@ export default function Home(){
           <Row xs={1} md={2} className="g-4">
             <Col>
             {/* {encontros.map((item, index) =>{<CardHome key={index} encontros={item}/>})} */}
-              <CardHome/>
+              {/* <CardHome/> */}
             </Col>
           </Row>
         </Container>

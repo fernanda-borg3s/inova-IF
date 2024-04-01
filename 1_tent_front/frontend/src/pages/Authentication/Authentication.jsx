@@ -2,15 +2,19 @@ import Container from "react-bootstrap/esm/Container";
 import Image from "react-bootstrap/esm/Image";
 import LogoLogin from '../../assets/Img/LogoLogin.png'
 import Logoif from '../../assets/Img/Logoif.png'
+import { toast } from "react-toastify";
 
 import Form from 'react-bootstrap/Form';
 import './Authentication.css'
 import  { useRef, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 const baseURL = 'http://localhost:3000'
 
 export default function Authentication(){
+  const navigate = useNavigate();
+
     const [selectedOption, setSelectedOption] = useState("Aluna");
     const [verificaMat, setVerificaMat] = useState("")
     const [isActive, setIsActive] = useState(false);
@@ -46,18 +50,20 @@ export default function Authentication(){
               //ENVIA PARA ENDPOINT QUE CONSULTA A TABELA ALUNA
             try {
                 const body = { nome, matricula, email, password };
-                const response = await axios.post(`${baseURL}/auth/cadastro`, 
+                const response = await axios.post(`${baseURL}/auth/cadastroAluna`, 
                 {
                     body: JSON.stringify(body)
                 }
                 );
-          
+                // console.log(response.data.data);
+                toast.success("Usuário Criado com sucesso");
+
                 // const parseRes = await response.json();
           
                 // if (parseRes.jwtToken) {
                 //   localStorage.setItem("token", parseRes.jwtToken);
-                //   setAuth(true);
-                //   toast.success("Logged in Successfully");
+                  
+                //   toast.success("Logado com sucesso");
                 // } else {
                 //   setAuth(false);
                 //   toast.error(parseRes);
@@ -74,70 +80,67 @@ export default function Authentication(){
 
      const fazerLogin = async e => {
         e.preventDefault();
-        console.log("form is send");
+        
         if(selectedOption == "Aluna" && matricula.length < 12){
             console.log(matricula.length)
             setVerificaMat("Matrícula aluna deve conter 12 números!")
         }else {
-            console.log("fazlogin");
-              //ENVIA PARA ENDPOINT QUE CONSULTA A TABELA ALUNA
               try {
-                const body = { matricula, password };
-
-              const response = await axios.post(`${baseURL}/auth/cadastro`, 
-              {
-                  body: JSON.stringify(body)
+                const bodyAluna = { matricula, password };
+              const response = await axios.post(`${baseURL}/auth/loginAluna`, bodyAluna, {
+                headers: {
+                  "Content-type": "application/json"
+                }
               }
               );
+              console.log(response);
+                const parseRes = await response.data;
           
-        //         const parseRes = await response.json();
-          
-        //         if (parseRes.jwtToken) {
-        //           localStorage.setItem("token", parseRes.jwtToken);
-        //           setAuth(true);
-        //           toast.success("Logged in Successfully");
-        //         } else {
-        //           setAuth(false);
-        //           toast.error(parseRes);
-        //         }
+                if (parseRes.jwtToken) {
+                  localStorage.setItem("token", parseRes.jwtToken);
+                   navigate("/home");
+                  toast.success("Logado com sucesso!");
+                } else {
+                  
+                  toast.error(parseRes);
+                }
               } catch (err) {
                 console.error(err.message);
+                toast.error('Ocorreu um erro ao fazer login, tente novamente.')
+                
               }
 
         }
-        if(selectedOption == "Professora" && matricula.length < 7){
-            console.log(matricula.length)
-            setVerificaMat("Matrícula professora deve conter 7 números!")
-        }
-        else{
-            //ENVIA PARA ENDPOINT QUE CONSULTA A TABELA PROFESSORA
+        // if(selectedOption == "Professora" && matricula.length < 7){
+        //     console.log(matricula.length)
+        //     setVerificaMat("Matrícula professora deve conter 7 números!")
+        // }
+        // else{
+            
         //     try {
-        //         const body = { email, password };
-        //         const response = await fetch(
-        //           "http://localhost:5000/authentication/login",
-        //           {
-        //             method: "POST",
-        //             headers: {
-        //               "Content-type": "application/json"
-        //             },
+        //       const body = { matricula, password };
+
+        //       const response = await axios.post(`${baseURL}/auth/loginProfessora`, 
+        //         {
         //             body: JSON.stringify(body)
-        //           }
-        //         );
+        //         }
+        //       );
+                
           
-        //         const parseRes = await response.json();
+        //      const parseRes = await response.json();
           
         //         if (parseRes.jwtToken) {
         //           localStorage.setItem("token", parseRes.jwtToken);
-        //           setAuth(true);
-        //           toast.success("Logged in Successfully");
+        //           navigate("/gerenciarCadastro");
+        //           toast.success("Logado com sucesso!");
         //         } else {
-        //           setAuth(false);
+                  
         //           toast.error(parseRes);
         //         }
         //       } catch (err) {
         //         console.error(err.message);
         //       }
-         }
+        //  }
         
 
      }

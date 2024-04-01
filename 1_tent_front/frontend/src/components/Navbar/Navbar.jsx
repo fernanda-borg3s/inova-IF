@@ -8,11 +8,47 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 // import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import UserLogo from '../../assets/Img/UserLogo.png'
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import './Navbar.css'
+import { useEffect, useState,useContext} from 'react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { UserContext } from '../../Context/UserContext.jsx'
+
+
+const baseURL = 'http://localhost:3000'
+
 export function NavbarC(){
-  const user = 'Petrina Carla Smith'
-  const mat = '2023003100103'
+  const { user, setUser } = useContext(UserContext);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userLogged = async () => {
+
+      try {
+        const response = await axios.get(`${baseURL}/user/userAluna/`, {
+          headers: {
+            jwt_token: `${localStorage.getItem("token")}`,
+          }
+        });
+        setUser(response.data);
+        // console.log(encontros);
+  
+      } catch (error) {
+        console.error('Erro ao recuperar dados:', error);
+      }
+    };
+    
+    userLogged();
+  }, []); 
+ 
+  function signout() {
+    localStorage.removeItem("token");
+    setUser(undefined);
+    navigate("/");
+    toast.success("Logout com sucesso")
+  }
     return (
         <>
 {['sm'].map((expand) => (
@@ -50,19 +86,22 @@ export function NavbarC(){
                  
                   </NavDropdown>
                   <Nav.Link href="/home/agenda" className='me-2'>Agenda</Nav.Link>
-                  <Dropdown className='dropdown-left'>
-                    <Dropdown.Toggle  id="dropdown-basic" style={{backgroundColor:'transparent', border:'1px solid'}} className='ps-2 pe-3'>
-                    {user}
-                      <img src={UserLogo} alt="raposa" className="user-img" ></img>
-                    </Dropdown.Toggle>
+                  {user ? (
+                     <Dropdown className='dropdown-left'>
+                     <Dropdown.Toggle  id="dropdown-basic" style={{backgroundColor:'transparent', border:'1px solid'}} className='ps-2 pe-3'>
+                     {user.nome_aluna}
+                       <img src={UserLogo} alt="raposa" className="user-img" ></img>
+                     </Dropdown.Toggle>
+                     <Dropdown.Menu>
+                       <Dropdown.Header>Matrícula:</Dropdown.Header>
+                       <Dropdown.Item href="#" disabled>{user.mat_aluna}</Dropdown.Item>
+                       <Dropdown.Divider />
+                       <Dropdown.Item onClick={signout} ><i className="bi bi-box-arrow-right"></i>Sair</Dropdown.Item>
+                     </Dropdown.Menu>
+                   </Dropdown>
 
-                    <Dropdown.Menu>
-                      <Dropdown.Header>Matrícula:</Dropdown.Header>
-                      <Dropdown.Item href="#" disabled>{mat}</Dropdown.Item>
-                      <Dropdown.Divider />
-                      <Dropdown.Item href="#/action-2"><i className="bi bi-box-arrow-right"></i>Sair</Dropdown.Item>
-                    </Dropdown.Menu>
-                  </Dropdown>
+                  ) : (<span>ERROR</span>)}
+                 
                 </Nav>
                 
               </Offcanvas.Body>

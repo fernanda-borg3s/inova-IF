@@ -10,9 +10,9 @@ export default function generateToken(user_id) {
       id: user_id
     }
   }
-  return jwt.sign(payload, process.env.SECRET, { expiresIn: 86400 });
+  return jwt.sign(payload, process.env.SECRET, { expiresIn: "1h" });
 }
-
+// { expiresIn: 86400 } = 24h
 // const loginService = async ({ matricula, password }) => {
 //   const user = await userRepositories.findByEmailUserRepository(matricula);
 

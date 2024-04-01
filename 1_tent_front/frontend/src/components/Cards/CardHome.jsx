@@ -5,19 +5,22 @@ import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup'
 import './CardHome.css'
 // import { encontros } from '../../Data';
-import { useEffect, useState} from 'react';
+import { useEffect, useState, useContext} from 'react';
+import { UserContext } from '../../Context/UserContext.jsx'
 
 import axios from 'axios';
 
 const baseURL = 'http://localhost:3000'
 export default function CardHome(){
   const [encontros, setEncontros] = useState([]);
+const { user } = useContext(UserContext);
+
 
 
   useEffect(() => {
     const fetchEncontros = async () => {
       try {
-        const response = await axios.get(`${baseURL}/inscricao/inscritos/1`);
+        const response = await axios.get(`${baseURL}/inscricao/inscritos/${user.id_aluna}`);
         setEncontros(response.data.data);
         // console.log(encontros);
   

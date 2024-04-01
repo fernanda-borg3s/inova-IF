@@ -1,7 +1,7 @@
 import postgre from '../../database.js';
 import bcrypt from "bcrypt";
 import generateToken from '../service/auth.service.js'
-import authorize from '../middleware/authorize.js'
+// import authorize from '../middleware/authorize.js'
 // import validEmail from ''
 const authController = {
     loginAluna: async (req, res) => {

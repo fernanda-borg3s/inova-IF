@@ -67,7 +67,7 @@ export default function FormCadastro(){
       const [selectedComponente, setSelectedComponente] = useState('17');
       const [objAprendizagem, setObjAprendizagem] = useState([]);
    
-         console.log(selectedComponente);
+        //  console.log(selectedComponente);
       useEffect(() => {
         const fetchEncontros = async () => {
           try {

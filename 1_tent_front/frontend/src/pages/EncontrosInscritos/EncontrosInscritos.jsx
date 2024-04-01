@@ -10,7 +10,8 @@ import '../EncontrosDisponiveis/EncontrosDisponivel.css'
 // import CardHome from "../../components/Cards/CardHome";
 
 // import { encontros } from "../../Data.js";
-import { useEffect, useState} from 'react';
+import { useEffect, useState, useContext} from 'react';
+import { UserContext } from '../../Context/UserContext.jsx'
 
 import axios from 'axios';
 
@@ -20,12 +21,14 @@ const baseURL = 'http://localhost:3000'
 export default function EncontrosInscritos(){
   // console.log(encontros);
   const [encontrosInscrito, setEncontrosInscrito] = useState([]);
+  const { user } = useContext(UserContext);
+
 
 
   useEffect(() => {
     const fetchEncontros = async () => {
       try {
-        const response = await axios.get(`${baseURL}/inscricao/inscritos/1`);
+        const response = await axios.get(`${baseURL}/inscricao/inscritos/${user.id_aluna}`);
         setEncontrosInscrito(response.data.data);
         // console.log(encontros);
   

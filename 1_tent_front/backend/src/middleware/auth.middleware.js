@@ -1,32 +1,33 @@
-import "dotenv/config";
-import jwt from "jsonwebtoken";
-import userRepositories from "../repositories/user.repositories.js";
+// import "dotenv/config";
+// import jwt from "jsonwebtoken";
+// // import userRepositories from "../repositories/user.repositories.js";
 
-function authMiddleware(req, res, next) {
-  const authHeader = req.headers.authorization;
-  if (!authHeader)
-    return res.status(401).send({ message: "O Token não foi informado!" });
+// function authMiddleware(req, res, next) {
+//   const authHeader = req.headers.jwt_token;
+//   if (!authHeader)
+//     return res.status(401).send({ message: "O Token não foi informado!" });
 
-  const parts = authHeader.split(" "); /* ["Bearer", "asdasdasdadsadasd"] */
-  if (parts.length !== 2)
-    return res.status(401).send({ message: "Token Invalido!" });
+//   const parts = authHeader.split(" "); /* ["Bearer", "asdasdasdadsadasd"] */
+//   if (parts.length !== 2)
+//     return res.status(401).send({ message: "Token Invalido!" });
 
-  const [scheme, token] = parts;
+//   const [scheme, token] = parts;
 
-  if (!/^Bearer$/i.test(scheme))
-    return res.status(401).send({ message: "Malformatted Token!" });
+//   if (!/^Bearer$/i.test(scheme))
+//     return res.status(401).send({ message: "Malformatted Token!" });
 
-  jwt.verify(token, process.env.SECRET, async (err, decoded) => {
-    if (err) return res.status(401).send({ message: "Token Invalido!" });
-    //DESCOBIR COMO ACESSAR AQUI DIRETAMENTE NO BANCO
-    const user = await userRepositories.findByIdUserRepository(decoded.id);
-    if (!user || !user.id)
-      return res.status(401).send({ message: "Token Invalido!" });
+//   jwt.verify(token, process.env.SECRET, async (err, decoded) => {
+//     if (err) return res.status(401).send({ message: "Token Invalido!" });
+//     console.log(decoded)
+//     //DESCOBIR COMO ACESSAR AQUI DIRETAMENTE NO BANCO
+//     // const user = await userRepositories.findByIdUserRepository(decoded.id);
+//     // if (!user || !user.id)
+//     //   return res.status(401).send({ message: "Token Invalido!" });
 
-    req.userId = user.id;
+//     // req.userId = user.id;
 
-    return next();
-  });
-}
+//     return next();
+//   });
+// }
 
-export default authMiddleware;
+// export default authMiddleware;
