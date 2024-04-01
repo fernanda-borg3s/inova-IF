@@ -98,7 +98,7 @@ const authController = {
         [matricula, nome, email, bcryptPassword]
       );
         //ESTA DANDO PROBLEMA NA GERAÇÃO DO TOKEN, MAS O CADASTRO TA FUNCIONANDO
-      const jwtToken = generateToken(newUser.rows[0].id_aluna);
+      const jwtToken = generateToken(newUser.rows[0].id_professora);
   
       return res.json({ jwtToken });
     } catch (err) {

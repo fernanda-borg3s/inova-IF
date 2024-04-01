@@ -15,6 +15,8 @@ import Sobre from './pages/Sobre/Sobre.jsx'
 import EncontrosCadastrados from './pages/EncontrosCadastrados/EncontrosCadastrados.jsx'
 
 import UserProvider from './Context/UserContext.jsx'
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const router = createBrowserRouter([
   {
@@ -70,12 +72,24 @@ const router = createBrowserRouter([
     ]
   }
 ])
-
+const notify = () => toast.success("Wow so easy !");
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <UserProvider>
     <RouterProvider router={router} />
-
+    <ToastContainer
+     position="top-right"
+     autoClose={5000}
+     hideProgressBar={false}
+     newestOnTop={false}
+     closeOnClick
+     rtl={false}
+     pauseOnFocusLoss
+     draggable
+     pauseOnHover
+     theme="light"
+   
+     />
     </UserProvider>
   </React.StrictMode>,
 )

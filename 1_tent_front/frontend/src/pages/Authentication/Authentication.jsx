@@ -3,7 +3,6 @@ import Image from "react-bootstrap/esm/Image";
 import LogoLogin from '../../assets/Img/LogoLogin.png'
 import Logoif from '../../assets/Img/Logoif.png'
 import { toast } from "react-toastify";
-
 import Form from 'react-bootstrap/Form';
 import './Authentication.css'
 import  { useRef, useState } from 'react';
@@ -41,49 +40,37 @@ export default function Authentication(){
     
       const fazerCadastro = async e =>{
         e.preventDefault();
-        console.log("form is send");
         if(matricula.length < 12){
-            console.log(matricula.length)
             setVerificaMat("Matrícula aluna deve conter 12 números!")
+            return;
         }else {
-            console.log("fazCadastro");
-              //ENVIA PARA ENDPOINT QUE CONSULTA A TABELA ALUNA
             try {
-                const body = { nome, matricula, email, password };
-                const response = await axios.post(`${baseURL}/auth/cadastroAluna`, 
-                {
-                    body: JSON.stringify(body)
+                const bodyCadastro = { nome, matricula, email, password };
+                const response = await axios.post(`${baseURL}/auth/cadastroAluna`, bodyCadastro, {
+                  headers: {
+                    "Content-type": "application/json"
+                  }
                 }
                 );
                 // console.log(response.data.data);
                 toast.success("Usuário Criado com sucesso");
 
-                // const parseRes = await response.json();
-          
-                // if (parseRes.jwtToken) {
-                //   localStorage.setItem("token", parseRes.jwtToken);
-                  
-                //   toast.success("Logado com sucesso");
-                // } else {
-                //   setAuth(false);
-                //   toast.error(parseRes);
-                // }
+               
               } catch (err) {
-                console.error(err.message);
-              }
+                // console.error(err.message);
+                toast.error("Ocorreu um erro ao cadastrar usuário, tente novamente");
 
+              }
         }
     
-        
       }
-
-
      const fazerLogin = async e => {
         e.preventDefault();
         
         if(selectedOption == "Aluna" && matricula.length < 12){
             console.log(matricula.length)
             setVerificaMat("Matrícula aluna deve conter 12 números!")
+            return;
         }else {
               try {
                 const bodyAluna = { matricula, password };
@@ -93,7 +80,7 @@ export default function Authentication(){
                 }
               }
               );
-              console.log(response);
+              // console.log(response);
                 const parseRes = await response.data;
           
                 if (parseRes.jwtToken) {
@@ -105,47 +92,44 @@ export default function Authentication(){
                   toast.error(parseRes);
                 }
               } catch (err) {
-                console.error(err.message);
+                // console.error(err.message);
                 toast.error('Ocorreu um erro ao fazer login, tente novamente.')
-                
               }
-
         }
-        // if(selectedOption == "Professora" && matricula.length < 7){
-        //     console.log(matricula.length)
-        //     setVerificaMat("Matrícula professora deve conter 7 números!")
-        // }
-        // else{
+        if(selectedOption == "Professora" && matricula.length < 7){
+            console.log(matricula.length)
+            setVerificaMat("Matrícula professora deve conter 7 números!")
+            return;
+        }
+        else{
             
-        //     try {
-        //       const body = { matricula, password };
+            try {
+              const bodyProfessora = { matricula, password };
 
-        //       const response = await axios.post(`${baseURL}/auth/loginProfessora`, 
-        //         {
-        //             body: JSON.stringify(body)
-        //         }
-        //       );
-                
-          
-        //      const parseRes = await response.json();
-          
-        //         if (parseRes.jwtToken) {
-        //           localStorage.setItem("token", parseRes.jwtToken);
-        //           navigate("/gerenciarCadastro");
-        //           toast.success("Logado com sucesso!");
-        //         } else {
-                  
-        //           toast.error(parseRes);
-        //         }
-        //       } catch (err) {
-        //         console.error(err.message);
-        //       }
-        //  }
-        
-
+              const response = await axios.post(`${baseURL}/auth/loginProfessora`, bodyProfessora, {
+                headers: {
+                  "Content-type": "application/json"
+                }
+              }
+              );
+              const parseRes = await response.data;
+                if (parseRes.jwtToken) {
+                  localStorage.setItem("token", parseRes.jwtToken);
+                  navigate("/gerenciarEncontro");
+                  toast.success("Logado com sucesso!");
+                } else {
+                  toast.error(parseRes);
+                }
+              } catch (err) {
+                // console.error(err.message);
+                toast.error('Ocorreu um erro ao fazer login, tente novamente.')
+              }
+         }       
      }
+    
     return (
         <>
+        
         <Container className="d-flex align-items-center justify-content-center flex-column" style={{height: '100vh', marginTop:'90px'}}>
         <div  ref={containerRef} className='box'>
             <div className="form-container sign-up-container">
@@ -169,6 +153,9 @@ export default function Authentication(){
                 placeholder="Matrícula" 
                 name="matricula"
                 value={matricula}
+                required
+                maxLength={12}
+                minLength={7}
                 onChange={e => onChange(e)} />
 
                 <span className="verficar-mat p-1">{verificaMat}</span>
@@ -208,6 +195,9 @@ export default function Authentication(){
                 placeholder="Matrícula" 
                 name="matricula"  
                 value={matricula}
+                required
+                maxLength={12}
+                minLength={7}
                 onChange={e => onChange(e)}/>
                 <span className="verficar-mat p-1">{verificaMat}</span>
                 <input 
@@ -218,9 +208,8 @@ export default function Authentication(){
                 onChange={e => onChange(e)} />
                 {/* <a href="#">Forgot your password?</a> */}
                 <button type="submit" className="mt-3" >Entrar</button>
-                {/* <p style={{margin:'5px', fontWeight:'bold'}}>ou entrar com</p>
-                <button className=""><i className="bi bi-google"></i>oogle</button> */}
                 </form>
+               
             </div>
             <div className="overlay-container">
                 <div className="overlay">

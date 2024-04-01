@@ -10,7 +10,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import UserLogo from '../../assets/Img/UserLogo.png'
 import { Outlet, useNavigate } from 'react-router-dom';
 import './Navbar.css'
-import { useEffect, useState,useContext} from 'react';
+import { useEffect, useState, useContext} from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { UserContext } from '../../Context/UserContext.jsx'
@@ -47,7 +47,7 @@ export function NavbarC(){
     localStorage.removeItem("token");
     setUser(undefined);
     navigate("/");
-    toast.success("Logout com sucesso")
+    toast.success("Logout com sucesso!")
   }
     return (
         <>

@@ -18,13 +18,13 @@ const userController ={
     getUserProfessora: async(req, res) => {
         try {
         
-            const { rows } = await postgre.query("SELECT nome_professora, mat_professora FROM professora WHERE id_professora = $1", [req.params.id])
-            if (rows[0]) {
-                return res.json({msg: "OK", data: rows})
-            }
-            res.status(500).json({msg: "Ocorreu um erro ao encontrar usuário"})
+            const user = await postgre.query("SELECT nome_professora, mat_professora FROM professora WHERE id_professora = $1", [req.user.id])
+            res.json(user.rows[0]);
+
+            // res.status(500).json({msg: "Ocorreu um erro ao encontrar usuário"})
         } catch (error) {
-            res.json({msg: error.msg})
+            console.error(err.message);
+            res.status(500).send("Server error");
         }
     },
     
