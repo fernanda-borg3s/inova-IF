@@ -69,10 +69,10 @@ export function NavbarProfessor(){
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 navLink">
                   <Nav.Link href="/gerenciarEncontro">Início</Nav.Link>
-                  <Nav.Link href="/gerenciarEncontro/encontrosCadastrados">Encontros Cadastrados</Nav.Link>
+                  <Nav.Link href="/gerenciarEncontro/encontrosCadastrados" className='me-5'>Encontros Cadastrados</Nav.Link>
                   {user ? (
                   <Dropdown className='dropdown-left pt-1'>
-                    <Dropdown.Toggle  id="dropdown-basic" style={{backgroundColor:'transparent', border:'1px solid'}} className='ps-2 pe-3'>
+                    <Dropdown.Toggle  id="dropdown-basic" style={{backgroundColor:'transparent', border:'none', fontWeight:'bold'}} className='p-1'>
                     {user.nome_professora}
                       <img src={UserLogo} alt="raposa" className="user-img" ></img>
                     </Dropdown.Toggle>

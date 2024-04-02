@@ -4,7 +4,7 @@ const aprendizagemController ={
     getObjetivoByComponente: async(req, res) => {
         try {
         
-            const { rows } = await postgre.query("SELECT OA.id_objetivos_aprendizagem, OA.objetivos_aprendizagem, OA.etapa FROM objetivos_aprendizagem AS OA INNER JOIN componente_curricular AS CC ON OA.id_componente_curricular = CC.id_componente_curricular WHERE CC.id_componente_curricular = $1", [req.params.id])
+            const { rows } = await postgre.query("SELECT OA.id_objetivos_aprendizagem, OA.tipo_objetivo, OA.objetivos_aprendizagem, OA.etapa FROM objetivos_aprendizagem AS OA INNER JOIN componente_curricular AS CC ON OA.id_componente_curricular = CC.id_componente_curricular WHERE CC.id_componente_curricular = $1", [req.params.id])
             if (rows[0]) {
                 return res.json({msg: "OK", data: rows})
             }

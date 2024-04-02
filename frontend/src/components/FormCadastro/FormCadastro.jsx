@@ -4,13 +4,19 @@ import Col from "react-bootstrap/esm/Col";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './FormCadastro.css'
-import { useEffect, useState} from 'react';
+import { useEffect, useState, useContext} from 'react';
+import { UserContext } from '../../Context/UserContext.jsx'
+
 
 import axios from 'axios';
 
 const baseURL = 'http://localhost:3000'
 
 export default function FormCadastro(){
+
+
+  const { user, setUser } = useContext(UserContext);
+
     const [inputs, setInputs] = useState({
         titulo_encontro:"",
          descricao_encontro:"",
@@ -102,7 +108,7 @@ export default function FormCadastro(){
 
                     <Form.Group as={Col} controlId="matricula-professor">
                         <Form.Label>Matrícula Professora:</Form.Label>
-                        <Form.Control type="text" placeholder="000000-0" />
+                        <Form.Control type="text" placeholder="000000-0" value={user.mat_professora} />
                     </Form.Group>
                 </Row>
                 <Row className="mb-3">                       
@@ -129,7 +135,7 @@ export default function FormCadastro(){
                     <Form.Group as={Col} controlId="id_componente_curricular">
                       <Form.Label>Componente Curricular:</Form.Label>
                         <Form.Select 
-                        defaultValue="17" 
+                        
                         value={selectedComponente}
                         onChange={e => setSelectedComponente(e.target.value)}>
                             <option value="17">Não se aplica</option>
@@ -190,17 +196,24 @@ export default function FormCadastro(){
                     
                     <Form.Group as={Col} controlId="tipo_objetivo">
                         <Form.Label>Tipo de Objetivo:</Form.Label>
-                     <Form.Select defaultValue="Objetivos Essenciais Introdutório">
-                            <option value="Objetivos Essenciais Introdutórios">Objetivos Essenciais Introdutórios</option>
-                            <option value="Objetivos Essenciais">Objetivos Essenciais</option>
-                            <option value="Objetivos Complementares">Objetivos Complementares</option>
+                     <Form.Select >
+                            <option value="">Selecione</option>
+                            {objAprendizagem.filter((aprendizagem, index, self) => 
+                            index === self.findIndex((t) => t.tipo_objetivo === aprendizagem.tipo_objetivo)
+                            )
+                            .map((aprendizagem) => (
+                            <option key={aprendizagem.id_objetivos_aprendizagem} value={aprendizagem.tipo_objetivo}>
+                                {aprendizagem.tipo_objetivo}
+                            </option>
+                            ))
+                        }
                           </Form.Select> 
                     </Form.Group>  
                  
                     <Form.Group as={Col} controlId="objetivos_aprendizagem" className="mt-3 mb-3">
                         {/* vem do banco */}
                         <Form.Label>Objetivo De aprendizagem:</Form.Label>
-                        <Form.Select defaultValue="Não se aplica">
+                        <Form.Select>
                             <option>Não se aplica</option>
                     {objAprendizagem.map((aprendizagem) => (
                         <option key={aprendizagem.id_objetivos_aprendizagem} value={aprendizagem.id_objetivos_aprendizagem}>
@@ -213,13 +226,22 @@ export default function FormCadastro(){
 
                     <Form.Group as={Col} controlId="etapa">
                         <Form.Label>Etapa:</Form.Label>
-                        <Form.Select defaultValue="Não se aplica">
-                            <option>Não se aplica</option>
-                    {objAprendizagem.map((aprendizagem) => (
-                        <option key={aprendizagem.id_objetivos_aprendizagem} value={aprendizagem.id_objetivos_aprendizagem}>
-                            {formatText(aprendizagem.etapa)}
-                        </option>
-                        ))}
+                        <Form.Select >
+                            {/* <option>Não se aplica</option> */}
+                            {objAprendizagem.map((aprendizagem) => {
+                                if (aprendizagem.etapa === null) {
+                                    return null;
+                                } else {
+                                    return (
+                                        <option key={aprendizagem.id_objetivos_aprendizagem} value={aprendizagem.id_objetivos_aprendizagem}>
+                                            {formatText(aprendizagem.etapa)}
+                                        </option>
+                                    );
+                                }
+                            })}
+                            {objAprendizagem.filter(aprendizagem => aprendizagem.etapa === null).length > 0 &&
+                                <option>Não se aplica</option>
+                            }
                             </Form.Select>
                     </Form.Group>
             

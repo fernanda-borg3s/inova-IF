@@ -5,7 +5,7 @@ const userController ={
     getUserAluna: async(req, res) => {
         try {
         
-            const user = await postgre.query("SELECT nome_aluna, mat_aluna FROM aluna WHERE id_aluna = $1", [req.user.id])
+            const user = await postgre.query("SELECT id_aluna, nome_aluna, mat_aluna FROM aluna WHERE id_aluna = $1", [req.user.id])
             res.json(user.rows[0]);
                 // res.json({msg: "OK", data: rows})
             

@@ -87,14 +87,16 @@ export default function Authentication(){
                   localStorage.setItem("token", parseRes.jwtToken);
                    navigate("/home");
                   toast.success("Logado com sucesso!");
+                  
                 } else {
                   
-                  toast.error(parseRes);
+                  toast.error('Ocorreu um erro ao fazer login, tente novamente.' + parseRes);
                 }
               } catch (err) {
-                // console.error(err.message);
-                toast.error('Ocorreu um erro ao fazer login, tente novamente.')
+                console.error(err.message);
+              
               }
+              
         }
         if(selectedOption == "Professora" && matricula.length < 7){
             console.log(matricula.length)
@@ -118,11 +120,11 @@ export default function Authentication(){
                   navigate("/gerenciarEncontro");
                   toast.success("Logado com sucesso!");
                 } else {
-                  toast.error(parseRes);
+                  toast.error('Ocorreu um erro ao fazer login, tente novamente.' + parseRes);
                 }
               } catch (err) {
-                // console.error(err.message);
-                toast.error('Ocorreu um erro ao fazer login, tente novamente.')
+                console.error(err.message);
+           
               }
          }       
      }

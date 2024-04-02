@@ -85,10 +85,10 @@ export function NavbarC(){
                     </NavDropdown.Item>
                  
                   </NavDropdown>
-                  <Nav.Link href="/home/agenda" className='me-2'>Agenda</Nav.Link>
+                  <Nav.Link href="/home/agenda" className='me-4'>Agenda</Nav.Link>
                   {user ? (
                      <Dropdown className='dropdown-left'>
-                     <Dropdown.Toggle  id="dropdown-basic" style={{backgroundColor:'transparent', border:'1px solid'}} className='ps-2 pe-3'>
+                     <Dropdown.Toggle  id="dropdown-basic" style={{backgroundColor:'transparent', border:'none',fontWeight:'bold'}} className='p-2'>
                      {user.nome_aluna}
                        <img src={UserLogo} alt="raposa" className="user-img" ></img>
                      </Dropdown.Toggle>

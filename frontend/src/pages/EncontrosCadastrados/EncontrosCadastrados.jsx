@@ -54,7 +54,7 @@ export default function EncontrosCadastrados(){
              
                 {/* verificar se esta vazio */}
        {encontrosCadastrados.length === 0 ? (
-        <p>Não há encontros disponíveis.</p>
+        <p>Não há encontros cadastrados.</p>
       ) : (
         <Row xs={1} md={3} className="g-4 mt-2">
            {encontrosCadastrados.map((encontro, index) => (
