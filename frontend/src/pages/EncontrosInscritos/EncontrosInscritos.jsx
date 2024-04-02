@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button';
 import './EncontrosInscritos.css'
-import '../EncontrosDisponiveis/EncontrosDisponivel.css'
+// import '../EncontrosDisponiveis/EncontrosDisponivel.css'
 // import CardHome from "../../components/Cards/CardHome";
 
 // import { encontros } from "../../Data.js";
@@ -32,7 +32,7 @@ export default function EncontrosInscritos(){
       try {
         const response = await axios.get(`${baseURL}/inscricao/inscritos/${user.id_aluna}`);
         setEncontrosInscrito(response.data.data);
-        console.log(encontrosInscrito);
+        // console.log(encontrosInscrito);
   
       } catch (error) {
         console.error('Erro ao recuperar dados:', error);
@@ -87,7 +87,7 @@ export default function EncontrosInscritos(){
        ))}
      </Row>
       ) : (
-        <p>Não há encontros disponíveis.</p>
+        <p>Não há encontros inscritos.</p>
         
       )}
             </Col>

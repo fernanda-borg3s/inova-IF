@@ -45,7 +45,53 @@ const inscricaoController ={
         } catch (error) {
             res.json({msg: error.msg})
         }
-    }
+    },
+    listInscritos: async(req, res) => {
+        try {
+            const { rows } = await postgre.query("SELECT I.*, E.id_encontro FROM inscricao AS I INNER JOIN encontro AS E ON I.id_encontro = E.id_encontro INNER JOIN professora AS P ON E.id_professora = P.id_professora WHERE id_professora = $1", [req.params.id])
+            if (rows[0]) {
+                return res.json({msg: "OK", data: rows})
+            }
+
+            res.status(404).json({msg: "Não há inscritos nesse encontro"})
+    
+        } catch (error) {
+            res.json({msg: error.msg})
+        }
+    },
+    deleteAluno: async(req, res) => {
+        try {
+            const sql = ''
+
+            const { rows } = await postgre.query(sql, [req.params.id])
+
+            if (rows[0]) {
+                return res.json({msg: "OK", data: rows[0]})
+            }
+
+            return res.status(404).json({msg: "Ocorreu um erro ao excluir sua inscrição"})
+            
+
+        } catch (error) {
+            res.json({msg: error.msg})
+        }
+    },
+    addAluno: async(req, res) => {
+        try {
+            const {id_encontro, id_aluna} = req.body
+
+            const sql = 'INSERT INTO inscricao(id_encontro, id_aluna) VALUES($1, $2) RETURNING *'
+
+            const { rows } = await postgre.query(sql, [id_encontro, id_aluna])
+
+            res.json({msg: "Inscrição realizado com sucesso", data: rows[0]})
+
+        } catch (error) {
+            console.error(error);
+            res.json({ msg: "Ocorreu um erro realizar inscrição" });
+        }
+    },
+    
 }
 export default inscricaoController;
 

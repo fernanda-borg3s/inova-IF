@@ -9,7 +9,8 @@ import './EncontrosDisponivel.css'
 // import CardHome from "../../components/Cards/CardHome";
 
 // import { encontros } from "../../Data.js";
-import { useEffect, useState} from 'react';
+import { useEffect, useState, useContext} from 'react';
+import { UserContext } from '../../Context/UserContext.jsx'
 
 import axios from 'axios';
 
@@ -18,12 +19,13 @@ const baseURL = 'http://localhost:3000'
 export default function EncontrosDisponivel(){
   // console.log(encontros);
   const [encontrosDisponivel, setEncontrosDisponivel] = useState([]);
+  const { user } = useContext(UserContext);
 
 
   useEffect(() => {
-    const fetchEncontros = async () => {
+    const fetchEncontrosDisponivel = async () => {
       try {
-        const response = await axios.get(`${baseURL}/encontros/encontrosDisponivel`);
+        const response = await axios.get(`${baseURL}/encontros/encontrosDisponivel/${user.id_aluna}`);
         setEncontrosDisponivel(response.data.data);
         // console.log(encontros);
   
@@ -31,8 +33,10 @@ export default function EncontrosDisponivel(){
         console.error('Erro ao recuperar dados:', error);
       }
     };
-    
-    fetchEncontros();
+    if(user){
+      fetchEncontrosDisponivel();
+
+    }
   }, []); 
   function formatDate(dateString) {
     const datePart = dateString.substring(0, 10);
@@ -48,32 +52,33 @@ export default function EncontrosDisponivel(){
             <Col>
              
                 {/* verificar se esta vazio */}
-       {encontrosDisponivel.length === 0 ? (
-        <p>Não há encontros disponíveis.</p>
-      ) : (
-        <Row xs={1} md={3} className="g-4 mt-2">
-            {encontrosDisponivel.map((encontro, index) => (
-            <Col key={index}>
-              <Card className='cardHome-container'>
-                <Card.Header className='d-flex justify-content-end card-header'>{index + 1}</Card.Header>
-                <Card.Body>
-                  <Card.Title className='py-1 '>{encontro.titulo_encontro}</Card.Title>
-                  <ListGroup className="list-group-flush">
-                  <ListGroup.Item className="px-1">Componente Curricular: <span>{encontro.componente_curricular}</span></ListGroup.Item>
-                    <ListGroup.Item className="px-1">Data: <span>{formatDate(encontro.data_inicio)}</span> até <span>{formatDate(encontro.data_fim)}</span></ListGroup.Item>
-                    <ListGroup.Item className="px-1">Horários: <span>{encontro.hora_inicio}</span> até <span>{encontro.hora_fim}</span></ListGroup.Item>
-                    <ListGroup.Item className="px-1">Sala: <span>{encontro.sala}</span></ListGroup.Item>
-                    <ListGroup.Item className="px-1">Professora(o): <span>{encontro.nome_professora}</span></ListGroup.Item>
+       {encontrosDisponivel && encontrosDisponivel.length > 0 ? (
+           <Row xs={1} md={3} className="g-4 mt-2">
+           {encontrosDisponivel.map((encontro, index) => (
+           <Col key={index}>
+             <Card className='cardHome-container'>
+               <Card.Header className='d-flex justify-content-end card-header'>{index + 1}</Card.Header>
+               <Card.Body>
+                 <Card.Title className='py-1 '>{encontro.titulo_encontro}</Card.Title>
+                 <ListGroup className="list-group-flush">
+                 <ListGroup.Item className="px-1">Componente Curricular: <span>{encontro.componente_curricular}</span></ListGroup.Item>
+                   <ListGroup.Item className="px-1">Data: <span>{formatDate(encontro.data_inicio)}</span> até <span>{formatDate(encontro.data_fim)}</span></ListGroup.Item>
+                   <ListGroup.Item className="px-1">Horários: <span>{encontro.hora_inicio}</span> até <span>{encontro.hora_fim}</span></ListGroup.Item>
+                   <ListGroup.Item className="px-1">Sala: <span>{encontro.sala}</span></ListGroup.Item>
+                   <ListGroup.Item className="px-1">Professora(o): <span>{encontro.nome_professora}</span></ListGroup.Item>
 
-                  </ListGroup>
-                    <Button variant="success" className='mt-3 px-4' style={{fontWeight:'bold'}}>
-                    Inscrever
-                  </Button>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+                 </ListGroup>
+                   <Button variant="success" className='mt-3 px-4' style={{fontWeight:'bold'}}>
+                   Inscrever
+                 </Button>
+               </Card.Body>
+             </Card>
+           </Col>
+         ))}
+       </Row>
+      ) : (
+        <p>Não há encontros disponíveis.</p>
+     
       )}
             </Col>
           </Row>
