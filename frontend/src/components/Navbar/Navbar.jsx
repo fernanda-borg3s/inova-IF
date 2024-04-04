@@ -1,57 +1,48 @@
 import logo from '../../assets/Img/LogoWhite.png'
-import '../../App.jsx'
+import '../../App.jsx' //outlet
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
-// import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import UserLogo from '../../assets/Img/UserLogo.png'
 import { Outlet, useNavigate } from 'react-router-dom';
 import './Navbar.css'
-import { useEffect, useState, useContext} from 'react';
-import axios from 'axios';
+import { useEffect, useContext} from 'react';
 import { toast } from 'react-toastify';
+import { userLogged } from "../../Service/userservice.js";
 import { UserContext } from '../../Context/UserContext.jsx'
+
 
 
 const baseURL = 'http://localhost:3000'
 
 export function NavbarC(){
   const { user, setUser } = useContext(UserContext);
+    async function findUserLoggedAluno(){
+      try {
+        const response = await userLogged();
+        setUser(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    useEffect(() => {
+      if (localStorage.getItem("token")) findUserLoggedAluno();
+    }, []);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const userLogged = async () => {
-
-      try {
-        const response = await axios.get(`${baseURL}/user/userAluna/`, {
-          headers: {
-            jwt_token: `${localStorage.getItem("token")}`,
-          }
-        });
-        setUser(response.data);
-        // console.log(encontros);
-  
-      } catch (error) {
-        console.error('Erro ao recuperar dados:', error);
+      function signout() {
+        localStorage.removeItem("token");
+        setUser(undefined);
+        navigate("/");
+        toast.success("Logout com sucesso!")
       }
-    };
-    
-    userLogged();
-  }, []); 
- 
-  function signout() {
-    localStorage.removeItem("token");
-    setUser(undefined);
-    navigate("/");
-    toast.success("Logout com sucesso!")
-  }
+  
     return (
         <>
-{['sm'].map((expand) => (
+    {['sm'].map((expand) => (
         <Navbar key={expand} expand={expand} className="bg-body-tertiary mb-3 navStyle" >
           <Container >
             <Navbar.Brand href="#">  
@@ -112,7 +103,7 @@ export function NavbarC(){
       ))}
 
 
-<Outlet/>
+        <Outlet/>
         </>
     )
 }

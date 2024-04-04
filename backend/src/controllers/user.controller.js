@@ -6,7 +6,7 @@ const userController ={
         try {
         
             const user = await postgre.query("SELECT id_aluna, nome_aluna, mat_aluna FROM aluna WHERE id_aluna = $1", [req.user.id])
-            res.json(user.rows[0]);
+           return res.json(user.rows[0]);
                 // res.json({msg: "OK", data: rows})
             
                 // return res.status(500).json({msg: "OK", data: rows})
@@ -18,10 +18,25 @@ const userController ={
     getUserProfessora: async(req, res) => {
         try {
         
-            const user = await postgre.query("SELECT id_professora, nome_professora, mat_professora FROM professora WHERE id_professora = $1", [req.user.id])
-            res.json(user.rows[0]);
+            const user = await postgre.query("SELECT id_professora, nome_professora, mat_professora, perfil_gestora FROM professora WHERE id_professora = $1", [req.user.id])
+           return res.json(user.rows[0]);
 
             // res.status(500).json({msg: "Ocorreu um erro ao encontrar usuário"})
+        } catch (error) {
+            console.error(err.message);
+            res.status(500).send("Server error");
+        }
+    },
+    getAllAluno: async(req, res) => {
+        try {
+        
+            const { rows } = await postgre.query("SELECT id_aluna, nome_aluna, mat_aluna, email FROM aluna")
+            if (rows[0]) {
+                return res.json({msg: "OK", data: rows})
+            }
+            //tem que ser dessa maenira pra voltar resultados dentro de um objeto
+
+             res.status(500).json({msg: "Não há encontros cadastrados"})
         } catch (error) {
             console.error(err.message);
             res.status(500).send("Server error");

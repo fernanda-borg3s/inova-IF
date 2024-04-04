@@ -58,6 +58,7 @@ export default function FormCadastro(){
       const onChange = e => {
         if(e.target.name == 'num_repeticoes' && e.target.name == 'num_vagas'){
             setInputs({ ...inputs, [e.target.name]: Number(e.target.value) });
+            console.log([e.target.name])
         }
         setInputs({ ...inputs, [e.target.name]: e.target.value });
 
@@ -85,24 +86,7 @@ export default function FormCadastro(){
               );
             
                 toast.success("Encontro criado com sucesso!")
-                const { titulo_encontro, descricao_encontro, criterios_avaliacao, sala, num_vagas, data_inicio, hora_inicio, data_fim, hora_fim, repete, num_repeticoes, disponivel_inscricao, id_area_conhecimento, id_objetivos_aprendizagem, id_componente_curricular } = ""
-        
-            //   const parseRes = await response.data.data;
-            //   if(parseRes){
-            //     toast.success("Encontro criando com sucesso!")
-            //   }else{
-            //     toast.error("Ops! Algo deu errado")
-            //     console.log(parseRes);
-            //   }
-        
-              // if (parseRes.jwtToken) {
-              //   localStorage.setItem("token", parseRes.jwtToken);
-              //   setAuth(true);
-              //   toast.success("Logged in Successfully");
-              // } else {
-              //   setAuth(false);
-              //   toast.error(parseRes);
-              // }
+               
             } catch (err) {
               console.error(err.message);
             }
@@ -124,26 +108,23 @@ export default function FormCadastro(){
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="titulo-encontro">
                         <Form.Label>Título do Encontro</Form.Label>
-                        <Form.Control type="text" placeholder="Digite aqui"  name="titulo_encontro"  onChange={onChange}/>
+                        <Form.Control type="text" required placeholder="Digite aqui"  name="titulo_encontro"  onChange={onChange}/>
                     </Form.Group>
                     <Form.Group as={Col} controlId="disponivel_inscricao" className="inscricao">
                         <Form.Label>Disponível para Inscrição?</Form.Label>
-                        <Form.Select name="disponivel_inscricao"  onChange={onChange}>
+                        <Form.Select required name="disponivel_inscricao"  onChange={onChange}>
                         <option value="">Selecione</option>
 
                             <option value="Sim">Sim</option>
                             <option value="Não">Não</option>
                         </Form.Select>
                     </Form.Group>
-                    {/* <Form.Group as={Col} controlId="matricula-professor">
-                        <Form.Label>Matrícula Professora:</Form.Label>
-                        <Form.Control type="text" placeholder="000000-0" value={user.mat_professora} />
-                    </Form.Group> */}
+                
                 </Row>
                 <Row className="mb-3">                       
                     <Form.Group as={Col} controlId="id_area_conhecimento">
                       <Form.Label>Area de conhecimento:</Form.Label>
-                        <Form.Select  name="id_area_conhecimento" onChange={onChange}>
+                        <Form.Select required name="id_area_conhecimento" onChange={onChange}>
 
                             <option value="1">Base de Autonomia e Emancipação</option>
                             <option value="2">Ciências da Natureza e suas Tecnologias </option>
@@ -202,24 +183,24 @@ export default function FormCadastro(){
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="data-inicio">
                       <Form.Label>Data de início:</Form.Label>
-                        <Form.Control type="date" name="data_inicio" onChange={onChange}/>
+                        <Form.Control type="date" required name="data_inicio" onChange={onChange}/>
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="data-fim">
                         <Form.Label>Hora de Início:</Form.Label>
-                        <Form.Control type="time" name="hora_inicio"  onChange={onChange}/>
+                        <Form.Control type="time" required name="hora_inicio"  onChange={onChange}/>
                     </Form.Group>
                 </Row>
     
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="data-fim">
                         <Form.Label>Data de Fim:</Form.Label>
-                        <Form.Control type="date" name="data_fim" onChange={onChange} />
+                        <Form.Control required type="date" name="data_fim" onChange={onChange} />
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="data-fim">
                         <Form.Label>Hora de Fim:</Form.Label>
-                        <Form.Control type="time" name="hora_fim"  onChange={onChange} />
+                        <Form.Control required type="time" name="hora_fim"  onChange={onChange} />
                     </Form.Group>
                 </Row>             
                     
@@ -242,8 +223,8 @@ export default function FormCadastro(){
                     <Form.Group as={Col} controlId="objetivos_aprendizagem" className="mt-3 mb-3">
                         {/* vem do banco */}
                         <Form.Label>Objetivo De aprendizagem:</Form.Label>
-                        <Form.Select name='id_objetivos_aprendizagem' onChange={onChange}>
-                            <option>Não se aplica</option>
+                        <Form.Select required name='id_objetivos_aprendizagem' onChange={onChange}>
+                            {/* <option value=''>Não se aplica</option> */}
                     {objAprendizagem.map((aprendizagem) => (
                         <option key={aprendizagem.id_objetivos_aprendizagem} value={aprendizagem.id_objetivos_aprendizagem} >
                             {formatText(aprendizagem.objetivos_aprendizagem)}
@@ -277,12 +258,12 @@ export default function FormCadastro(){
                 <Row className="mb-3 mt-3">
                     <Form.Group as={Col} controlId="num_vagas" >
                         <Form.Label>Número de vagas:</Form.Label>
-                        <Form.Control type="number"  name="num_vagas" maxLength={60} onChange={onChange}/>
+                        <Form.Control type="number" required  name="num_vagas"  onChange={onChange}/>
                     </Form.Group>
 
                     <Form.Group as={Col}  controlId="sala-encontro" >
                         <Form.Label>Sala:</Form.Label>
-                        <Form.Control type="text" placeholder="Digite a sala e o bloco"  name="sala" onChange={onChange} />
+                        <Form.Control type="text" required placeholder="Digite a sala e o bloco"  name="sala" onChange={onChange} />
                     </Form.Group>
 
                    
@@ -293,7 +274,7 @@ export default function FormCadastro(){
                 <Row className="mb-3">   
                 <Form.Group as={Col} controlId="repete" >
                         <Form.Label>Encontro se repete?</Form.Label>
-                        <Form.Select name="repete" onChange={onChange}>
+                        <Form.Select name="repete" required onChange={onChange}>
                         <option value="">Selecione</option>
 
                             <option value="Não">Não</option>
@@ -302,8 +283,8 @@ export default function FormCadastro(){
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="num_repeticoes" >
-                        <Form.Label>Se sim, quantas vezes? </Form.Label>
-                        <Form.Control defaultValue="0" type="number" name="num_repeticoes" onChange={onChange} />
+                        <Form.Label>Se sim, quantas vezes? Se não, digite 0. </Form.Label>
+                        <Form.Control placeholder="" type="number" name="num_repeticoes" onChange={onChange} />
                         {/* COLOCAR UM CONTROLE PARA MULTIPLICAR A DATA DE INICIO */}
                     </Form.Group>                       
                 </Row>

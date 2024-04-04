@@ -11,11 +11,11 @@ import Welcome from "../../components/Welcome/Welcome";
 // import { encontros } from "../../Data.js";
 import CalenderHome from '../../assets/Img/CalenderHome.png'
 import Footer from '../../components/Footer/Footer';
-
-
+import { useEffect, useState, useContext} from 'react';
+import { userLogged } from "../../Service/userservice.js";
+import { UserContext } from '../../Context/UserContext.jsx'
 
 export default function Home(){
-  // console.log(encontros);
 
     return (
     <>
@@ -26,7 +26,7 @@ export default function Home(){
           <Row xs={1} md={2} className="g-4">
             <Col>
             {/* {encontros.map((item, index) =>{<CardHome key={index} encontros={item}/>})} */}
-              {/* <CardHome/> */}
+              <CardHome/>
             </Col>
           </Row>
         </Container>

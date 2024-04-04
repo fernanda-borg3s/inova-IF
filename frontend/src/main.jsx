@@ -13,10 +13,11 @@ import GerenciarEncontro from './pages/GerenciarEncontro/GerenciarEncontro.jsx'
 import Agenda from './pages/Agenda/Agenda.jsx'
 import Sobre from './pages/Sobre/Sobre.jsx'
 import EncontrosCadastrados from './pages/EncontrosCadastrados/EncontrosCadastrados.jsx'
-
 import UserProvider from './Context/UserContext.jsx'
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import EditarEncontro from './pages/EditarEncontro/EditarEncontro.jsx'
+
 
 const router = createBrowserRouter([
   {
@@ -68,6 +69,10 @@ const router = createBrowserRouter([
       {
         path:"/gerenciarEncontro/EncontrosCadastrados",
         element: <EncontrosCadastrados/>,
+      },
+      {
+        path:"/gerenciarEncontro/editarEncontro",
+        element: <EditarEncontro/>,
       }
     ]
   }

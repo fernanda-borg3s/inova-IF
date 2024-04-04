@@ -4,7 +4,9 @@ import { Router } from "express";
 
 const agendaRouter = Router();
 // agendaRouter.use(authMiddleware) //rotas privadas, so entra se tiver token
-agendaRouter.get("/datas", AgendaController.getById)
+agendaRouter.get("/datas", AgendaController.getAllDatas)
+agendaRouter.get("/dataHoje/:id", AgendaController.getDataByUser)
+agendaRouter.get("/encontroHoje/:id", AgendaController.getEncontrosToday)
 // router.get("/:id", AgendaController.getById)
 // router.post("/", AgendaController.createEncontro)
 // router.put("/:id", AgendaController.updateById)

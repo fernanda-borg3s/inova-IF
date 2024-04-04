@@ -6,6 +6,8 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import './EncontrosDisponivel.css'
 import { toast } from "react-toastify";
+import { userLogged } from "../../Service/userservice.js";
+
 import { useEffect, useState, useContext} from 'react';
 import { UserContext } from '../../Context/UserContext.jsx'
 import axios from 'axios';
@@ -15,31 +17,44 @@ const baseURL = 'http://localhost:3000'
 export default function EncontrosDisponivel(){
   // console.log(encontros);
   const [encontrosDisponivel, setEncontrosDisponivel] = useState([]);
-  const { user } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
+  async function findUserLogged(){
+    try {
+      const response = await userLogged();
+      setUser(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+   }
+   useEffect(() => {
+    if (localStorage.getItem("token")) findUserLogged();
+  }, []);
 
+  // const {id_aluna} = user.id_aluna
+  // console.log(id_aluna)
 
   useEffect(() => {
     const fetchEncontrosDisponivel = async () => {
       try {
         const response = await axios.get(`${baseURL}/encontros/encontrosDisponivel/${user.id_aluna}`);
+        console.log(response);
+
         setEncontrosDisponivel(response.data.data);
-        // console.log(encontros);
   
       } catch (error) {
         console.error('Erro ao recuperar dados:', error);
       }
     };
-    if(user){
+    
       fetchEncontrosDisponivel();
 
-    }
-  }, []); 
+   
+  }, [user]); 
   function formatDate(dateString) {
     const datePart = dateString.substring(0, 10);
     const parts = datePart.split("-")
     return `${parts[2]}-${parts[1]}-${parts[0]}`;
   }
-  const {id_aluna} = user.id_aluna
   const inscreverEncontro = async (id_encontro) => {
     try {
       const bodyInscrever = {id_encontro, id_aluna}
@@ -78,7 +93,7 @@ export default function EncontrosDisponivel(){
                    <ListGroup.Item className="px-1">Professora(o): <span>{encontro.nome_professora}</span></ListGroup.Item>
 
                  </ListGroup>
-                   <Button variant="success" className='mt-3 px-4' style={{fontWeight:'bold'}} onClick={inscreverEncontro(encontro.id_encontro)}>
+                   <Button variant="success" className='mt-3 px-4' style={{fontWeight:'bold'}} onClick={() => inscreverEncontro(encontro.id_encontro)}>
                    Inscrever
                  </Button>
                </Card.Body>

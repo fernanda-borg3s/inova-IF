@@ -8,7 +8,20 @@ const AgendaController = {
             res.json({msg: error.msg})
         }
     },
-    getById: async(req, res) => {
+    getAllDatas: async(req, res) => {
+        try {
+            const { rows } = await postgre.query("select * from books where book_id = $1", [req.params.id])
+
+            if (rows[0]) {
+                return res.json({msg: "OK", data: rows})
+            }
+
+            res.status(404).json({msg: "not found"})
+        } catch (error) {
+            res.json({msg: error.msg})
+        }
+    },
+    getDataByUser: async(req, res) => {
         try {
             const { rows } = await postgre.query("select * from books where book_id = $1", [req.params.id])
 

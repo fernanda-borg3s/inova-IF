@@ -53,10 +53,10 @@ const inscricaoController ={
                 return res.json({msg: "OK", data: rows})
             }
 
-            res.status(404).json({msg: "Não há inscritos nesse encontro"})
+           return res.status(404).json({msg: "Não há inscritos nesse encontro"})
     
         } catch (error) {
-            res.json({msg: error.msg})
+           return res.json({msg: error.msg})
         }
     },
     deleteAluno: async(req, res) => {
@@ -73,7 +73,7 @@ const inscricaoController ={
             
 
         } catch (error) {
-            res.json({msg: error.msg})
+           return res.json({msg: error.msg})
         }
     },
     addAluno: async(req, res) => {
@@ -84,11 +84,11 @@ const inscricaoController ={
 
             const { rows } = await postgre.query(sql, [id_encontro, id_aluna])
 
-            res.json({msg: "Inscrição realizado com sucesso", data: rows[0]})
+           return res.json({msg: "Inscrição realizado com sucesso", data: rows[0]})
 
         } catch (error) {
             console.error(error);
-            res.json({ msg: "Ocorreu um erro realizar inscrição" });
+           return res.json({ msg: "Ocorreu um erro realizar inscrição" });
         }
     },
     

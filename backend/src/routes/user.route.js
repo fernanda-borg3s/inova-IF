@@ -6,4 +6,5 @@ const userRouter = Router();
 
 userRouter.get("/userAluna", authorize, userController.getUserAluna);
 userRouter.get("/userProfessora", authorize, userController.getUserProfessora);
+userRouter.get("/allAluno", userController.getAllAluno);
 export default userRouter;

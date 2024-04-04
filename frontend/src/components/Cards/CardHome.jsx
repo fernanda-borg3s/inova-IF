@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup'
 import './CardHome.css'
-// import { encontros } from '../../Data';
+import { userLoggedProf } from "../../Service/userservice.js";
 import { useEffect, useState, useContext} from 'react';
 import { UserContext } from '../../Context/UserContext.jsx'
 
@@ -12,10 +12,20 @@ import axios from 'axios';
 
 const baseURL = 'http://localhost:3000'
 export default function CardHome(){
-  const [encontros, setEncontros] = useState([]);
-const { user } = useContext(UserContext);
+      const { user, setUser } = useContext(UserContext);
+      async function findUserLoggedProf(){
+        try {
+          const response = await userLoggedProf();
+          setUser(response.data);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      useEffect(() => {
+        if (localStorage.getItem("token")) findUserLoggedProf();
+      }, []);
 
-
+const [encontros, setEncontros] = useState([]);
 
   useEffect(() => {
     const fetchEncontros = async () => {

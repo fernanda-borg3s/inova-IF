@@ -111,7 +111,7 @@ export default function Authentication(){
               
               
             }
-            toast.success("Logado com sucesso!");
+            toast.success("Login realizado com sucesso!");
           } else {
             toast.error('Ocorreu um erro ao fazer login, tente novamente.' + parseRes);
           }

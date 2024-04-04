@@ -25,7 +25,8 @@ export default function EncontrosCadastrados(){
       try {
         const response = await axios.get(`${baseURL}/encontros/encontrosCadastrados/${user.id_professora}`);
         setEncontrosCadastrados(response.data.data);
-        // console.log(encontros);
+        console.log(response)
+        console.log(encontrosCadastrados);
     //    for()
         // console.log(encontrosCadastrados.length);
       } catch (error) {
@@ -37,7 +38,7 @@ export default function EncontrosCadastrados(){
       fetchEncontrosCadastrados();
 
     }
-  }, []); 
+  }, [user]); 
   function formatDate(dateString) {
     const datePart = dateString.substring(0, 10);
     const parts = datePart.split("-")

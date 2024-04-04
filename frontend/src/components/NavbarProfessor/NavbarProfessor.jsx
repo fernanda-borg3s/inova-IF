@@ -11,7 +11,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import UserLogo from '../../assets/Img/UserLogo.png'
 import '../Navbar/Navbar.css'
 import { useEffect, useContext} from 'react';
-
+import { userLoggedProf } from "../../Service/userservice.js";
 import { toast } from 'react-toastify';
 import { UserContext } from '../../Context/UserContext.jsx'
 import axios from 'axios';
@@ -22,30 +22,18 @@ export function NavbarProfessor(){
   const { user, setUser } = useContext(UserContext);
 
   const navigate = useNavigate();
-  useEffect(() => {
-    const userLoggedProf = async () => {
-
-      try {
-        const response = await axios.get(`${baseURL}/user/userProfessora/`, {
-          headers: {
-            jwt_token: `${localStorage.getItem("token")}`,
-          }
-        });
-        setUser(response.data);
-
-        if(!localStorage){
-           navigate("/");
-          toast.info("Sessão Encerrada, faça login novamente")
-          
-        }
-  
-      } catch (error) {
-        console.error('Erro ao recuperar dados:', error);
-      }
-    };
-    
-    userLoggedProf();
-  }, []); 
+  async function findUserLoggedProf(){
+    try {
+      const response = await userLoggedProf();
+      setUser(response.data);
+    } catch (error) {
+      console.log(error);
+      navigate("/");
+      localStorage.removeItem("token");
+      setUser(undefined);
+      toast.info("Sessão Encerrada, faça login novamente")
+    }
+   }
  
   function signout() {
     localStorage.removeItem("token");
@@ -53,6 +41,9 @@ export function NavbarProfessor(){
     navigate("/");
     toast.success("Logout com sucesso")
   }
+  useEffect(() => {
+    if (localStorage.getItem("token")) findUserLoggedProf();
+  }, []);
     return (
         <>
 {['sm'].map((expand) => (
