@@ -9,13 +9,15 @@ import { UserContext } from '../../Context/UserContext.jsx'
 
 
 import axios from 'axios';
+import { toast } from "react-toastify";
 
 const baseURL = 'http://localhost:3000'
 
 export default function FormCadastro(){
 
-
-  const { user, setUser } = useContext(UserContext);
+    const [selectedComponente, setSelectedComponente] = useState('17');
+    const [objAprendizagem, setObjAprendizagem] = useState([]);
+  const { user } = useContext(UserContext);
 
     const [inputs, setInputs] = useState({
         titulo_encontro:"",
@@ -27,51 +29,15 @@ export default function FormCadastro(){
          hora_inicio:"",
          data_fim:"",
          hora_fim:"", 
-         repete:"",
+         repete: "",
          num_repeticoes:"",
          disponivel_inscricao:"",
-         id_professora:"",
-         id_area_conhecimento:"",
-         id_componente_curricular:"",
-         id_objetivos_aprendizagem:"",
+         id_area_conhecimento:"", 
+         id_objetivos_aprendizagem:""
       });
     
-      const { titulo_encontro, descricao_encontro, criterios_avaliacao, sala, num_vagas, data_inicio, hora_inicio, data_fim, hora_fim, repete, num_repeticoes, disponivel_inscricao, id_professora, id_area_conhecimento, id_componente_curricular, id_objetivos_aprendizagem } = inputs;
-    //   const onChange = e =>
-    //     setInputs({ ...inputs, [e.target.name]: e.target.value });
+     
     
-      const CadastrarEncontro = async e =>{
-        e.preventDefault();
-        console.log("form is send");
-       
-
-            try {
-                const body = { titulo_encontro, descricao_encontro, criterios_avaliacao, sala, num_vagas, data_inicio, hora_inicio, data_fim, hora_fim, repete, num_repeticoes, disponivel_inscricao, id_professora, id_area_conhecimento, id_componente_curricular, id_objetivos_aprendizagem };
-            
-                const response = await axios.post(`${baseURL}/encontros/create`, 
-                {
-                    body: JSON.stringify(body)
-                }
-                );
-         
-          
-                // const parseRes = await response.json();
-          
-                // if (parseRes.jwtToken) {
-                //   localStorage.setItem("token", parseRes.jwtToken);
-                //   setAuth(true);
-                //   toast.success("Logged in Successfully");
-                // } else {
-                //   setAuth(false);
-                //   toast.error(parseRes);
-                // }
-              } catch (err) {
-                console.error(err.message);
-              }
-
-      }
-      const [selectedComponente, setSelectedComponente] = useState('17');
-      const [objAprendizagem, setObjAprendizagem] = useState([]);
    
         //  console.log(selectedComponente);
       useEffect(() => {
@@ -79,6 +45,7 @@ export default function FormCadastro(){
           try {
             const response = await axios.get(`${baseURL}/aprendizagem/getObjetivo/${selectedComponente}`);
             setObjAprendizagem(response.data.data);
+           
            
       
           } catch (error) {
@@ -88,6 +55,60 @@ export default function FormCadastro(){
         
         fetchEncontros();
       }, [selectedComponente]); 
+      const onChange = e => {
+        if(e.target.name == 'num_repeticoes' && e.target.name == 'num_vagas'){
+            setInputs({ ...inputs, [e.target.name]: Number(e.target.value) });
+        }
+        setInputs({ ...inputs, [e.target.name]: e.target.value });
+
+      }
+  
+    const CadastrarEncontro = async e =>{
+      e.preventDefault();
+      console.log("form is send");
+      console.log(inputs);
+     
+      const { titulo_encontro, descricao_encontro, criterios_avaliacao, sala, num_vagas, data_inicio, hora_inicio, data_fim, hora_fim, repete, num_repeticoes, disponivel_inscricao, id_area_conhecimento, id_objetivos_aprendizagem } = inputs;
+      const id_professora  = user.id_professora
+      const id_componente_curricular = selectedComponente
+  
+     
+
+          try {
+              const body = { titulo_encontro, descricao_encontro, criterios_avaliacao, sala, num_vagas, data_inicio, hora_inicio, data_fim, hora_fim, repete, num_repeticoes, disponivel_inscricao, id_professora, id_area_conhecimento, id_componente_curricular, id_objetivos_aprendizagem };
+          
+              const response = await axios.post(`${baseURL}/encontros/create`, body, {
+                headers: {
+                  "Content-type": "application/json"
+                }
+              }
+              );
+            
+                toast.success("Encontro criado com sucesso!")
+                const { titulo_encontro, descricao_encontro, criterios_avaliacao, sala, num_vagas, data_inicio, hora_inicio, data_fim, hora_fim, repete, num_repeticoes, disponivel_inscricao, id_area_conhecimento, id_objetivos_aprendizagem, id_componente_curricular } = ""
+        
+            //   const parseRes = await response.data.data;
+            //   if(parseRes){
+            //     toast.success("Encontro criando com sucesso!")
+            //   }else{
+            //     toast.error("Ops! Algo deu errado")
+            //     console.log(parseRes);
+            //   }
+        
+              // if (parseRes.jwtToken) {
+              //   localStorage.setItem("token", parseRes.jwtToken);
+              //   setAuth(true);
+              //   toast.success("Logged in Successfully");
+              // } else {
+              //   setAuth(false);
+              //   toast.error(parseRes);
+              // }
+            } catch (err) {
+              console.error(err.message);
+            }
+
+    }
+   
       function formatText(textString){
         if (textString.length > 110) {
             const truncatedText = textString.slice(0, 110);
@@ -103,18 +124,26 @@ export default function FormCadastro(){
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="titulo-encontro">
                         <Form.Label>Título do Encontro</Form.Label>
-                        <Form.Control type="text" placeholder="Digite aqui" />
+                        <Form.Control type="text" placeholder="Digite aqui"  name="titulo_encontro"  onChange={onChange}/>
                     </Form.Group>
+                    <Form.Group as={Col} controlId="disponivel_inscricao" className="inscricao">
+                        <Form.Label>Disponível para Inscrição?</Form.Label>
+                        <Form.Select name="disponivel_inscricao"  onChange={onChange}>
+                        <option value="">Selecione</option>
 
-                    <Form.Group as={Col} controlId="matricula-professor">
+                            <option value="Sim">Sim</option>
+                            <option value="Não">Não</option>
+                        </Form.Select>
+                    </Form.Group>
+                    {/* <Form.Group as={Col} controlId="matricula-professor">
                         <Form.Label>Matrícula Professora:</Form.Label>
                         <Form.Control type="text" placeholder="000000-0" value={user.mat_professora} />
-                    </Form.Group>
+                    </Form.Group> */}
                 </Row>
                 <Row className="mb-3">                       
                     <Form.Group as={Col} controlId="id_area_conhecimento">
                       <Form.Label>Area de conhecimento:</Form.Label>
-                        <Form.Select  >
+                        <Form.Select  name="id_area_conhecimento" onChange={onChange}>
 
                             <option value="1">Base de Autonomia e Emancipação</option>
                             <option value="2">Ciências da Natureza e suas Tecnologias </option>
@@ -161,36 +190,36 @@ export default function FormCadastro(){
                 <Row className="mb-3">   
                     <Form.Group as={Col} controlId="criterios_avaliacao">
                       <Form.Label>Critérios de Avaliação:</Form.Label>
-                        <Form.Control as="textarea" placeholder="Critérios de Avaliação" />
+                        <Form.Control as="textarea" placeholder="Critérios de Avaliação" name="criterios_avaliacao" onChange={onChange} />
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="descricao">                     
                       <Form.Label>Descrição do Encontros:</Form.Label>
-                       <Form.Control as="textarea" placeholder="Critérios de Avaliação" />
+                       <Form.Control as="textarea" placeholder="Descrição" name="descricao_encontro" onChange={onChange} />
                     </Form.Group>
                 </Row>
                    
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="data-inicio">
                       <Form.Label>Data de início:</Form.Label>
-                        <Form.Control type="date" />
+                        <Form.Control type="date" name="data_inicio" onChange={onChange}/>
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="data-fim">
                         <Form.Label>Hora de Início:</Form.Label>
-                        <Form.Control type="time" />
+                        <Form.Control type="time" name="hora_inicio"  onChange={onChange}/>
                     </Form.Group>
                 </Row>
     
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="data-fim">
                         <Form.Label>Data de Fim:</Form.Label>
-                        <Form.Control type="date" />
+                        <Form.Control type="date" name="data_fim" onChange={onChange} />
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="data-fim">
                         <Form.Label>Hora de Fim:</Form.Label>
-                        <Form.Control type="time" />
+                        <Form.Control type="time" name="hora_fim"  onChange={onChange} />
                     </Form.Group>
                 </Row>             
                     
@@ -213,10 +242,10 @@ export default function FormCadastro(){
                     <Form.Group as={Col} controlId="objetivos_aprendizagem" className="mt-3 mb-3">
                         {/* vem do banco */}
                         <Form.Label>Objetivo De aprendizagem:</Form.Label>
-                        <Form.Select>
+                        <Form.Select name='id_objetivos_aprendizagem' onChange={onChange}>
                             <option>Não se aplica</option>
                     {objAprendizagem.map((aprendizagem) => (
-                        <option key={aprendizagem.id_objetivos_aprendizagem} value={aprendizagem.id_objetivos_aprendizagem}>
+                        <option key={aprendizagem.id_objetivos_aprendizagem} value={aprendizagem.id_objetivos_aprendizagem} >
                             {formatText(aprendizagem.objetivos_aprendizagem)}
                         </option>
                         ))}
@@ -246,43 +275,40 @@ export default function FormCadastro(){
                     </Form.Group>
             
                 <Row className="mb-3 mt-3">
-                    <Form.Group controlId="num_vagas" className="num_vagas">
+                    <Form.Group as={Col} controlId="num_vagas" >
                         <Form.Label>Número de vagas:</Form.Label>
-                        <Form.Control type="number" />
+                        <Form.Control type="number"  name="num_vagas" maxLength={60} onChange={onChange}/>
                     </Form.Group>
 
-                    <Form.Group  controlId="sala-encontro" className="sala_encontro mt-4">
+                    <Form.Group as={Col}  controlId="sala-encontro" >
                         <Form.Label>Sala:</Form.Label>
-                        <Form.Control type="text" placeholder="Digite a sala e o bloco"  />
+                        <Form.Control type="text" placeholder="Digite a sala e o bloco"  name="sala" onChange={onChange} />
                     </Form.Group>
 
-                    <Form.Group controlId="disponivel_inscricao" className="disponivel_inscricao">
-                        <Form.Label>Disponível para Inscrição?</Form.Label>
-                        <Form.Select defaultValue="Sim">
-                            <option>Sim</option>
-                            <option>Não</option>
-                        </Form.Select>
-                    </Form.Group>
+                   
 
-                    <Form.Group controlId="repete" className="repete">
-                        <Form.Label>Encontro se repete?</Form.Label>
-                        <Form.Select defaultValue="Não">
-                            <option>Não</option>
-                            <option>Sim</option>
-                        </Form.Select>
-                    </Form.Group>
-
-                    <Form.Group controlId="num_repeticoes" className="num_repeticoes">
-                        <Form.Label>Se sim, quantas?</Form.Label>
-                        <Form.Control type="number"  />
-                        {/* COLOCAR UM CONTROLE PARA MULTIPLICAR A DATA DE INICIO */}
-                    </Form.Group>  
+                    
                 </Row>
                 
-                <Row className="mb-3">                        
+                <Row className="mb-3">   
+                <Form.Group as={Col} controlId="repete" >
+                        <Form.Label>Encontro se repete?</Form.Label>
+                        <Form.Select name="repete" onChange={onChange}>
+                        <option value="">Selecione</option>
+
+                            <option value="Não">Não</option>
+                            <option value="Sim">Sim</option>
+                        </Form.Select>
+                    </Form.Group>
+
+                    <Form.Group as={Col} controlId="num_repeticoes" >
+                        <Form.Label>Se sim, quantas vezes? </Form.Label>
+                        <Form.Control defaultValue="0" type="number" name="num_repeticoes" onChange={onChange} />
+                        {/* COLOCAR UM CONTROLE PARA MULTIPLICAR A DATA DE INICIO */}
+                    </Form.Group>                       
                 </Row>
 
-                    <Button variant="primary" type="submit" style={{backgroundColor:'#004d2a', border:'none'}} className="w-100 p-2 mb-2">Cadastrar Encontro</Button>
+                    <Button variant="primary" type="submit" style={{backgroundColor:'#004d2a', border:'none'}} className="w-100 p-2 mb-2 mt-3">Cadastrar Encontro</Button>
                     <Button variant="primary" type="reset" style={{backgroundColor:'#870303', border:'none'}} className="w-100 p-2">Limpar</Button>
             </Form>
         </Container>

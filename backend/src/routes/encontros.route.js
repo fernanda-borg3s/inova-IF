@@ -8,7 +8,8 @@ const encontrosRouter = Router();
     //PROFESSOR
 // encontrosRouter.use(authMiddleware) //rotas privadas, so entra se tiver token(testar separadamente para professor)
 encontrosRouter.post("/create", encontrosController.createEncontro);
-encontrosRouter.get("/encontrosCadastrados", encontrosController.getAllEncontrosCadastrados);
+encontrosRouter.get("/encontrosCadastrados/:id", encontrosController.getAllEncontrosCadastrados);
+encontrosRouter.get("/myCadastros/:id", encontrosController.getMyCadastros);
 // encontrosRouter.get("/encontrosCadastrados/:id", encontrosController.getEncontroCadastradoById);
 encontrosRouter.put("/updateEncontro/:id", encontrosController.updateEncontroById);
 encontrosRouter.delete("/deleteEncontro/:id", encontrosController.deleteEncontroById);

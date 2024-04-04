@@ -1,4 +1,3 @@
-
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -6,12 +5,9 @@ import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import './EncontrosDisponivel.css'
-// import CardHome from "../../components/Cards/CardHome";
-
-// import { encontros } from "../../Data.js";
+import { toast } from "react-toastify";
 import { useEffect, useState, useContext} from 'react';
 import { UserContext } from '../../Context/UserContext.jsx'
-
 import axios from 'axios';
 
 const baseURL = 'http://localhost:3000'
@@ -43,6 +39,20 @@ export default function EncontrosDisponivel(){
     const parts = datePart.split("-")
     return `${parts[2]}-${parts[1]}-${parts[0]}`;
   }
+  const {id_aluna} = user.id_aluna
+  const inscreverEncontro = async (id_encontro) => {
+    try {
+      const bodyInscrever = {id_encontro, id_aluna}
+      const response = await axios.post(`${baseURL}/inscrito/inscrever`, bodyInscrever, {
+        headers: {
+          "Content-type": "application/json"
+        }
+      });
+      toast.success("Inscrição realizada com sucesso!")
+    } catch (error) {
+      toast.error("Ocorreu um erro ao fazer inscrição, tente novamente");
+    }
+  }
     return (
     <>
     
@@ -68,7 +78,7 @@ export default function EncontrosDisponivel(){
                    <ListGroup.Item className="px-1">Professora(o): <span>{encontro.nome_professora}</span></ListGroup.Item>
 
                  </ListGroup>
-                   <Button variant="success" className='mt-3 px-4' style={{fontWeight:'bold'}}>
+                   <Button variant="success" className='mt-3 px-4' style={{fontWeight:'bold'}} onClick={inscreverEncontro(encontro.id_encontro)}>
                    Inscrever
                  </Button>
                </Card.Body>

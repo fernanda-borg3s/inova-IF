@@ -32,7 +32,12 @@ export function NavbarProfessor(){
           }
         });
         setUser(response.data);
-        // console.log(encontros);
+
+        if(!localStorage){
+           navigate("/");
+          toast.info("Sessão Encerrada, faça login novamente")
+          
+        }
   
       } catch (error) {
         console.error('Erro ao recuperar dados:', error);

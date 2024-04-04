@@ -6,10 +6,7 @@ import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button';
 import './EncontrosInscritos.css'
-// import '../EncontrosDisponiveis/EncontrosDisponivel.css'
-// import CardHome from "../../components/Cards/CardHome";
-
-// import { encontros } from "../../Data.js";
+import { toast } from "react-toastify";
 import { useEffect, useState, useContext} from 'react';
 import { UserContext } from '../../Context/UserContext.jsx'
 
@@ -50,6 +47,17 @@ export default function EncontrosInscritos(){
     const parts = datePart.split("-")
     return `${parts[2]}-${parts[1]}-${parts[0]}`;
   }
+  const removerInscricao = async (id_inscricao) => {
+      try {
+        const response = await axios.delete(`${baseURL}/inscricao/deleteinscricao/${id_inscricao}`);
+        toast.success("Inscrição excluída com sucesso!")
+        
+      } catch (error) {
+        toast.error("Ocorreu um erro ao excluir inscrição, tente novamente");
+        
+      }
+  }
+
     return (
     <>
     
@@ -76,7 +84,7 @@ export default function EncontrosInscritos(){
                  <ListGroup.Item className="px-1">Professora(o): <span>{inscrito.nome_professora}</span></ListGroup.Item>
 
                </ListGroup>
-               <Button variant="danger" className='mt-3'>
+               <Button variant="danger" className='mt-3' onClick={removerInscricao(inscrito.id_inscricao)}>
                  <i className="bi bi-trash p-1"></i>
                  Cancelar Inscrição
                </Button>

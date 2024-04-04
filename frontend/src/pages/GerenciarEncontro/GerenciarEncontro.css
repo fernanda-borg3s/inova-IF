@@ -4,3 +4,47 @@
     margin:35px;
 }
 
+.container-cadastrar{
+    background-color: #fff;
+    max-width: 45%;
+    height: auto;
+    padding: 30px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    border-radius: 10px;
+}
+
+.h2-cadastro{
+    font-size: 22px;
+    font-weight: bold;
+    color: #004d2a;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.modal-button{
+    background-color: transparent;
+    padding: 0;
+    border: none;
+}
+li button#controlled-tab-example-tab-lista, li button#controlled-tab-example-tab-meuCadastros{
+    color:#000;
+}
+td{
+    text-align: center;
+}
+.bi-trash-fill{
+    color: #f50505;
+    font-size: 20px;
+
+}
+.bi-pencil-square, .bi-person-check-fill{
+    color:#004d2a;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+@media (max-width: 500px){
+    
+    .container-cadastrar{
+        min-width: 400px;
+    }
+}

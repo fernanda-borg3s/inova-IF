@@ -5,7 +5,9 @@ import Logoif from '../../assets/Img/Logoif.png'
 import { toast } from "react-toastify";
 import Form from 'react-bootstrap/Form';
 import './Authentication.css'
-import  { useRef, useState } from 'react';
+import  { useRef, useState, useContext } from 'react';
+import { UserContext } from '../../Context/UserContext.jsx'
+
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
@@ -13,6 +15,7 @@ const baseURL = 'http://localhost:3000'
 
 export default function Authentication(){
   const navigate = useNavigate();
+  const { user, setUser } = useContext(UserContext);
 
     const [selectedOption, setSelectedOption] = useState("Aluna");
     const [verificaMat, setVerificaMat] = useState("")
@@ -67,66 +70,54 @@ export default function Authentication(){
      const fazerLogin = async e => {
         e.preventDefault();
         
-        if(selectedOption == "Aluna" && matricula.length < 12){
-            console.log(matricula.length)
-            setVerificaMat("Matrícula aluna deve conter 12 números!")
-            return;
-        }else {
-              try {
-                const bodyAluna = { matricula, password };
-              const response = await axios.post(`${baseURL}/auth/loginAluna`, bodyAluna, {
-                headers: {
-                  "Content-type": "application/json"
-                }
-              }
-              );
-              // console.log(response);
-                const parseRes = await response.data;
-          
-                if (parseRes.jwtToken) {
-                  localStorage.setItem("token", parseRes.jwtToken);
-                   navigate("/home");
-                  toast.success("Logado com sucesso!");
-                  
-                } else {
-                  
-                  toast.error('Ocorreu um erro ao fazer login, tente novamente.' + parseRes);
-                }
-              } catch (err) {
-                console.error(err.message);
-              
-              }
-              
-        }
-        if(selectedOption == "Professora" && matricula.length < 7){
-            console.log(matricula.length)
-            setVerificaMat("Matrícula professora deve conter 7 números!")
-            return;
-        }
-        else{
-            
-            try {
-              const bodyProfessora = { matricula, password };
+        const isAluna = selectedOption === "Aluna";
+        const isProfessora = selectedOption === "Professora";
 
-              const response = await axios.post(`${baseURL}/auth/loginProfessora`, bodyProfessora, {
-                headers: {
-                  "Content-type": "application/json"
-                }
-              }
-              );
-              const parseRes = await response.data;
-                if (parseRes.jwtToken) {
-                  localStorage.setItem("token", parseRes.jwtToken);
-                  navigate("/gerenciarEncontro");
-                  toast.success("Logado com sucesso!");
-                } else {
-                  toast.error('Ocorreu um erro ao fazer login, tente novamente.' + parseRes);
-                }
-              } catch (err) {
-                console.error(err.message);
-           
-              }
-         }       
+        if (isAluna && matricula.length < 12) {
+          setVerificaMat("Matrícula aluna deve conter 12 números!");
+          return;
+        }
+
+        if (isProfessora && matricula.length < 7) {
+          setVerificaMat("Matrícula professora deve conter 7 números!");
+          return;
+        }
+
+        try {
+          const body = { matricula, password };
+          let endpoint = "";
+          
+          if (isAluna) {
+            endpoint = "/auth/loginAluna";
+          } else if (isProfessora) {
+            endpoint = "/auth/loginProfessora";
+          }
+
+          const response = await axios.post(`${baseURL}${endpoint}`, body, {
+            headers: {
+              "Content-type": "application/json"
+            }
+          });
+
+          const parseRes = await response.data;
+
+          if (parseRes.jwtToken) {
+            localStorage.setItem("token", parseRes.jwtToken);
+            if (isAluna) {
+              navigate("/home");
+            } else if (isProfessora) {
+              navigate("/gerenciarEncontro");
+             
+              
+              
+            }
+            toast.success("Logado com sucesso!");
+          } else {
+            toast.error('Ocorreu um erro ao fazer login, tente novamente.' + parseRes);
+          }
+        } catch (err) {
+          toast.error('Opa! Ocorreu um erro ao conectar com servidor');
+        }     
      }
     
     return (
