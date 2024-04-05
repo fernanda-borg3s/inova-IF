@@ -2,3 +2,11 @@ a {
     color:#004d2a ;
     text-decoration: none;
 }
+.popover-header{
+    background-color: #004d2a;
+    color: #fff;
+    text-transform: capitalize;
+}
+ h6{
+    text-transform: capitalize;
+}

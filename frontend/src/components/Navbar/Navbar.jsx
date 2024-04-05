@@ -26,6 +26,10 @@ export function NavbarC(){
         setUser(response.data);
       } catch (error) {
         console.log(error);
+        navigate("/");
+        localStorage.removeItem("token");
+        setUser(undefined);
+        toast.info("Sessão Encerrada, faça login novamente")
       }
     }
     useEffect(() => {

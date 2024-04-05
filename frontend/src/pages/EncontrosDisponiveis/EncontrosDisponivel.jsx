@@ -37,7 +37,7 @@ export default function EncontrosDisponivel(){
     const fetchEncontrosDisponivel = async () => {
       try {
         const response = await axios.get(`${baseURL}/encontros/encontrosDisponivel/${user.id_aluna}`);
-        console.log(response);
+        // console.log(response);
 
         setEncontrosDisponivel(response.data.data);
   
@@ -56,14 +56,17 @@ export default function EncontrosDisponivel(){
     return `${parts[2]}-${parts[1]}-${parts[0]}`;
   }
   const inscreverEncontro = async (id_encontro) => {
+    const id_aluna = user.id_aluna;
     try {
       const bodyInscrever = {id_encontro, id_aluna}
-      const response = await axios.post(`${baseURL}/inscrito/inscrever`, bodyInscrever, {
+      const response = await axios.post(`${baseURL}/inscricao/inscrever`, bodyInscrever, {
         headers: {
           "Content-type": "application/json"
         }
       });
       toast.success("Inscrição realizada com sucesso!")
+      const updatedEncontrosDisponiveis = encontrosDisponivel.filter(item => item.id_encontro !== id_encontro);
+                setEncontrosDisponivel(updatedEncontrosDisponiveis);
     } catch (error) {
       toast.error("Ocorreu um erro ao fazer inscrição, tente novamente");
     }

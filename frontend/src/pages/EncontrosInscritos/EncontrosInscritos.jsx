@@ -6,6 +6,8 @@ import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button';
 import './EncontrosInscritos.css'
+import { userLogged } from "../../Service/userservice.js";
+
 import { toast } from "react-toastify";
 import { useEffect, useState, useContext} from 'react';
 import { UserContext } from '../../Context/UserContext.jsx'
@@ -16,18 +18,28 @@ import axios from 'axios';
 const baseURL = 'http://localhost:3000'
 
 export default function EncontrosInscritos(){
-  // console.log(encontros);
+  const { user, setUser } = useContext(UserContext);
+  async function findUserLogged(){
+    try {
+      const response = await userLogged();
+      setUser(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+   }
+   useEffect(() => {
+    if (localStorage.getItem("token")) findUserLogged();
+  }, []);
+
+
   const [encontrosInscrito, setEncontrosInscrito] = useState([]);
-  const { user } = useContext(UserContext);
-
-
-
 
   useEffect(() => {
     const fetchEncontrosInscritos = async () => {
  
       try {
         const response = await axios.get(`${baseURL}/inscricao/inscritos/${user.id_aluna}`);
+        // console.log(response);
         setEncontrosInscrito(response.data.data);
         // console.log(encontrosInscrito);
   
@@ -41,17 +53,20 @@ export default function EncontrosInscritos(){
     }
      
    
-  }, []);
+  }, [user.id_aluna]);
   function formatDate(dateString) {
     const datePart = dateString.substring(0, 10);
     const parts = datePart.split("-")
     return `${parts[2]}-${parts[1]}-${parts[0]}`;
   }
   const removerInscricao = async (id_inscricao) => {
+    
       try {
         const response = await axios.delete(`${baseURL}/inscricao/deleteinscricao/${id_inscricao}`);
         toast.success("Inscrição excluída com sucesso!")
-        
+        //limpa o card que foi excluida
+        const updatedEncontrosInscritos = encontrosInscrito.filter(item => item.id_inscricao !== id_inscricao);
+        setEncontrosDisponivel(updatedEncontrosInscritos);
       } catch (error) {
         toast.error("Ocorreu um erro ao excluir inscrição, tente novamente");
         
@@ -84,7 +99,7 @@ export default function EncontrosInscritos(){
                  <ListGroup.Item className="px-1">Professora(o): <span>{inscrito.nome_professora}</span></ListGroup.Item>
 
                </ListGroup>
-               <Button variant="danger" className='mt-3' onClick={removerInscricao(inscrito.id_inscricao)}>
+               <Button variant="danger" className='mt-3' onClick={() => removerInscricao(inscrito.id_inscricao)}>
                  <i className="bi bi-trash p-1"></i>
                  Cancelar Inscrição
                </Button>

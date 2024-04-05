@@ -7,7 +7,7 @@
 .h5-welcome{
     font-weight: bold;
 }
-.p-welcome{font-size: 18px;}
+.p-welcome{font-size: 18px; text-align: justify;}
 .btn-home{
     font-weight: bold;
     background-color: #004d2a;

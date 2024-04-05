@@ -47,11 +47,7 @@ export default function GerenciarEncontro(){
       const fetchMyCadastros = async () => {
         try {
           const response = await axios.get(`${baseURL}/encontros/myCadastros/${user.id_professora}`);
-          // setMyCadastrados(response.data.data);
-          // console.log(myCadastrados)
           if (isSubscribed) {
-         
-
             setMyCadastrados(response.data.data);
             // console.log(myCadastrados);
           }
@@ -63,13 +59,13 @@ export default function GerenciarEncontro(){
          }
       }
       
-      if(user){
+   
         fetchMyCadastros();
-      }
+    
        return () => {
     isSubscribed = false;
   };
-      }, [user]);
+      }, [user.id_professora]);
 
       useEffect(() => {
        
@@ -108,7 +104,7 @@ export default function GerenciarEncontro(){
         }
      
       }
-console.log(myCadastrados);
+
     return (
         <>
         <h1 className="h1">Gerenciar Encontros</h1>

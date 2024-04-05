@@ -60,6 +60,7 @@ const encontrosController = {
             res.json({msg: error.msg})
         }
     },
+    //PROFESSOR
     getAllEncontrosCadastrados: async(req, res) => {
         try {
              //TEM QUE CORRIGIR ESSE SQL 
@@ -73,6 +74,7 @@ const encontrosController = {
             res.json({msg: error.msg})
         }
     },
+     //PROFESSOR
     getMyCadastros: async(req, res) => {
         try {
             const { rows } = await postgre.query("SELECT E.id_encontro, E.titulo_encontro, E.descricao_encontro, E.criterios_avaliacao, E.sala, E.num_vagas, E.data_inicio, E.hora_inicio, E.data_fim, E.hora_fim, E.num_repeticoes, E.repete, E.disponivel_inscricao, E.data_cadastro, AC.area, AC.area_sigla, CC.componente_curricular, OA.tipo_objetivo, OA.objetivos_aprendizagem, OA.etapa FROM encontro E INNER JOIN professora P ON E.id_professora = P.id_professora INNER JOIN area_conhecimento AS AC ON E.id_area_conhecimento = AC.id_area_conhecimento INNER JOIN componente_curricular AS CC ON E.id_componente_curricular = CC.id_componente_curricular INNER JOIN objetivos_aprendizagem AS OA ON E.id_objetivos_aprendizagem = OA.id_objetivos_aprendizagem WHERE P.id_professora = $1", [req.params.id])

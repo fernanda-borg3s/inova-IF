@@ -50,9 +50,7 @@ const [encontros, setEncontros] = useState([]);
       
         <>
         {/* verificar se esta vazio */}
-       {encontros.length === 0 ? (
-        <p>Nenhum encontro encontrado para hoje.</p>
-      ) : (
+        {encontros && encontros.length > 0 ? (
         <Row xs={1} md={2} className="g-4">
           {encontros.map((encontro, index) => (
             <Col key={index}>
@@ -74,10 +72,15 @@ const [encontros, setEncontros] = useState([]);
                   </Button>
                 </Card.Body>
               </Card>
+          
             </Col>
-          ))}
-        </Row>
-      )}
+              ))}
+               </Row>
+            ) : (
+              <p>Não há encontros para hoje.</p>
+            )}
+       
+     
     </>
   );
 }

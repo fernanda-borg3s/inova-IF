@@ -43,7 +43,7 @@ export default function Home(){
         <Col className='mt-5 d-flex flex-column align-items-center justify-content-center'>
         <div className='' >
             <h3 className='h3-home'>Sua Agenda</h3>
-            <p className='mt-4 ps-1 p-home'>Lorem ipsum dolor sviverra adipiscing at in tellus integer feugiat scelerisque. icitudin ac orci. Consectetur  Gravida cum sociis natoque penatibus et magnis dis. Mauris augue neque gravida in fermentum et sollicitudin ac orci</p>
+            <p className='mt-4 ps-1 p-home'>No sistema InovaIF, temos a funcionalidade que permite aos estudantes visualizarem rapidamente os encontros iminentes, facilitando a preparação e a coordenação de suas agendas. Confira os próximos encontros no botão abaixo.</p>
             <Button className="mt-2 btn2-home p-3" variant="success" href='/home/agenda'>Conferir Agenda</Button>
         </div>
         </Col>
