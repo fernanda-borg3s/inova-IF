@@ -64,8 +64,9 @@ export function NavbarProfessor(){
               </Offcanvas.Header>
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 navLink">
-                  <Nav.Link href="/gerenciarEncontro">Início</Nav.Link>
-                  <Nav.Link href="/gerenciarEncontro/encontrosCadastrados" className='me-5'>Encontros Cadastrados</Nav.Link>
+                  <Nav.Link href="/homeProfessor">Início</Nav.Link>
+                  <Nav.Link href="/homeProfessor/gerenciarEncontro">Meus Encontros</Nav.Link>
+                  <Nav.Link href="/homeProfessor/EncontrosCadastrados" className='me-5'>Encontros Cadastrados</Nav.Link>
                   {user ? (
                   <Dropdown className='dropdown-left pt-1'>
                     <Dropdown.Toggle  id="dropdown-basic" style={{backgroundColor:'transparent', border:'none', fontWeight:'bold'}} className='p-1'>

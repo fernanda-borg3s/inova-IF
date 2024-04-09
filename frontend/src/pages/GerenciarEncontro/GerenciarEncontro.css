@@ -1,17 +1,20 @@
+.container-meu-cadastro{
+min-height: 85vh;
+}
+.box-my-encontros{
+    background-color: #fff;
+min-height: 80vh;
+box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+border-radius: 10px;
+
+    /* width: 90%; */
+}
 .h1, .h1-cadastrados{
     color:#004d2a;
     text-align: center;
     margin:35px;
 }
 
-.container-cadastrar{
-    background-color: #fff;
-    max-width: 45%;
-    height: auto;
-    padding: 30px;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-    border-radius: 10px;
-}
 
 .h2-cadastro{
     font-size: 22px;
@@ -36,7 +39,7 @@ td{
     font-size: 20px;
 
 }
-.bi-pencil-square, .bi-person-check-fill{
+.bi-pencil-square, .bi-person-check-fill, .bi-person-plus-fill{
     color:#004d2a;
     font-weight: bold;
     font-size: 20px;
@@ -44,7 +47,7 @@ td{
 
 @media (max-width: 500px){
     
-    .container-cadastrar{
+    .container-meu-cadastro{
         min-width: 400px;
     }
 }

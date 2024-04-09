@@ -1,29 +1,173 @@
 import Container from "react-bootstrap/esm/Container";
 import Row from "react-bootstrap/esm/Row";
-// import Col from "react-bootstrap/esm/Col";
-// import Form from 'react-bootstrap/Form';
+import Col from "react-bootstrap/esm/Col";
+import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-// import './CadastrarEncontro.css'
-// import { useEffect, useState, useContext} from 'react';
-// import { UserContext } from '../../Context/UserContext.jsx'
-// import moment from 'moment';
+import './CadastrarEncontro.css'
+import { useEffect, useState, useContext} from 'react';
+import { UserContext } from '../../Context/UserContext.jsx'
+import moment from 'moment';
 
-// import axios from 'axios';
-// import { toast } from "react-toastify";
+import axios from 'axios';
+import { toast } from "react-toastify";
 
-export default function EditarEncontro(){
-    return (
+const baseURL = 'http://localhost:3000'
+export default function CadastrarEncontro(){
+    const [selectedComponente, setSelectedComponente] = useState('17');
+    const [objAprendizagem, setObjAprendizagem] = useState([]);
+  const { user } = useContext(UserContext);
+
+    const [inputs, setInputs] = useState({
+        titulo_encontro:"",
+         descricao_encontro:"",
+         criterios_avaliacao:"",
+         sala:"",
+         num_vagas:"",
+         data_inicio:"",
+         hora_inicio:"",
+         hora_fim:"", 
+         repete: "",   
+         disponivel_inscricao:"",
+         id_area_conhecimento:"", 
+         id_objetivos_aprendizagem:""
+      });
+    
+     
+    
+   
+        //  console.log(selectedComponente);
+      useEffect(() => {
+        const fetchEncontros = async () => {
+          try {
+            const response = await axios.get(`${baseURL}/aprendizagem/getObjetivo/${selectedComponente}`);
+            setObjAprendizagem(response.data.data);
+           
+           
+      
+          } catch (error) {
+            console.error('Erro ao recuperar dados:', error);
+          }
+        };
+        
+        fetchEncontros();
+      }, [selectedComponente]); 
+      const onChange = e => {
+        if(e.target.name == 'num_vagas'){
+            setInputs({ ...inputs, [e.target.name]: Number(e.target.value) });
+            // console.log([e.target.name])
+        }
+        setInputs({ ...inputs, [e.target.name]: e.target.value });
+
+      }
+      const CadastrarEncontro = async e => {
+        e.preventDefault();
+        console.log("form is send");
+        console.log(inputs);
+      
+        const {
+          titulo_encontro,
+          descricao_encontro,
+          criterios_avaliacao,
+          sala,
+          num_vagas,
+          data_inicio,
+          hora_inicio,
+          hora_fim,
+          repete,
+          disponivel_inscricao,
+          id_area_conhecimento,
+          id_objetivos_aprendizagem
+        } = inputs;
+        const id_professora = user.id_professora;
+        const id_componente_curricular = selectedComponente;
+      
+        const createEncontro = async (dataInicial) => {
+          try {
+            const body = {
+              titulo_encontro,
+              descricao_encontro,
+              criterios_avaliacao,
+              sala,
+              num_vagas,
+              data_inicio: dataInicial,
+              hora_inicio,
+              data_fim,
+              hora_fim,
+              repete,
+              disponivel_inscricao,
+              id_professora,
+              id_area_conhecimento,
+              id_componente_curricular,
+              id_objetivos_aprendizagem
+            };
+      
+            const response = await axios.post(`${baseURL}/encontros/create`, body, {
+              headers: {
+                "Content-type": "application/json"
+              }
+            });
+      
+            toast.success("Encontro criado com sucesso!");
+      
+          } catch (err) {
+            console.error(err.message);
+          }
+        }
+      
+        if (repete === '1') {
+          let dataInicial = data_inicio;
+          for (let repeteEncontro = 0; repeteEncontro <= 2; repeteEncontro++) {
+            await createEncontro(dataInicial);
+            const novaData = moment(dataInicial, 'YYYY-MM-DD').add(7, 'days').format('YYYY-MM-DD');
+            dataInicial = novaData;
+          }
+          return;
+        }
+      
+        if (repete === '2') {
+          let dataInicial = data_inicio;
+          for (let repeteEncontro = 0; repeteEncontro <= 3; repeteEncontro++) {
+            await createEncontro(dataInicial);
+            const novaData = moment(dataInicial, 'YYYY-MM-DD').add(7, 'days').format('YYYY-MM-DD');
+            dataInicial = novaData;
+          }
+          return;
+        }
+      
+        if (repete === '3') {
+          let dataInicial = data_inicio;
+          for (let repeteEncontro = 0; repeteEncontro <= 4; repeteEncontro++) {
+            await createEncontro(dataInicial);
+            const novaData = moment(dataInicial, 'YYYY-MM-DD').add(7, 'days').format('YYYY-MM-DD');
+            dataInicial = novaData;
+          }
+          return;
+        }
+      
+        await createEncontro(data_inicio);
+      }
+   
+      function formatText(textString){
+        if (textString.length > 110) {
+            const truncatedText = textString.slice(0, 110);
+            return truncatedText + "...";
+          }
+          return textString;
+      }
+    return(
         <>
-         <Container className="mt-5">
+        <Container className="mt-5">
         <div className="d-flex flex-row justify-content-between align-items-center mb-3">
             <div>
-            <h1 className="h1-homeProfessor">Editar Encontro</h1>
+            <h1 className="h1-homeProfessor">Cadastrar novo Encontro</h1>
             </div>
             <div className="mt-2 d-flex flex-row">
                 <Button variant="success" className="me-3 p-1 btn-homeProfessor" href="/homeProfessor/gerenciarEncontro">
-                Voltar
+                Gerenciar meus Encontros
                 </Button>
-              
+                <Button variant="success" className=" btn-homeProfessor p-1 " href="/homeProfessor/EncontrosCadastrados">
+                Todos Encontros
+                </Button>
             </div>
                     
                 
@@ -31,9 +175,9 @@ export default function EditarEncontro(){
            
             <Row className="container-cadastrar">
               
+                <h2 className="h2-cadastro">Cadastrar Encontro</h2>
 
-
-            {/* <Form onSubmit={CadastrarEncontro}>
+            <Form onSubmit={CadastrarEncontro}>
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="titulo-encontro">
                         <Form.Label>Título do Encontro</Form.Label>
@@ -151,10 +295,10 @@ export default function EditarEncontro(){
                     </Form.Group>  
                  
                     <Form.Group as={Col} controlId="objetivos_aprendizagem" className="">
-         
+                        {/* vem do banco */}
                         <Form.Label>Objetivo De aprendizagem:</Form.Label>
                         <Form.Select required name='id_objetivos_aprendizagem' onChange={onChange}>
-              
+                            {/* <option value=''>Não se aplica</option> */}
                     {objAprendizagem.map((aprendizagem) => (
                         <option key={aprendizagem.id_objetivos_aprendizagem} value={aprendizagem.id_objetivos_aprendizagem} >
                             {formatText(aprendizagem.objetivos_aprendizagem)}
@@ -167,7 +311,7 @@ export default function EditarEncontro(){
                     <Form.Group as={Col} controlId="etapa">
                         <Form.Label>Etapa:</Form.Label>
                         <Form.Select >
-                     
+                            {/* <option>Não se aplica</option> */}
                             {objAprendizagem.map((aprendizagem) => {
                                 if (aprendizagem.etapa === null) {
                                     return null;
@@ -184,7 +328,11 @@ export default function EditarEncontro(){
                             }
                             </Form.Select>
                     </Form.Group>
-           
+                    {/* <Form.Group as={Col} controlId="data-fim">
+                        <Form.Label>Data de Fim:</Form.Label>
+                        <Form.Control required type="date" name="data_fim" onChange={onChange} />
+                    </Form.Group> */}
+
                     
                 </Row>             
                     
@@ -207,12 +355,11 @@ export default function EditarEncontro(){
                     <Button variant="primary" type="submit" style={{backgroundColor:'#004d2a', border:'none'}} className="w-100 p-2 mb-2 mt-3">Cadastrar Encontro</Button>
                     <Button variant="primary" type="reset" style={{backgroundColor:'#870303', border:'none'}} className="w-100 p-2">Limpar</Button>
             </Form>
-            */}
+           
                
             </Row>
         
         </Container>
-        
         </>
     )
 }

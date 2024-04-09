@@ -9,7 +9,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import UserLogo from '../../assets/Img/UserLogo.png'
 import { Outlet, useNavigate } from 'react-router-dom';
 import './Navbar.css'
-import { useEffect, useContext} from 'react';
+import { useEffect, useContext, useState} from 'react';
 import { toast } from 'react-toastify';
 import { userLogged } from "../../Service/userservice.js";
 import { UserContext } from '../../Context/UserContext.jsx'
@@ -24,6 +24,7 @@ export function NavbarC(){
       try {
         const response = await userLogged();
         setUser(response.data);
+     
       } catch (error) {
         console.log(error);
         navigate("/");
@@ -80,7 +81,20 @@ export function NavbarC(){
                     </NavDropdown.Item>
                  
                   </NavDropdown>
-                  <Nav.Link href="/home/agenda" className='me-4'>Agenda</Nav.Link>
+                  <NavDropdown
+                    title="Agenda"
+                    id={`offcanvasNavbarDropdown-expand-${expand}`}
+                    className="dropdown-left"
+                  >
+                    <NavDropdown.Item href="/home/agenda">
+                    <i className="bi bi-mortarboard"></i>
+                      Encontros Disponíveis</NavDropdown.Item>
+                    <NavDropdown.Item href="/home/agendaInscrito">
+                    <i className="bi bi-card-list"></i>
+                      Encontros Inscritos
+                    </NavDropdown.Item>
+                 
+                  </NavDropdown>
                   {user ? (
                      <Dropdown className='dropdown-left'>
                      <Dropdown.Toggle  id="dropdown-basic" style={{backgroundColor:'transparent', border:'none',fontWeight:'bold'}} className='p-2'>
@@ -95,7 +109,14 @@ export function NavbarC(){
                      </Dropdown.Menu>
                    </Dropdown>
 
-                  ) : (<span>ERROR</span>)}
+                  ) : (<Dropdown className='dropdown-left'>
+                  <Dropdown.Toggle  id="dropdown-basic" style={{backgroundColor:'transparent', border:'none',fontWeight:'bold'}} className='p-2'>
+                    <img src={UserLogo} alt="raposa" className="user-img" ></img>
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item onClick={signout} ><i className="bi bi-box-arrow-right"></i>Sair</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>)}
                  
                 </Nav>
                 

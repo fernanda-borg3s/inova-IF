@@ -17,6 +17,9 @@ import UserProvider from './Context/UserContext.jsx'
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import EditarEncontro from './pages/EditarEncontro/EditarEncontro.jsx'
+import AgendaInscritos from './pages/AgendaInscritos/AgendaInscritos.jsx'
+import HomeProfessor from './pages/HomeProfessor/HomeProfessor.jsx'
+import CadastrarEncontro from './pages/CadastrarEncontro/CadastrarEncontro.jsx'
 
 
 const router = createBrowserRouter([
@@ -54,24 +57,36 @@ const router = createBrowserRouter([
         path:"/home/agenda",
         element:<Agenda/>
       },
+      {
+        path:"/home/agendaInscrito",
+        element: <AgendaInscritos/>
+      }
    
     ]
   },
   {
-    path:"/gerenciarEncontro",
+    path:"/homeProfessor",
     element: <NavbarProfessor/>,
     errorElement:<ErrorPage/>,
     children: [
       {
-        path:"/gerenciarEncontro",
+        path:"/homeProfessor",
+        element: <HomeProfessor/>,
+      },
+      {
+        path:"/homeProfessor/cadastrarEncontro",
+        element: <CadastrarEncontro/>,
+      },
+      {
+        path:"/homeProfessor/gerenciarEncontro",
         element: <GerenciarEncontro/>,
       },
       {
-        path:"/gerenciarEncontro/EncontrosCadastrados",
+        path:"/homeProfessor/EncontrosCadastrados",
         element: <EncontrosCadastrados/>,
       },
       {
-        path:"/gerenciarEncontro/editarEncontro",
+        path:"/homeProfessor/editarEncontro",
         element: <EditarEncontro/>,
       }
     ]

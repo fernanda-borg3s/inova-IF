@@ -48,34 +48,31 @@ const inscricaoController ={
     },
     listInscritos: async(req, res) => {
         try {
-            const { rows } = await postgre.query("SELECT I.*, E.id_encontro FROM inscricao AS I INNER JOIN encontro AS E ON I.id_encontro = E.id_encontro INNER JOIN professora AS P ON E.id_professora = P.id_professora WHERE id_professora = $1", [req.params.id])
+            const { rows } = await postgre.query("SELECT I.*, A.nome_aluna, A.mat_aluna, A.email FROM inscricao AS I INNER JOIN encontro AS E ON I.id_encontro = E.id_encontro INNER JOIN aluna AS A ON I.id_aluna = A.id_aluna INNER JOIN professora AS P ON E.id_professora = P.id_professora WHERE E.id_professora = $1 AND I.id_encontro = $2 ORDER BY A.nome_aluna ASC", [req.params.id, req.params.id_encontro])
             if (rows[0]) {
                 return res.json({msg: "OK", data: rows})
             }
 
-           return res.status(404).json({msg: "Não há inscritos nesse encontro"})
+           return res.json({msg: "Não há inscritos nesse encontro"})
     
         } catch (error) {
            return res.json({msg: error.msg})
         }
     },
-    deleteAluno: async(req, res) => {
+    allAlunoExceptInscritos: async(req, res) => {
         try {
-            const sql = ''
-
-            const { rows } = await postgre.query(sql, [req.params.id])
-
+            const { rows } = await postgre.query("SELECT aluna.nome_aluna, aluna.mat_aluna, aluna.email, T.id_encontro FROM aluna LEFT JOIN (SELECT I.id_encontro, A.nome_aluna, A.mat_aluna, A.email FROM inscricao AS I INNER JOIN encontro AS E ON I.id_encontro = E.id_encontro INNER JOIN aluna AS A ON I.id_aluna = A.id_aluna INNER JOIN professora AS P ON E.id_professora = P.id_professora WHERE E.id_professora = $1 AND I.id_encontro = $2) T ON aluna.mat_aluna = T.mat_aluna WHERE T.id_encontro IS NULL", [req.params.id, req.params.id_encontro])
             if (rows[0]) {
-                return res.json({msg: "OK", data: rows[0]})
+                return res.json({msg: "OK", data: rows})
             }
 
-            return res.status(404).json({msg: "Ocorreu um erro ao excluir sua inscrição"})
-            
-
+           return res.json({msg: "Não há inscritos nesse encontro"})
+    
         } catch (error) {
            return res.json({msg: error.msg})
         }
     },
+
     addAluno: async(req, res) => {
         try {
             const {id_encontro, id_aluna} = req.body

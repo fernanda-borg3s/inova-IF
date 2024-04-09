@@ -21,7 +21,10 @@ export default function Home(){
     <>
       
         <Container className="box-container mt-5" >
-          <Welcome/>
+          <Welcome>
+            <p>Inscreva-se nos encontros disponibilizados pelas professoras no botão abaixo.</p>
+            <Button className="mt-2 btn-home p-3" variant="success" href='/home/encontrosDisponivel'>Fazer inscrição no encontro</Button>
+          </Welcome>
             <h2 className="mt-5 mb-4 h2-home">Agenda para Hoje</h2>
           <Row xs={1} md={2} className="g-4">
             <Col>
@@ -44,7 +47,11 @@ export default function Home(){
         <div className='' >
             <h3 className='h3-home'>Sua Agenda</h3>
             <p className='mt-4 ps-1 p-home'>No sistema InovaIF, temos a funcionalidade que permite aos estudantes visualizarem rapidamente os encontros iminentes, facilitando a preparação e a coordenação de suas agendas. Confira os próximos encontros no botão abaixo.</p>
-            <Button className="mt-2 btn2-home p-3" variant="success" href='/home/agenda'>Conferir Agenda</Button>
+            <div>
+            <Button className="mt-2 btn2-home p-2 me-3" variant="success" href='/home/agenda'>Agenda dos Encontros Disponíveis</Button>
+            <Button className="mt-2 btn2-home p-2 " variant="success" href='/home/agendaInscrito'>Agenda dos Encontros Inscritos</Button>
+            </div>
+           
         </div>
         </Col>
       </Row>

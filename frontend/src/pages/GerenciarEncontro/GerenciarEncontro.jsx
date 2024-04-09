@@ -4,9 +4,13 @@ import './GerenciarEncontro.css'
 import Container from "react-bootstrap/esm/Container";
 import { useEffect, useState, useContext} from 'react';
 import { toast } from 'react-toastify';
-
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import Footer from "../../components/Footer/Footer";
-import FormCadastro from '../../components/FormCadastro/FormCadastro';
+// import FormCadastro from '../../components/FormCadastro/FormCadastro';
 import { UserContext } from '../../Context/UserContext.jsx'
 import axios from 'axios';
 import { userLoggedProf } from "../../Service/userservice.js";
@@ -35,6 +39,7 @@ export default function GerenciarEncontro(){
     const [myCadastrados, setMyCadastrados] = useState([]);
     const [show, setShow] = useState(false);
     const [allAluno, setAllAluno] = useState([]);
+    const [modalId, setModalId] = useState();
 
     // const [usuario, setUsuario] = useState(null);
  
@@ -59,13 +64,15 @@ export default function GerenciarEncontro(){
          }
       }
       
-   
+      if(user){
         fetchMyCadastros();
+
+      }
     
        return () => {
     isSubscribed = false;
   };
-      }, [user.id_professora]);
+      }, [user]);
 
       useEffect(() => {
        
@@ -82,7 +89,7 @@ export default function GerenciarEncontro(){
         }
         fetchAllAluno();
         }, []);
-    
+        
     function formatDate(dateString) {
         const parts = dateString.split("-")
         return `${parts[2]}-${parts[1]}-${parts[0]}`;
@@ -104,12 +111,16 @@ export default function GerenciarEncontro(){
         }
      
       }
-
+      //função necessaria para abrir a lista de acordo com id_encontro corretamente
+      const mostrarModal = (id_encontro) => {
+        setShow(true);
+        setModalId(id_encontro);
+      }
+    
     return (
         <>
-        <h1 className="h1">Gerenciar Encontros</h1>
-       <FormCadastro/>
-        <Container className="container-meu-cadastro">
+    
+        <Container className="container-meu-cadastro mt-3">
             <h1 className="m-4 h1-cadastrados">Meus Encontros Cadastrados</h1>
                 <div className="box-my-encontros p-4">
                 <Tabs 
@@ -120,6 +131,15 @@ export default function GerenciarEncontro(){
                  
                     >
                     <Tab eventKey="meuCadastros" title="Meus Encontros Cadastrados">
+                    <Form className="d-flex justify-content-end my-4">
+            <Form.Control
+              type="search"
+              placeholder="Procurar Encontro"
+              className="me-2 w-25"
+              aria-label="Search"
+            />
+            <Button variant="outline-success">Search</Button>
+          </Form>
                     <Table striped bordered hover responsive="sm">
             <thead>
                 <tr>
@@ -146,15 +166,13 @@ export default function GerenciarEncontro(){
                         <td>{formatDate(encontro.data_fim)}</td>
                         <td>
                     
-                    <button className="modal-button" onClick={() => setShow(true)}><i className="bi bi-person-check-fill"></i></button>
-                    <ModalListAluno props={encontro.id_encontro} show={show} setModalOpen={() => setShow(false)}>
-                    <p>Teste list</p>
-
-                    </ModalListAluno>
-                    
+                    <button className="modal-button" onClick={() => mostrarModal(encontro.id_encontro)}><i className="bi bi-person-check-fill"></i></button>
+                    <ModalListAluno encontroId={modalId} show={show} setModalOpen={() => setShow(false)} userProf={user.id_professora}>
+                  </ModalListAluno>
+                    {/* {encontro.id_encontro} */}
                     </td>
                     <td>
-                        <button className="modal-button" > <i className="bi bi-pencil-square" ></i></button>
+                        <a className="modal-button" href="/homeProfessor/editarEncontro"> <i className="bi bi-pencil-square" ></i></a>
                         {/* /gerenciarEncontro/editarEncontro */}
                     </td>
                     <td>
@@ -165,7 +183,7 @@ export default function GerenciarEncontro(){
                ))
                ) : (
                  <tr>
-                  <td>Você ainda não realizou nenhum cadastro...</td></tr>
+                  <td colSpan={9}>Você ainda não realizou nenhum cadastro...</td></tr>
                )}
            
             </tbody>
@@ -176,6 +194,15 @@ export default function GerenciarEncontro(){
 
                     </Tab>
                     <Tab eventKey="lista"  title="Lista de Alunos Cadastrados">
+                    <Form className="d-flex justify-content-end my-4">
+            <Form.Control
+              type="search"
+              placeholder="Procurar Aluno"
+              className="me-2 w-25"
+              aria-label="Search"
+            />
+            <Button variant="outline-success">Search</Button>
+          </Form>
                     <Table striped bordered hover responsive="sm">
             <thead>
                 <tr>

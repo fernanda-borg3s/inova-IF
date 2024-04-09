@@ -19,7 +19,7 @@ export default function Calendario(events){
             initialView='dayGridMonth'
             weekends={false}
             events={events}
-            
+            allDay={true}
             eventContent={renderEventContent}
        
             locale={brLocales}
@@ -53,7 +53,7 @@ function renderEventContent(eventInfo) {
     <Popover id="popover-basic">
       <Popover.Header as="h3" className='popover-header'>{event.title}</Popover.Header>
       <Popover.Body className='popover-body'>
-      <p>Data: <strong> {formatDate(extendedProps.dataInicio)}</strong> até <strong>{formatDate(extendedProps.dataFim)}</strong></p>
+      <p>Data: <strong> {formatDate(extendedProps.dataInicio)}</strong></p>
       <p>Horário:<strong> {extendedProps.horaInicio}</strong> até <strong>{extendedProps.horaFim}</strong></p>
       <p>Componente: <strong>{extendedProps.componente}</strong></p>
       <p>Sala: <strong>{extendedProps.sala}</strong></p>

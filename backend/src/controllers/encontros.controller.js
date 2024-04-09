@@ -11,16 +11,15 @@ const encontrosController = {
                 num_vagas, 
                 data_inicio, 
                 hora_inicio, 
-                data_fim, hora_fim, 
-                repete, 
-                num_repeticoes, 
+                hora_fim, 
+                repete,  
                 disponivel_inscricao, 
                 id_professora, 
                 id_area_conhecimento, 
                 id_componente_curricular, 
                 id_objetivos_aprendizagem} = req.body
 
-            const sql = 'INSERT INTO encontro(titulo_encontro, descricao_encontro, criterios_avaliacao, sala, num_vagas, data_inicio, hora_inicio, data_fim, hora_fim, repete, num_repeticoes, disponivel_inscricao, id_professora, id_area_conhecimento, id_componente_curricular, id_objetivos_aprendizagem) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING *'
+            const sql = 'INSERT INTO encontro(titulo_encontro, descricao_encontro, criterios_avaliacao, sala, num_vagas, data_inicio, hora_inicio, hora_fim, repete, disponivel_inscricao, id_professora, id_area_conhecimento, id_componente_curricular, id_objetivos_aprendizagem) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *'
  
             const { rows } = await postgre.query(sql, [
                 titulo_encontro, 
@@ -30,10 +29,8 @@ const encontrosController = {
                 num_vagas, 
                 data_inicio, 
                 hora_inicio, 
-                data_fim, 
                 hora_fim, 
                 repete, 
-                num_repeticoes, 
                 disponivel_inscricao, 
                 id_professora, 
                 id_area_conhecimento, 

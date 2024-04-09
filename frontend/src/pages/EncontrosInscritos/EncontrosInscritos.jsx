@@ -39,9 +39,9 @@ export default function EncontrosInscritos(){
  
       try {
         const response = await axios.get(`${baseURL}/inscricao/inscritos/${user.id_aluna}`);
-        // console.log(response);
+        console.log(response);
         setEncontrosInscrito(response.data.data);
-        // console.log(encontrosInscrito);
+        console.log(encontrosInscrito);
   
       } catch (error) {
         console.error('Erro ao recuperar dados:', error);

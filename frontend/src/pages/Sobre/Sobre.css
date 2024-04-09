@@ -12,7 +12,7 @@
 .box-sobre{
     text-align: justify;
     margin: auto;
-    width: 45%;
+    width: 80%;
 }
 .box-sobre img{
     width: 190px;
@@ -23,6 +23,7 @@
     font-size: 18px;
     margin-top: 30px;
     text-indent: 30px;
+    line-height: 1.5;
 }
 .a-sobre{
      border-radius: 5px;
