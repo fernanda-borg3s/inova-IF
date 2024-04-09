@@ -7,16 +7,18 @@ import Modal from 'react-bootstrap/Modal';
 import Table from 'react-bootstrap/Table';
 // import Col from 'react-bootstrap/Col';
 import { toast } from "react-toastify";
-
+import Paginacao from '../../components/Paginacao/Paginacao.jsx';
 import { useEffect, useState} from 'react';
 const baseURL = 'http://localhost:3000'
+const ITEMS_PER_PAGE = 8;
 
-export default function ModalEditar({ show, setModalOpen, encontroId, userProf}){
+export default function ModalList({ show, setModalOpen, encontroId, userProf}){
     // const handleClose = () => setShow(false);
     // const handleShow = () => setShow(true);
     
     const [listAlunoInscrito, setListAlunoInscrito] = useState([])
     const [alunoExceptInscrito, setAlunoExceptInscrito] = useState([])
+    
     useEffect(() => {
        
       const fetchAlunoInscritosEncontro = async () => {
@@ -85,6 +87,30 @@ export default function ModalEditar({ show, setModalOpen, encontroId, userProf})
           }
        
         }
+        const [alunoEncontroCurrentPage, setAlunoEncontroCurrentPage] = useState(1);
+  const [alunoExceptCurrentPage, setAlunoExceptCurrentPage] = useState(1);
+
+  const alunoEncontroTotalPages = Math.ceil(listAlunoInscrito?.length / ITEMS_PER_PAGE);
+  const alunoExceptTotalPages = Math.ceil(alunoExceptInscrito?.length / ITEMS_PER_PAGE);
+
+  const alunoEncontroPaginatedData = listAlunoInscrito?.slice(
+    (alunoEncontroCurrentPage - 1) * ITEMS_PER_PAGE,
+    alunoEncontroCurrentPage * ITEMS_PER_PAGE
+  );
+
+  const alunoExceptPaginatedData = alunoExceptInscrito?.slice(
+    (alunoExceptCurrentPage - 1) * ITEMS_PER_PAGE,
+    alunoExceptCurrentPage * ITEMS_PER_PAGE
+  );
+
+  const handleAlunoEncontroPageChange = (page) => {
+    setAlunoEncontroCurrentPage(page);
+  };
+
+  const handleAlunoExceptPageChange = (page) => {
+    setAlunoExceptCurrentPage(page);
+  };
+
     return(
         <>
     
@@ -113,7 +139,7 @@ export default function ModalEditar({ show, setModalOpen, encontroId, userProf})
             </thead>
             <tbody>
             {listAlunoInscrito && listAlunoInscrito.length > 0 ? (
-                listAlunoInscrito.map((aluno, index) => (
+                alunoEncontroPaginatedData.map((aluno, index) => (
                       <tr key={index}>
                         <td>{index + 1}</td>
                         <td>{aluno.nome_aluna}</td>
@@ -131,6 +157,10 @@ export default function ModalEditar({ show, setModalOpen, encontroId, userProf})
             </tbody>
 
         </Table>
+        <Paginacao  
+        currentPage={alunoEncontroCurrentPage}
+        totalPages={alunoEncontroTotalPages}
+        onPageChange={handleAlunoEncontroPageChange} />
         <div>
             <h6>Adicionar Alunas</h6>
             <Table striped bordered hover responsive="sm mb-2">
@@ -147,7 +177,7 @@ export default function ModalEditar({ show, setModalOpen, encontroId, userProf})
             </thead>
             <tbody>
             {alunoExceptInscrito && alunoExceptInscrito.length > 0 ? (
-            alunoExceptInscrito.map((alunoExcept, i) => (
+            alunoExceptPaginatedData.map((alunoExcept, i) => (
                       <tr key={i}>
                         <td>{i + 1}</td>
                         <td>{alunoExcept.nome_aluna}</td>
@@ -165,60 +195,11 @@ export default function ModalEditar({ show, setModalOpen, encontroId, userProf})
             </tbody>
 
         </Table>
-        {/* <Row className="mb-3"> 
-       <Col>
-       <InputGroup >
-        <InputGroup.Text id="inputGroup-sizing-default">
-          Nome
-        </InputGroup.Text>
-        <Form.Control
-          aria-label="Default"
-          aria-describedby="inputGroup-sizing-default"
-        />
-      </InputGroup>
-      </Col>
-      
-      <Col>
-      <InputGroup >
-        <InputGroup.Text id="inputGroup-sizing-default">
-          Matrícula
-        </InputGroup.Text>
-        <Form.Control
-          aria-label="Default"
-          aria-describedby="inputGroup-sizing-default"
-        />
-      </InputGroup>
-      </Col>
-      
-      </Row>
-      <Row className="mb-3"> 
-      <Col>
-      <InputGroup >
-        <InputGroup.Text id="inputGroup-sizing-default">
-          Nome Social
-        </InputGroup.Text>
-        <Form.Control
-          aria-label="Default"
-          aria-describedby="inputGroup-sizing-default"
-        />
-      </InputGroup>
-      </Col>
-      <Col>
-      
-      <InputGroup >
-        <InputGroup.Text id="inputGroup-sizing-default">
-          Email
-        </InputGroup.Text>
-        <Form.Control
-          aria-label="Default"
-          aria-describedby="inputGroup-sizing-default"
-        />
-      </InputGroup>
-      </Col>
-        
-      
-      </Row>
-       */}
+        <Paginacao
+        currentPage={alunoExceptCurrentPage}
+        totalPages={alunoExceptTotalPages}
+        onPageChange={handleAlunoExceptPageChange} />
+    
         </div>
        
 

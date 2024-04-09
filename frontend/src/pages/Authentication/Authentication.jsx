@@ -116,7 +116,7 @@ export default function Authentication(){
             toast.error('Ocorreu um erro ao fazer login, tente novamente.' + parseRes);
           }
         } catch (err) {
-          toast.error('Opa! Ocorreu um erro ao conectar com servidor');
+          toast.error('Matrícula ou senha incorreta, tente novamente');
         }     
      }
     

@@ -10,7 +10,7 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Footer from "../../components/Footer/Footer";
-// import FormCadastro from '../../components/FormCadastro/FormCadastro';
+import Paginacao from '../../components/Paginacao/Paginacao.jsx';
 import { UserContext } from '../../Context/UserContext.jsx'
 import axios from 'axios';
 import { userLoggedProf } from "../../Service/userservice.js";
@@ -19,8 +19,9 @@ import Table from 'react-bootstrap/Table';
 
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import ModalEditar from '../../components/ModalEditarEncontro/ModalEditarEncontro.jsx';
 const baseURL = 'http://localhost:3000'
-
+const ITEMS_PER_PAGE = 10;
 export default function GerenciarEncontro(){
   const { user, setUser } = useContext(UserContext);
   async function findUserLoggedProf(){
@@ -35,11 +36,14 @@ export default function GerenciarEncontro(){
     if (localStorage.getItem("token")) findUserLoggedProf();
   }, []);
 
-
+  
     const [myCadastrados, setMyCadastrados] = useState([]);
-    const [show, setShow] = useState(false);
     const [allAluno, setAllAluno] = useState([]);
+
+    const [show, setShow] = useState(false);
+    const [showModalEdit, setShowModalEdit] = useState(false);
     const [modalId, setModalId] = useState();
+    const [modalEditId, setModalEditId] = useState();
 
     // const [usuario, setUsuario] = useState(null);
  
@@ -111,12 +115,41 @@ export default function GerenciarEncontro(){
         }
      
       }
+      const [myCadastroCurrentPage, setMyCadastroCurrentPage] = useState(1);
+  const [allAlunoCurrentPage, setAllAlunoCurrentPage] = useState(1);
+
+  const myCadastroTotalPages = Math.ceil(myCadastrados.length / ITEMS_PER_PAGE);
+  const allAlunoTotalPages = Math.ceil(allAluno.length / ITEMS_PER_PAGE);
+
+  const myCadastroPaginatedData = myCadastrados.slice(
+    (myCadastroCurrentPage - 1) * ITEMS_PER_PAGE,
+    myCadastroCurrentPage * ITEMS_PER_PAGE
+  );
+
+  const allAlunoPaginatedData = allAluno.slice(
+    (allAlunoCurrentPage - 1) * ITEMS_PER_PAGE,
+    allAlunoCurrentPage * ITEMS_PER_PAGE
+  );
+
+  const handleMyCadastroPageChange = (page) => {
+    setMyCadastroCurrentPage(page);
+  };
+
+  const handleAllAlunoPageChange = (page) => {
+    setAllAlunoCurrentPage(page);
+  };
+      
       //função necessaria para abrir a lista de acordo com id_encontro corretamente
       const mostrarModal = (id_encontro) => {
         setShow(true);
         setModalId(id_encontro);
       }
-    
+      const mostrarModalEditarEncontro = (id_encontro) => {
+        console.log('clicou')
+        setShowModalEdit(true);
+        setModalEditId(id_encontro);
+      }
+     
     return (
         <>
     
@@ -138,7 +171,7 @@ export default function GerenciarEncontro(){
               className="me-2 w-25"
               aria-label="Search"
             />
-            <Button variant="outline-success">Search</Button>
+            <Button variant="outline-success">Buscar</Button>
           </Form>
                     <Table striped bordered hover responsive="sm">
             <thead>
@@ -156,7 +189,7 @@ export default function GerenciarEncontro(){
             </thead>
             <tbody>
             { myCadastrados && myCadastrados.length > 0 ? (
-                    myCadastrados.map((encontro, index) => (
+                    myCadastroPaginatedData.map((encontro, index) => (
                       <tr key={index}>
                         <td>{index + 1}</td>
                         <td>{encontro.titulo_encontro}</td>
@@ -167,13 +200,12 @@ export default function GerenciarEncontro(){
                         <td>
                     
                     <button className="modal-button" onClick={() => mostrarModal(encontro.id_encontro)}><i className="bi bi-person-check-fill"></i></button>
-                    <ModalListAluno encontroId={modalId} show={show} setModalOpen={() => setShow(false)} userProf={user.id_professora}>
-                  </ModalListAluno>
+                    <ModalListAluno encontroId={modalId} show={show} setModalOpen={() => setShow(false)} userProf={user.id_professora}></ModalListAluno>
                     {/* {encontro.id_encontro} */}
                     </td>
                     <td>
-                        <a className="modal-button" href="/homeProfessor/editarEncontro"> <i className="bi bi-pencil-square" ></i></a>
-                        {/* /gerenciarEncontro/editarEncontro */}
+                        <button className="modal-button" onClick={() => mostrarModalEditarEncontro(encontro.id_encontro)}> <i className="bi bi-pencil-square" ></i></button>
+                        <ModalEditar idEncontro={modalEditId} showEdit={showModalEdit} userProf={user.id_professora} modalOpen={() => setShowModalEdit(false)}/>
                     </td>
                     <td>
                       <button className="modal-button" onClick={() => excluirEncontro(encontro.id_encontro)}> <i className="bi bi-trash-fill" ></i></button>
@@ -189,7 +221,10 @@ export default function GerenciarEncontro(){
             </tbody>
 
         </Table>
-                   
+        <Paginacao  
+        currentPage={myCadastroCurrentPage}
+        totalPages={myCadastroTotalPages}
+        onPageChange={handleMyCadastroPageChange} />
 
 
                     </Tab>
@@ -201,7 +236,7 @@ export default function GerenciarEncontro(){
               className="me-2 w-25"
               aria-label="Search"
             />
-            <Button variant="outline-success">Search</Button>
+            <Button variant="outline-success">Buscar</Button>
           </Form>
                     <Table striped bordered hover responsive="sm">
             <thead>
@@ -214,7 +249,7 @@ export default function GerenciarEncontro(){
                 </tr>
             </thead>
             <tbody>
-            {allAluno.map((aluno, index) => (
+            {allAlunoPaginatedData.map((aluno, index) => (
                       <tr key={index}>
                         <td>{index + 1}</td>
                         <td>{aluno.nome_aluna}</td>
@@ -225,6 +260,10 @@ export default function GerenciarEncontro(){
             </tbody>
 
         </Table>
+        <Paginacao
+        currentPage={allAlunoCurrentPage}
+        totalPages={allAlunoTotalPages}
+        onPageChange={handleAllAlunoPageChange} />
                     </Tab>
                     
                     </Tabs>

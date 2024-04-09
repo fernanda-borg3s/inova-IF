@@ -10,6 +10,7 @@ const encontrosRouter = Router();
 encontrosRouter.post("/create", encontrosController.createEncontro);
 encontrosRouter.get("/encontrosCadastrados/:id", encontrosController.getAllEncontrosCadastrados);
 encontrosRouter.get("/myCadastros/:id", encontrosController.getMyCadastros);
+encontrosRouter.get("/editCadastro/:id/:id_encontro", encontrosController.getEditCadastro);
 // encontrosRouter.get("/encontrosCadastrados/:id", encontrosController.getEncontroCadastradoById);
 encontrosRouter.put("/updateEncontro/:id", encontrosController.updateEncontroById);
 encontrosRouter.delete("/deleteEncontro/:id", encontrosController.deleteEncontroById);

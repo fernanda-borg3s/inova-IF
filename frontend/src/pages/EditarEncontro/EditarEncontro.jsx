@@ -3,6 +3,7 @@ import Row from "react-bootstrap/esm/Row";
 // import Col from "react-bootstrap/esm/Col";
 // import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { useEffect } from "react";
 // import './CadastrarEncontro.css'
 // import { useEffect, useState, useContext} from 'react';
 // import { UserContext } from '../../Context/UserContext.jsx'
@@ -33,7 +34,7 @@ export default function EditarEncontro(){
               
 
 
-            {/* <Form onSubmit={CadastrarEncontro}>
+            <Form onSubmit={CadastrarEncontro}>
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="titulo-encontro">
                         <Form.Label>Título do Encontro</Form.Label>
@@ -207,7 +208,7 @@ export default function EditarEncontro(){
                     <Button variant="primary" type="submit" style={{backgroundColor:'#004d2a', border:'none'}} className="w-100 p-2 mb-2 mt-3">Cadastrar Encontro</Button>
                     <Button variant="primary" type="reset" style={{backgroundColor:'#870303', border:'none'}} className="w-100 p-2">Limpar</Button>
             </Form>
-            */}
+           
                
             </Row>
         

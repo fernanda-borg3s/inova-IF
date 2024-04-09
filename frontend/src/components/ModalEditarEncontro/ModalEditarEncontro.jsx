@@ -1,22 +1,20 @@
-import Container from "react-bootstrap/esm/Container";
-import Row from "react-bootstrap/esm/Row";
-import Col from "react-bootstrap/esm/Col";
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import './CadastrarEncontro.css'
-import { useEffect, useState, useContext} from 'react';
-import { UserContext } from '../../Context/UserContext.jsx'
-import moment from 'moment';
-
 import axios from 'axios';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+// import InputGroup from 'react-bootstrap/InputGroup';
+import Row from 'react-bootstrap/esm/Row';
+import Table from 'react-bootstrap/Table';
+import Col from 'react-bootstrap/Col';
 import { toast } from "react-toastify";
 
+import { useEffect, useState} from 'react';
 const baseURL = 'http://localhost:3000'
-export default function CadastrarEncontro(){
-    const [selectedComponente, setSelectedComponente] = useState('17');
-    const [objAprendizagem, setObjAprendizagem] = useState([]);
-  const { user } = useContext(UserContext);
 
+export default function ModalEditarEncontro({ showEdit, modalOpen, idEncontro, userProf}){
+
+    
+    const [editEncontro, setEditEncontro] = useState([])
     const [inputs, setInputs] = useState({
         titulo_encontro:"",
          descricao_encontro:"",
@@ -31,15 +29,31 @@ export default function CadastrarEncontro(){
          id_area_conhecimento:"", 
          id_objetivos_aprendizagem:""
       });
-    
-     
-    
-   
-        //  console.log(selectedComponente);
+
+    useEffect(() => {
+       
+      const fetchUpdateEncontro = async () => {
+        try {
+          const response = await axios.get(`${baseURL}/encontro/editEncontro/${userProf}/${idEncontro}`); 
+          console.log(response);
+         setEditEncontro(response.data.data);
+
+        } catch (error) {
+          console.error('Erro ao recuperar dados:', error);
+          toast.error('Ocorreu um erro ao conectar com servidor, tente novamente mais tarde')
+
+         }
+      }
+      fetchUpdateEncontro();
+      }, [idEncontro]);
+
+      const [Componente, setComponente] = useState(editEncontro.id_componente_curricular);
+
+
       useEffect(() => {
         const fetchEncontros = async () => {
           try {
-            const response = await axios.get(`${baseURL}/aprendizagem/getObjetivo/${selectedComponente}`);
+            const response = await axios.get(`${baseURL}/aprendizagem/getObjetivo/${Componente}`);
             setObjAprendizagem(response.data.data);
            
            
@@ -50,7 +64,7 @@ export default function CadastrarEncontro(){
         };
         
         fetchEncontros();
-      }, [selectedComponente]); 
+      }, [Componente]); 
       const onChange = e => {
         if(e.target.name == 'num_vagas'){
             setInputs({ ...inputs, [e.target.name]: Number(e.target.value) });
@@ -59,125 +73,59 @@ export default function CadastrarEncontro(){
         setInputs({ ...inputs, [e.target.name]: e.target.value });
 
       }
-      const CadastrarEncontro = async e => {
+      const UpdateEncontro = async e => {
         e.preventDefault();
-        console.log("form is send");
-        console.log(inputs);
-      
         const {
-          titulo_encontro,
-          descricao_encontro,
-          criterios_avaliacao,
-          sala,
-          num_vagas,
-          data_inicio,
-          hora_inicio,
-          hora_fim,
-          repete,
-          disponivel_inscricao,
-          id_area_conhecimento,
-          id_objetivos_aprendizagem
-        } = inputs;
-        const id_professora = user.id_professora;
-        const id_componente_curricular = selectedComponente;
-      
-        const createEncontro = async (dataInicial) => {
+            titulo_encontro,
+            descricao_encontro,
+            criterios_avaliacao,
+            sala,
+            num_vagas,
+            data_inicio,
+            hora_inicio,
+            hora_fim,
+            repete,
+            disponivel_inscricao,
+            id_area_conhecimento,
+            id_objetivos_aprendizagem
+          } = inputs;
+          const id_componente_curricular = Componente;
           try {
-            const body = {
-              titulo_encontro,
-              descricao_encontro,
-              criterios_avaliacao,
-              sala,
-              num_vagas,
-              data_inicio: dataInicial,
-              hora_inicio,
-              data_fim,
-              hora_fim,
-              repete,
-              disponivel_inscricao,
-              id_professora,
-              id_area_conhecimento,
-              id_componente_curricular,
-              id_objetivos_aprendizagem
-            };
-      
-            const response = await axios.post(`${baseURL}/encontros/create`, body, {
+            const body = { titulo_encontro, descricao_encontro, criterios_avaliacao, sala, num_vagas, data_inicio, hora_inicio, hora_fim, repete, disponivel_inscricao, id_area_conhecimento, id_componente_curricular, id_objetivos_aprendizagem };
+        
+            const response = await axios.post(`${baseURL}/encontros/updateEncontro/${idEncontro}`, body, {
               headers: {
                 "Content-type": "application/json"
               }
-            });
-      
-            toast.success("Encontro criado com sucesso!");
-      
+            }
+            );
+          
+              toast.success("Atualização realizada com sucesso!")
+             
           } catch (err) {
             console.error(err.message);
           }
-        }
-      
-        if (repete === '1') {
-          let dataInicial = data_inicio;
-          for (let repeteEncontro = 0; repeteEncontro <= 2; repeteEncontro++) {
-            await createEncontro(dataInicial);
-            const novaData = moment(dataInicial, 'YYYY-MM-DD').add(7, 'days').format('YYYY-MM-DD');
-            dataInicial = novaData;
-          }
-          return;
-        }
-      
-        if (repete === '2') {
-          let dataInicial = data_inicio;
-          for (let repeteEncontro = 0; repeteEncontro <= 3; repeteEncontro++) {
-            await createEncontro(dataInicial);
-            const novaData = moment(dataInicial, 'YYYY-MM-DD').add(7, 'days').format('YYYY-MM-DD');
-            dataInicial = novaData;
-          }
-          return;
-        }
-      
-        if (repete === '3') {
-          let dataInicial = data_inicio;
-          for (let repeteEncontro = 0; repeteEncontro <= 4; repeteEncontro++) {
-            await createEncontro(dataInicial);
-            const novaData = moment(dataInicial, 'YYYY-MM-DD').add(7, 'days').format('YYYY-MM-DD');
-            dataInicial = novaData;
-          }
-          return;
-        }
-      
-        await createEncontro(data_inicio);
-      }
-   
-      function formatText(textString){
-        if (textString.length > 110) {
-            const truncatedText = textString.slice(0, 110);
-            return truncatedText + "...";
-          }
-          return textString;
+
       }
     return(
         <>
-        <Container className="mt-5">
-        <div className="d-flex flex-row justify-content-between align-items-center mb-3">
-            <div>
-            <h1 className="h1-homeProfessor">Cadastrar novo Encontro</h1>
-            </div>
-            <div className="mt-2 d-flex flex-row">
-                <Button variant="success" className="me-3 p-1 btn-homeProfessor" href="/homeProfessor/gerenciarEncontro">
-                Gerenciar meus Encontros
-                </Button>
-                <Button variant="success" className=" btn-homeProfessor p-1 " href="/homeProfessor/EncontrosCadastrados">
-                Todos Encontros
-                </Button>
-            </div>
-                    
-                
-                </div>
-           
-            <Row className="container-cadastrar">
-              
-                <h2 className="h2-cadastro">Cadastrar Encontro</h2>
-
-            <Form onSubmit={CadastrarEncontro}>
+    
+        <Modal    
+    
+      size="lg"
+   
+      backdrop="static"
+        keyboard={false}
+      show={showEdit} 
+      >
+        <Modal.Header >
+            <Modal.Title>Editar Encontro</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <h6></h6>
+        
+        <div>
+        <Form onSubmit={UpdateEncontro}>
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="titulo-encontro">
                         <Form.Label>Título do Encontro</Form.Label>
@@ -185,16 +133,19 @@ export default function CadastrarEncontro(){
                     </Form.Group>
                     <Form.Group as={Col} controlId="disponivel_inscricao" className="inscricao">
                         <Form.Label>Disponível para Inscrição?</Form.Label>
-                        <Form.Select required name="disponivel_inscricao"  onChange={onChange}>
+                        <Form.Select required name="disponivel_inscricao" value={editEncontro.disponivel_inscricao} onChange={onChange}>
                         <option value="">Selecione</option>
 
                             <option value="Sim">Sim</option>
                             <option value="Não">Não</option>
                         </Form.Select>
                     </Form.Group>
-                    <Form.Group as={Col} controlId="id_area_conhecimento">
+                    
+                    
+                </Row>
+                <Row className="mb-3"><Form.Group as={Col} controlId="id_area_conhecimento">
                       <Form.Label>Area de conhecimento:</Form.Label>
-                        <Form.Select required name="id_area_conhecimento" onChange={onChange}>
+                        <Form.Select required name="id_area_conhecimento" value={editEncontro.id_area_conhecimento} onChange={onChange}>
 
                             <option value="1">Base de Autonomia e Emancipação</option>
                             <option value="2">Ciências da Natureza e suas Tecnologias </option>
@@ -214,9 +165,9 @@ export default function CadastrarEncontro(){
                     <Form.Group as={Col} controlId="id_componente_curricular">
                       <Form.Label>Componente Curricular:</Form.Label>
                         <Form.Select 
-                        
-                        value={selectedComponente}
-                        onChange={e => setSelectedComponente(e.target.value)}>
+                        value={Componente}
+                    
+                        onChange={e => setComponente(e.target.value)}>
                             <option value="17">Não se aplica</option>
                             <option value="1">Artes Cênicas</option>
                             <option value="2">Artes Visuais</option>
@@ -236,37 +187,53 @@ export default function CadastrarEncontro(){
                             <option value="16">Sociologia</option>
                         </Form.Select>
                     </Form.Group>
-                </Row>
+                    </Row>
          
                 <Row className="mb-3">   
                     <Form.Group as={Col} controlId="criterios_avaliacao">
                       <Form.Label>Critérios de Avaliação:</Form.Label>
-                        <Form.Control as="textarea" placeholder="Critérios de Avaliação" name="criterios_avaliacao" onChange={onChange} />
+                        <Form.Control as="textarea" placeholder="Critérios de Avaliação" 
+                        name="criterios_avaliacao" 
+                        value={editEncontro.criterios_avaliacao} 
+                        onChange={onChange} />
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="descricao">                     
                       <Form.Label>Descrição do Encontro:</Form.Label>
-                       <Form.Control as="textarea" placeholder="Descrição" name="descricao_encontro" onChange={onChange} />
+                       <Form.Control as="textarea" placeholder="Descrição" name="descricao_encontro" 
+                       value={editEncontro.descricao_encontro}
+                       onChange={onChange} />
                     </Form.Group>
                 </Row>
                    
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="data-inicio">
                       <Form.Label>Data de início:</Form.Label>
-                        <Form.Control type="date" required name="data_inicio" onChange={onChange}/>
+                        <Form.Control type="date" required 
+                        name="data_inicio"
+                        value={editEncontro.data_inicio} 
+                        onChange={onChange}/>
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="data-fim">
                         <Form.Label>Hora de Início:</Form.Label>
-                        <Form.Control type="time" required name="hora_inicio"  onChange={onChange}/>
+                        <Form.Control type="time" required 
+                        name="hora_inicio" 
+                        value={editEncontro.hora_inicio} 
+                        onChange={onChange}/>
                     </Form.Group>
                     <Form.Group as={Col} controlId="data-fim">
                         <Form.Label>Hora de Fim:</Form.Label>
-                        <Form.Control required type="time" name="hora_fim"  onChange={onChange} />
+                        <Form.Control required type="time" 
+                        name="hora_fim"  
+                        value={editEncontro.hora_fim}
+                        onChange={onChange} />
                     </Form.Group>
                     <Form.Group as={Col} controlId="repete" >
                         <Form.Label>Encontro se repete?</Form.Label>
-                        <Form.Select name="repete" required onChange={onChange}>
+                        <Form.Select name="repete" required 
+                        value={editEncontro.repete}
+                        onChange={onChange}>
                         <option value="">Selecione</option>
                         <option value="Não">Não</option>
                             <option value="1"> + Uma vez</option>
@@ -281,7 +248,7 @@ export default function CadastrarEncontro(){
                 <Form.Group as={Col} controlId="tipo_objetivo">
                         <Form.Label>Tipo de Objetivo:</Form.Label>
                      <Form.Select >
-                            <option value="">Selecione</option>
+                            {/* <option value="">Selecione</option>
                             {objAprendizagem.filter((aprendizagem, index, self) => 
                             index === self.findIndex((t) => t.tipo_objetivo === aprendizagem.tipo_objetivo)
                             )
@@ -290,20 +257,22 @@ export default function CadastrarEncontro(){
                                 {aprendizagem.tipo_objetivo}
                             </option>
                             ))
-                        }
+                        } */}
                           </Form.Select> 
                     </Form.Group>  
                  
                     <Form.Group as={Col} controlId="objetivos_aprendizagem" className="">
                         {/* vem do banco */}
                         <Form.Label>Objetivo De aprendizagem:</Form.Label>
-                        <Form.Select required name='id_objetivos_aprendizagem' onChange={onChange}>
+                        <Form.Select required name='id_objetivos_aprendizagem' 
+                        value={editEncontro.id_objetivos_aprendizagem}
+                        onChange={onChange}>
                             {/* <option value=''>Não se aplica</option> */}
-                    {objAprendizagem.map((aprendizagem) => (
+                    {/* {objAprendizagem.map((aprendizagem) => (
                         <option key={aprendizagem.id_objetivos_aprendizagem} value={aprendizagem.id_objetivos_aprendizagem} >
                             {formatText(aprendizagem.objetivos_aprendizagem)}
                         </option>
-                        ))}
+                        ))} */}
                           </Form.Select>
                    
                     </Form.Group>
@@ -312,7 +281,7 @@ export default function CadastrarEncontro(){
                         <Form.Label>Etapa:</Form.Label>
                         <Form.Select >
                             {/* <option>Não se aplica</option> */}
-                            {objAprendizagem.map((aprendizagem) => {
+                            {/* {objAprendizagem.map((aprendizagem) => {
                                 if (aprendizagem.etapa === null) {
                                     return null;
                                 } else {
@@ -325,9 +294,10 @@ export default function CadastrarEncontro(){
                             })}
                             {objAprendizagem.filter(aprendizagem => aprendizagem.etapa === null).length > 0 &&
                                 <option>Não se aplica</option>
-                            }
+                            } */}
                             </Form.Select>
                     </Form.Group>
+               
                     
                 </Row>             
                     
@@ -336,25 +306,34 @@ export default function CadastrarEncontro(){
                 <Row className="mb-3 mt-3">
                     <Form.Group as={Col} controlId="num_vagas" >
                         <Form.Label>Número de vagas:</Form.Label>
-                        <Form.Control type="number" required  name="num_vagas"  onChange={onChange}/>
+                        <Form.Control type="number" required  
+                        name="num_vagas" 
+                        value={editEncontro.num_vagas} 
+                        onChange={onChange}/>
                     </Form.Group>
 
                     <Form.Group as={Col}  controlId="sala-encontro" >
                         <Form.Label>Sala:</Form.Label>
-                        <Form.Control type="text" required placeholder="Digite a sala e o bloco"  name="sala" onChange={onChange} />
+                        <Form.Control type="text" required placeholder="Digite a sala e o bloco" 
+                        name="sala" 
+                        value={editEncontro.sala} 
+                        onChange={onChange} />
                     </Form.Group>
                     
                 </Row>
                 
 
-                    <Button variant="primary" type="submit" style={{backgroundColor:'#004d2a', border:'none'}} className="w-100 p-2 mb-2 mt-3">Cadastrar Encontro</Button>
-                    <Button variant="primary" type="reset" style={{backgroundColor:'#870303', border:'none'}} className="w-100 p-2">Limpar</Button>
+                    <Button variant="primary" type="submit" style={{backgroundColor:'#004d2a', border:'none'}} className="w-100 p-2 mb-2 mt-3">Salvar Alterações</Button>
+                
+                    <Button variant="primary" type="reset" style={{backgroundColor:'#870303', border:'none'}} className="w-100 p-2" onClick={modalOpen}>Cancelar</Button>
             </Form>
-           
-               
-            </Row>
-        
-        </Container>
+        </div>
+       
+
+        </Modal.Body>
+      
+  </Modal>
+      
         </>
     )
 }

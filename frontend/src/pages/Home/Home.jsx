@@ -22,7 +22,7 @@ export default function Home(){
       
         <Container className="box-container mt-5" >
           <Welcome>
-            <p>Inscreva-se nos encontros disponibilizados pelas professoras no botão abaixo.</p>
+            <p className='p-welcome'>Inscreva-se nos encontros disponibilizados pelas professoras no botão abaixo.</p>
             <Button className="mt-2 btn-home p-3" variant="success" href='/home/encontrosDisponivel'>Fazer inscrição no encontro</Button>
           </Welcome>
             <h2 className="mt-5 mb-4 h2-home">Agenda para Hoje</h2>
