@@ -37,7 +37,7 @@ export default function EncontrosDisponivel(){
     const fetchEncontrosDisponivel = async () => {
       try {
         const response = await axios.get(`${baseURL}/encontros/encontrosDisponivel/${user.id_aluna}`);
-        // console.log(response);
+        console.log(response);
 
         setEncontrosDisponivel(response.data.data);
   
@@ -64,6 +64,7 @@ export default function EncontrosDisponivel(){
           "Content-type": "application/json"
         }
       });
+      console.log(response);
       toast.success("Inscrição realizada com sucesso!")
       const updatedEncontrosDisponiveis = encontrosDisponivel.filter(item => item.id_encontro !== id_encontro);
                 setEncontrosDisponivel(updatedEncontrosDisponiveis);
@@ -90,16 +91,19 @@ export default function EncontrosDisponivel(){
                  <Card.Title className='py-1 '>{encontro.titulo_encontro}</Card.Title>
                  <ListGroup className="list-group-flush">
                  <ListGroup.Item className="px-1">Componente Curricular: <span>{encontro.componente_curricular}</span></ListGroup.Item>
-                   <ListGroup.Item className="px-1">Data: <span>{formatDate(encontro.data_inicio)}</span> até <span>{formatDate(encontro.data_fim)}</span></ListGroup.Item>
+                   <ListGroup.Item className="px-1">Data: <span>{formatDate(encontro.data_inicio)}</span></ListGroup.Item>
                    <ListGroup.Item className="px-1">Horários: <span>{encontro.hora_inicio}</span> até <span>{encontro.hora_fim}</span></ListGroup.Item>
                    <ListGroup.Item className="px-1">Sala: <span>{encontro.sala}</span></ListGroup.Item>
                    <ListGroup.Item className="px-1">Professora(o): <span>{encontro.nome_professora}</span></ListGroup.Item>
 
                  </ListGroup>
-                   <Button variant="success" className='mt-3 px-4' style={{fontWeight:'bold'}} onClick={() => inscreverEncontro(encontro.id_encontro)}>
+                
+               </Card.Body>
+               <Card.Footer className="card-footer-disponivel"> 
+               <Button variant="success" className='' style={{fontWeight:'bold'}} onClick={() => inscreverEncontro(encontro.id_encontro)}>
                    Inscrever
                  </Button>
-               </Card.Body>
+              </Card.Footer>
              </Card>
            </Col>
          ))}

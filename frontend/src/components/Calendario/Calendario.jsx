@@ -19,7 +19,7 @@ export default function Calendario(events){
             initialView='dayGridMonth'
             weekends={false}
             events={events}
-            allDay={true}
+       
             eventContent={renderEventContent}
        
             locale={brLocales}
@@ -66,7 +66,7 @@ function renderEventContent(eventInfo) {
     return (
       <>
       <OverlayTrigger trigger="click" placement="bottom" overlay={popover} >
-        <h6 style={{ background }}>{event.title}</h6>
+        <h6 style={{ background, color:'#fff' }}>{event.title}</h6>
       </OverlayTrigger>
       
       </>

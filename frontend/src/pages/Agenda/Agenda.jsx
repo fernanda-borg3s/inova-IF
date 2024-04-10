@@ -53,11 +53,13 @@ export default function Agenda(){
           return {
             title: event.titulo_encontro,
             start: event.data_inicio,
-            end: event.data_fim,
+            end:event.data_inicio,
+            display: 'background',
+        
             backgroundColor: '#02a059',
             borderColor:'#02a059',
+           
             dataInicio: event.data_inicio,
-            dataFim: event.data_fim,
             horaInicio:event.hora_inicio,
             horaFim:event.hora_fim,
             componente:event.componente_curricular,

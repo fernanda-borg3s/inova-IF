@@ -31,6 +31,21 @@ padding-left: 9px;
     padding-right: 130px;
    
 } */
+.avatar-perfil{
+    width: 55px;
+    height: 40px;
+    border: 2px solid #fff;
+    border-radius: 25px;
+    background-color: transparent;
+      margin-left:15px;
+      padding: 5px 2px;
+      
+}
+.avatar-perfil:hover, .avatar-perfil:active, .btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active{
+    background-color: #017501;
+    border-color: #fff;
+}
+
 .nav-link, .nav-link.show, .nav-link:hover, .nav-link:focus{
     color: #ffff;
 }
@@ -46,8 +61,8 @@ padding-left: 9px;
     border: 1px solid #fff;
 }
 .user-img{
-    width: 25px;
-    margin-left:10px;
+    width: 20px;
+    
     
 }
 .bi-box-arrow-right{

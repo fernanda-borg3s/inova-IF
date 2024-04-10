@@ -36,7 +36,7 @@ const userController ={
             }
             //tem que ser dessa maenira pra voltar resultados dentro de um objeto
 
-             res.status(500).json({msg: "Não há encontros cadastrados"})
+             res.json({msg: "Não há encontros cadastrados"})
         } catch (error) {
             console.error(err.message);
             res.status(500).send("Server error");

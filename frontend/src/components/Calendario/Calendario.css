@@ -7,6 +7,9 @@ a {
     color: #fff;
     text-transform: capitalize;
 }
+.fc .fc-bg-event{
+    opacity: 1;
+}
  h6{
     text-transform: capitalize;
 }

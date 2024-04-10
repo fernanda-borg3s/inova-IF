@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 
 const baseURL = 'http://localhost:3000'
 export default function CadastrarEncontro(){
-    const [selectedComponente, setSelectedComponente] = useState('17');
+    const [selectedComponente, setSelectedComponente] = useState('1');
     const [objAprendizagem, setObjAprendizagem] = useState([]);
   const { user } = useContext(UserContext);
 
@@ -29,7 +29,7 @@ export default function CadastrarEncontro(){
          repete: "",   
          disponivel_inscricao:"",
          id_area_conhecimento:"", 
-         id_objetivos_aprendizagem:""
+         id_tipoObj_objApren_etapa:""
       });
     
      
@@ -42,7 +42,7 @@ export default function CadastrarEncontro(){
             const response = await axios.get(`${baseURL}/aprendizagem/getObjetivo/${selectedComponente}`);
             setObjAprendizagem(response.data.data);
            
-           
+           console.log(objAprendizagem)
       
           } catch (error) {
             console.error('Erro ao recuperar dados:', error);
@@ -52,17 +52,18 @@ export default function CadastrarEncontro(){
         fetchEncontros();
       }, [selectedComponente]); 
       const onChange = e => {
+
         if(e.target.name == 'num_vagas'){
             setInputs({ ...inputs, [e.target.name]: Number(e.target.value) });
             // console.log([e.target.name])
         }
         setInputs({ ...inputs, [e.target.name]: e.target.value });
-
+  
       }
       const CadastrarEncontro = async e => {
         e.preventDefault();
         console.log("form is send");
-        console.log(inputs);
+      
       
         const {
           titulo_encontro,
@@ -75,12 +76,12 @@ export default function CadastrarEncontro(){
           hora_fim,
           repete,
           disponivel_inscricao,
-          id_area_conhecimento,
-          id_objetivos_aprendizagem
+          id_componente_curricular,
+          id_tipoObj_objApren_etapa
         } = inputs;
         const id_professora = user.id_professora;
-        const id_componente_curricular = selectedComponente;
-      
+        const id_area_conhecimento = selectedComponente;
+        console.log(inputs);
         const createEncontro = async (dataInicial) => {
           try {
             const body = {
@@ -91,14 +92,13 @@ export default function CadastrarEncontro(){
               num_vagas,
               data_inicio: dataInicial,
               hora_inicio,
-              data_fim,
               hora_fim,
               repete,
               disponivel_inscricao,
               id_professora,
               id_area_conhecimento,
               id_componente_curricular,
-              id_objetivos_aprendizagem
+              id_tipoObj_objApren_etapa
             };
       
             const response = await axios.post(`${baseURL}/encontros/create`, body, {
@@ -116,7 +116,7 @@ export default function CadastrarEncontro(){
       
         if (repete === '1') {
           let dataInicial = data_inicio;
-          for (let repeteEncontro = 0; repeteEncontro <= 2; repeteEncontro++) {
+          for (let repeteEncontro = 0; repeteEncontro <= 1; repeteEncontro++) {
             await createEncontro(dataInicial);
             const novaData = moment(dataInicial, 'YYYY-MM-DD').add(7, 'days').format('YYYY-MM-DD');
             dataInicial = novaData;
@@ -126,7 +126,7 @@ export default function CadastrarEncontro(){
       
         if (repete === '2') {
           let dataInicial = data_inicio;
-          for (let repeteEncontro = 0; repeteEncontro <= 3; repeteEncontro++) {
+          for (let repeteEncontro = 0; repeteEncontro <= 2; repeteEncontro++) {
             await createEncontro(dataInicial);
             const novaData = moment(dataInicial, 'YYYY-MM-DD').add(7, 'days').format('YYYY-MM-DD');
             dataInicial = novaData;
@@ -136,7 +136,7 @@ export default function CadastrarEncontro(){
       
         if (repete === '3') {
           let dataInicial = data_inicio;
-          for (let repeteEncontro = 0; repeteEncontro <= 4; repeteEncontro++) {
+          for (let repeteEncontro = 0; repeteEncontro <= 3; repeteEncontro++) {
             await createEncontro(dataInicial);
             const novaData = moment(dataInicial, 'YYYY-MM-DD').add(7, 'days').format('YYYY-MM-DD');
             dataInicial = novaData;
@@ -194,7 +194,10 @@ export default function CadastrarEncontro(){
                     </Form.Group>
                     <Form.Group as={Col} controlId="id_area_conhecimento">
                       <Form.Label>Area de conhecimento:</Form.Label>
-                        <Form.Select required name="id_area_conhecimento" onChange={onChange}>
+                        <Form.Select required name="id_area_conhecimento" 
+                         value={selectedComponente}
+                         onChange={e => setSelectedComponente(e.target.value)}
+                       >
 
                             <option value="1">Base de Autonomia e Emancipação</option>
                             <option value="2">Ciências da Natureza e suas Tecnologias </option>
@@ -213,10 +216,9 @@ export default function CadastrarEncontro(){
                     </Form.Group>
                     <Form.Group as={Col} controlId="id_componente_curricular">
                       <Form.Label>Componente Curricular:</Form.Label>
-                        <Form.Select 
-                        
-                        value={selectedComponente}
-                        onChange={e => setSelectedComponente(e.target.value)}>
+                        <Form.Select name="id_componente_curricular"
+                         onChange={onChange}
+                       >
                             <option value="17">Não se aplica</option>
                             <option value="1">Artes Cênicas</option>
                             <option value="2">Artes Visuais</option>
@@ -283,11 +285,11 @@ export default function CadastrarEncontro(){
                      <Form.Select >
                             <option value="">Selecione</option>
                             {objAprendizagem.filter((aprendizagem, index, self) => 
-                            index === self.findIndex((t) => t.tipo_objetivo === aprendizagem.tipo_objetivo)
+                            index === self.findIndex((t) => t.tipo_objetivos === aprendizagem.tipo_objetivos)
                             )
                             .map((aprendizagem) => (
-                            <option key={aprendizagem.id_objetivos_aprendizagem} value={aprendizagem.tipo_objetivo}>
-                                {aprendizagem.tipo_objetivo}
+                            <option key={aprendizagem.id_tipo_objetivos} value={aprendizagem.id_tipo_objetivos}>
+                                {aprendizagem.tipo_objetivos}
                             </option>
                             ))
                         }
@@ -297,35 +299,33 @@ export default function CadastrarEncontro(){
                     <Form.Group as={Col} controlId="objetivos_aprendizagem" className="">
                         {/* vem do banco */}
                         <Form.Label>Objetivo De aprendizagem:</Form.Label>
-                        <Form.Select required name='id_objetivos_aprendizagem' onChange={onChange}>
-                            {/* <option value=''>Não se aplica</option> */}
-                    {objAprendizagem.map((aprendizagem) => (
-                        <option key={aprendizagem.id_objetivos_aprendizagem} value={aprendizagem.id_objetivos_aprendizagem} >
-                            {formatText(aprendizagem.objetivos_aprendizagem)}
+                        <Form.Select required name='id_tipoObj_objApren_etapa' onChange={onChange}>
+                        <option value=''>Selecione</option>
+                        {objAprendizagem.filter((aprendizagem, index, self) => 
+                        index === self.findIndex((t) => t.objetivo_aprendizagem === aprendizagem.objetivo_aprendizagem)
+                        )
+                      .map((aprendizagem) => (
+                        <option key={aprendizagem.id_objetivo_aprendizagem} value={aprendizagem.id_tipoobj_objapren_etapa}>
+                            {formatText(aprendizagem.objetivo_aprendizagem)}
                         </option>
                         ))}
-                          </Form.Select>
+                      </Form.Select>
                    
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="etapa">
                         <Form.Label>Etapa:</Form.Label>
                         <Form.Select >
-                            {/* <option>Não se aplica</option> */}
-                            {objAprendizagem.map((aprendizagem) => {
-                                if (aprendizagem.etapa === null) {
-                                    return null;
-                                } else {
-                                    return (
-                                        <option key={aprendizagem.id_objetivos_aprendizagem} value={aprendizagem.id_objetivos_aprendizagem}>
-                                            {formatText(aprendizagem.etapa)}
-                                        </option>
-                                    );
-                                }
-                            })}
-                            {objAprendizagem.filter(aprendizagem => aprendizagem.etapa === null).length > 0 &&
-                                <option>Não se aplica</option>
-                            }
+                            <option value="">Selecione</option>
+                             {objAprendizagem.filter((aprendizagem, index, self) => 
+                            index === self.findIndex((t) => t.etapa === aprendizagem.etapa)
+                            )
+                            .map((aprendizagem) => (
+                            <option key={aprendizagem.id_etapa} value={aprendizagem.id_etapa}>
+                                {formatText(aprendizagem.etapa)}
+                            </option>
+                            ))
+                        }
                             </Form.Select>
                     </Form.Group>
                     

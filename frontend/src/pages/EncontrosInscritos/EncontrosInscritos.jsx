@@ -93,18 +93,21 @@ export default function EncontrosInscritos(){
                <ListGroup className="list-group-flush">
                <ListGroup.Item className="px-1">Componente Curricular: <span>{inscrito.componente_curricular}</span></ListGroup.Item>
                <ListGroup.Item className="px-1">Descrição: <span>{inscrito.descricao_encontro}</span></ListGroup.Item>
-                 <ListGroup.Item className="px-1">Data: <span>{formatDate(inscrito.data_inicio)}</span> até <span>{formatDate(inscrito.data_fim)}</span></ListGroup.Item>
+                 <ListGroup.Item className="px-1">Data: <span>{formatDate(inscrito.data_inicio)}</span></ListGroup.Item>
                  <ListGroup.Item className="px-1">Horários: <span>{inscrito.hora_inicio}</span> até <span>{inscrito.hora_fim}</span></ListGroup.Item>
                  <ListGroup.Item className="px-1">Sala: <span>{inscrito.sala}</span></ListGroup.Item>
                  <ListGroup.Item className="px-1">Professora(o): <span>{inscrito.nome_professora}</span></ListGroup.Item>
 
                </ListGroup>
-               <Button variant="danger" className='mt-3' onClick={() => removerInscricao(inscrito.id_inscricao)}>
+              
+             
+             </Card.Body>
+             <Card.Footer className="card-footer-inscrito"> 
+             <Button variant="danger" className='' onClick={() => removerInscricao(inscrito.id_inscricao)}>
                  <i className="bi bi-trash p-1"></i>
                  Cancelar Inscrição
                </Button>
-             
-             </Card.Body>
+              </Card.Footer>
            </Card>
          </Col>
        ))}

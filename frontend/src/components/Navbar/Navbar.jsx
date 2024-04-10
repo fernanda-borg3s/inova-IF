@@ -96,27 +96,33 @@ export function NavbarC(){
                  
                   </NavDropdown>
                   {user ? (
-                     <Dropdown className='dropdown-left'>
-                     <Dropdown.Toggle  id="dropdown-basic" style={{backgroundColor:'transparent', border:'none',fontWeight:'bold'}} className='p-2'>
-                     {user.nome_aluna}
+                  
+                  <Dropdown className='dropdown-left'>
+                     <Dropdown.Toggle  id="dropdown-basic" className='avatar-perfil'>
                        <img src={UserLogo} alt="raposa" className="user-img" ></img>
                      </Dropdown.Toggle>
                      <Dropdown.Menu>
+                     <Dropdown.Header>Nome:</Dropdown.Header>
+                       <Dropdown.Item href="#" disabled>{user.nome_aluna}</Dropdown.Item>
                        <Dropdown.Header>Matrícula:</Dropdown.Header>
                        <Dropdown.Item href="#" disabled>{user.mat_aluna}</Dropdown.Item>
                        <Dropdown.Divider />
                        <Dropdown.Item onClick={signout} ><i className="bi bi-box-arrow-right"></i>Sair</Dropdown.Item>
                      </Dropdown.Menu>
                    </Dropdown>
+             
+                 
 
-                  ) : (<Dropdown className='dropdown-left'>
-                  <Dropdown.Toggle  id="dropdown-basic" style={{backgroundColor:'transparent', border:'none',fontWeight:'bold'}} className='p-2'>
+                  ) : (
+                  <Dropdown className='dropdown-left'>
+                  <Dropdown.Toggle  id="dropdown-basic" className='avatar-perfil'>
                     <img src={UserLogo} alt="raposa" className="user-img" ></img>
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     <Dropdown.Item onClick={signout} ><i className="bi bi-box-arrow-right"></i>Sair</Dropdown.Item>
                   </Dropdown.Menu>
-                </Dropdown>)}
+                </Dropdown>
+              )}
                  
                 </Nav>
                 

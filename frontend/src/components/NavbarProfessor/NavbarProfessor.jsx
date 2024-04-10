@@ -66,22 +66,32 @@ export function NavbarProfessor(){
                 <Nav className="justify-content-end flex-grow-1 navLink">
                   <Nav.Link href="/homeProfessor">Início</Nav.Link>
                   <Nav.Link href="/homeProfessor/gerenciarEncontro">Meus Encontros</Nav.Link>
-                  <Nav.Link href="/homeProfessor/EncontrosCadastrados" className='me-5'>Encontros Cadastrados</Nav.Link>
+                  <Nav.Link href="/homeProfessor/EncontrosCadastrados" className='me-2'>Encontros Cadastrados</Nav.Link>
                   {user ? (
-                  <Dropdown className='dropdown-left pt-1'>
-                    <Dropdown.Toggle  id="dropdown-basic" style={{backgroundColor:'transparent', border:'none', fontWeight:'bold'}} className='p-1'>
-                    {user.nome_professora}
+                  <Dropdown className='dropdown-left'>
+                    <Dropdown.Toggle  id="dropdown-basic" className='avatar-perfil'>
                       <img src={UserLogo} alt="raposa" className="user-img" ></img>
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu>
+                    <Dropdown.Header>Nome:</Dropdown.Header>
+                       <Dropdown.Item href="#" disabled> {user.nome_professora}</Dropdown.Item>
                       <Dropdown.Header>Matrícula:</Dropdown.Header>
                       <Dropdown.Item href="#" disabled>{user.mat_professora}</Dropdown.Item>
                       <Dropdown.Divider />
                       <Dropdown.Item onClick={signout} ><i className="bi bi-box-arrow-right"></i>Sair</Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>
-                 ) : (<span>ERROR</span>)}
+                 ) : (
+                  <Dropdown className='dropdown-left'>
+                  <Dropdown.Toggle  id="dropdown-basic" className='avatar-perfil'>
+                    <img src={UserLogo} alt="raposa" className="user-img" ></img>
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item onClick={signout} ><i className="bi bi-box-arrow-right"></i>Sair</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+                 )}
                 </Nav>
                 
               </Offcanvas.Body>

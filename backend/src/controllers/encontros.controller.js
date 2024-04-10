@@ -17,9 +17,9 @@ const encontrosController = {
                 id_professora, 
                 id_area_conhecimento, 
                 id_componente_curricular, 
-                id_objetivos_aprendizagem} = req.body
+                id_tipoObj_objApren_etapa } = req.body
 
-            const sql = 'INSERT INTO encontro(titulo_encontro, descricao_encontro, criterios_avaliacao, sala, num_vagas, data_inicio, hora_inicio, hora_fim, repete, disponivel_inscricao, id_professora, id_area_conhecimento, id_componente_curricular, id_objetivos_aprendizagem) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *'
+            const sql = 'INSERT INTO encontro(titulo_encontro, descricao_encontro, criterios_avaliacao, sala, num_vagas, data_inicio, hora_inicio, hora_fim, repete, disponivel_inscricao, id_professora, id_area_conhecimento, id_componente_curricular, id_tipoObj_objApren_etapa) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *'
  
             const { rows } = await postgre.query(sql, [
                 titulo_encontro, 
@@ -35,7 +35,7 @@ const encontrosController = {
                 id_professora, 
                 id_area_conhecimento, 
                 id_componente_curricular, 
-                id_objetivos_aprendizagem])
+                id_tipoObj_objApren_etapa ])
 
             res.json({msg: "Encontro criado com sucesso", data: rows[0]})
 
@@ -48,7 +48,7 @@ const encontrosController = {
         try {
           
            
-            const { rows } = await postgre.query("SELECT E.id_encontro, E.titulo_encontro, E.descricao_encontro, E.criterios_avaliacao, E.sala, E.num_vagas, E.data_inicio, E.hora_inicio, E.data_fim, E.hora_fim, P.nome_professora, AC.area, CC.componente_curricular, OA.tipo_objetivo, OA.objetivos_aprendizagem, OA.etapa FROM encontro E INNER JOIN professora AS P ON E.id_professora = P.id_professora INNER JOIN area_conhecimento AS AC ON E.id_area_conhecimento = AC.id_area_conhecimento INNER JOIN componente_curricular AS CC ON E.id_componente_curricular = CC.id_componente_curricular INNER JOIN objetivos_aprendizagem AS OA ON E.id_objetivos_aprendizagem = OA.id_objetivos_aprendizagem WHERE E.disponivel_inscricao = 'Sim' AND NOT EXISTS (SELECT 1 FROM inscricao AS I WHERE E.id_encontro = I.id_encontro AND I.id_aluna = $1)", [req.params.id])
+            const { rows } = await postgre.query("SELECT E.id_encontro, E.titulo_encontro, E.descricao_encontro, E.criterios_avaliacao, E.sala, E.num_vagas, E.data_inicio, E.hora_inicio, E.hora_fim, P.nome_professora, AC.area, CC.componente_curricular, TOBJ.tipo_objetivos, OA.objetivo_aprendizagem, ET.etapa FROM encontro E INNER JOIN professora AS P ON E.id_professora = P.id_professora INNER JOIN area_conhecimento AS AC ON E.id_area_conhecimento = AC.id_area_conhecimento INNER JOIN componente_curricular AS CC ON E.id_componente_curricular = CC.id_componente_curricular INNER JOIN tipo_objAprend_etapa AS TAE ON E.id_tipoObj_objApren_etapa = TAE.id_tipoObj_objApren_etapa INNER JOIN tipos_objetivos AS TOBJ ON TAE.id_tipo_objetivos = TOBJ.id_tipo_objetivos INNER JOIN objetivos_aprendizagem AS OA ON TAE.id_objetivo_aprendizagem = OA.id_objetivo_aprendizagem INNER JOIN etapa AS ET ON TAE.id_etapa = ET.id_etapa WHERE E.disponivel_inscricao = 'Sim' AND NOT EXISTS (SELECT 1 FROM inscricao AS I WHERE E.id_encontro = I.id_encontro AND I.id_aluna = $1)", [req.params.id])
             if (rows[0]) {
                 return res.json({msg: "OK", data: rows})
             }
@@ -61,7 +61,7 @@ const encontrosController = {
     getAllEncontrosCadastrados: async(req, res) => {
         try {
              //TEM QUE CORRIGIR ESSE SQL 
-            const { rows } = await postgre.query("SELECT E.id_encontro, E.titulo_encontro, E.descricao_encontro, E.criterios_avaliacao, E.sala, E.num_vagas, E.data_inicio, E.hora_inicio, E.data_fim, E.hora_fim, E.num_repeticoes, E.repete, E.disponivel_inscricao, E.data_cadastro, P.mat_professora, P.nome_professora, P.email, AC.area, AC.area_sigla, CC.componente_curricular, OA.tipo_objetivo, OA.objetivos_aprendizagem, OA.etapa FROM encontro E INNER JOIN professora P ON E.id_professora = P.id_professora INNER JOIN area_conhecimento AS AC ON E.id_area_conhecimento = AC.id_area_conhecimento INNER JOIN componente_curricular AS CC ON E.id_componente_curricular = CC.id_componente_curricular INNER JOIN objetivos_aprendizagem AS OA ON E.id_objetivos_aprendizagem = OA.id_objetivos_aprendizagem WHERE P.id_professora <> $1", [req.params.id])
+            const { rows } = await postgre.query("SELECT E.id_encontro, E.titulo_encontro, E.descricao_encontro, E.criterios_avaliacao, E.sala, E.num_vagas, E.data_inicio, E.hora_inicio, E.hora_fim, E.repete, E.disponivel_inscricao, E.data_cadastro, P.mat_professora, P.nome_professora, P.email, AC.area, AC.area_sigla, CC.componente_curricular, TOBJ.tipo_objetivos, OA.objetivo_aprendizagem, ET.etapa FROM encontro E INNER JOIN professora P ON E.id_professora = P.id_professora INNER JOIN area_conhecimento AS AC ON E.id_area_conhecimento = AC.id_area_conhecimento INNER JOIN componente_curricular AS CC ON E.id_componente_curricular = CC.id_componente_curricular INNER JOIN tipo_objAprend_etapa AS TAE ON E.id_tipoObj_objApren_etapa = TAE.id_tipoObj_objApren_etapa INNER JOIN tipos_objetivos AS TOBJ ON TAE.id_tipo_objetivos = TOBJ.id_tipo_objetivos INNER JOIN objetivos_aprendizagem AS OA ON TAE.id_objetivo_aprendizagem = OA.id_objetivo_aprendizagem INNER JOIN etapa AS ET ON TAE.id_etapa = ET.id_etapa WHERE P.id_professora <> $1", [req.params.id])
             if (rows[0]) {
                 return res.json({msg: "OK", data: rows})
             }
@@ -74,7 +74,7 @@ const encontrosController = {
      //PROFESSOR
     getMyCadastros: async(req, res) => {
         try {
-            const { rows } = await postgre.query("SELECT E.id_encontro, E.titulo_encontro, E.descricao_encontro, E.criterios_avaliacao, E.sala, E.num_vagas, E.data_inicio, E.hora_inicio, E.data_fim, E.hora_fim, E.num_repeticoes, E.repete, E.disponivel_inscricao, E.data_cadastro, AC.area, AC.area_sigla, CC.componente_curricular, OA.tipo_objetivo, OA.objetivos_aprendizagem, OA.etapa FROM encontro E INNER JOIN professora P ON E.id_professora = P.id_professora INNER JOIN area_conhecimento AS AC ON E.id_area_conhecimento = AC.id_area_conhecimento INNER JOIN componente_curricular AS CC ON E.id_componente_curricular = CC.id_componente_curricular INNER JOIN objetivos_aprendizagem AS OA ON E.id_objetivos_aprendizagem = OA.id_objetivos_aprendizagem WHERE P.id_professora = $1", [req.params.id])
+            const { rows } = await postgre.query("SELECT E.id_encontro, E.titulo_encontro, E.descricao_encontro, E.criterios_avaliacao, E.sala, E.num_vagas, E.data_inicio, E.hora_inicio, E.hora_fim, E.repete, E.disponivel_inscricao, E.data_cadastro, AC.area, AC.area_sigla, CC.componente_curricular, TOBJ.tipo_objetivos, OA.objetivo_aprendizagem, ET.etapa FROM encontro E INNER JOIN professora P ON E.id_professora = P.id_professora INNER JOIN area_conhecimento AS AC ON E.id_area_conhecimento = AC.id_area_conhecimento INNER JOIN componente_curricular AS CC ON E.id_componente_curricular = CC.id_componente_curricular INNER JOIN tipo_objAprend_etapa AS TAE ON E.id_tipoObj_objApren_etapa = TAE.id_tipoObj_objApren_etapa INNER JOIN tipos_objetivos AS TOBJ ON TAE.id_tipo_objetivos = TOBJ.id_tipo_objetivos INNER JOIN objetivos_aprendizagem AS OA ON TAE.id_objetivo_aprendizagem = OA.id_objetivo_aprendizagem INNER JOIN etapa AS ET ON TAE.id_etapa = ET.id_etapa WHERE P.id_professora = $1", [req.params.id])
             if (rows[0]) {
                 return res.json({msg: "OK", data: rows})
             }
@@ -86,7 +86,7 @@ const encontrosController = {
     },
     getEditCadastro: async(req, res) => {
         try {
-            const { rows } = await postgre.query("SELECT E.id_encontro, E.titulo_encontro, E.descricao_encontro, E.criterios_avaliacao, E.sala, E.num_vagas, E.data_inicio, E.hora_inicio, E.data_fim, E.hora_fim, E.num_repeticoes, E.repete, E.disponivel_inscricao, E.data_cadastro, AC.area, AC.area_sigla, CC.componente_curricular, OA.tipo_objetivo, OA.objetivos_aprendizagem, OA.etapa FROM encontro E INNER JOIN professora P ON E.id_professora = P.id_professora INNER JOIN area_conhecimento AS AC ON E.id_area_conhecimento = AC.id_area_conhecimento INNER JOIN componente_curricular AS CC ON E.id_componente_curricular = CC.id_componente_curricular INNER JOIN objetivos_aprendizagem AS OA ON E.id_objetivos_aprendizagem = OA.id_objetivos_aprendizagem WHERE P.id_professora = $1 AND E.id_encontro = $2", [req.params.id, req.params.id_encontro])
+            const { rows } = await postgre.query("SELECT E.id_encontro, E.titulo_encontro, E.descricao_encontro, E.criterios_avaliacao, E.sala, E.num_vagas, E.data_inicio, E.hora_inicio, E.hora_fim, E.repete, E.disponivel_inscricao, E.data_cadastro, AC.id_area_conhecimento, AC.area, AC.area_sigla, CC.componente_curricular, TOBJ.tipo_objetivos, OA.objetivo_aprendizagem, ET.etapa FROM encontro E INNER JOIN professora P ON E.id_professora = P.id_professora INNER JOIN area_conhecimento AS AC ON E.id_area_conhecimento = AC.id_area_conhecimento INNER JOIN componente_curricular AS CC ON E.id_componente_curricular = CC.id_componente_curricular INNER JOIN tipo_objAprend_etapa AS TAE ON E.id_tipoObj_objApren_etapa = TAE.id_tipoObj_objApren_etapa INNER JOIN tipos_objetivos AS TOBJ ON TAE.id_tipo_objetivos = TOBJ.id_tipo_objetivos INNER JOIN objetivos_aprendizagem AS OA ON TAE.id_objetivo_aprendizagem = OA.id_objetivo_aprendizagem INNER JOIN etapa AS ET ON TAE.id_etapa = ET.id_etapa WHERE P.id_professora = $1 AND E.id_encontro = $2", [req.params.id, req.params.id_encontro])
             if (rows[0]) {
                 return res.json({msg: "OK", data: rows})
             }
@@ -99,11 +99,11 @@ const encontrosController = {
     
     updateEncontroById: async(req, res) => {
         try {
-            const {titulo_encontro, descricao_encontro, criterios_avaliacao, sala, num_vagas, data_inicio, hora_inicio, data_fim, hora_fim, repete, num_repeticoes, disponivel_inscricao, id_area_conhecimento, id_componente_curricular, id_objetivos_aprendizagem} = req.body
+            const {titulo_encontro, descricao_encontro, criterios_avaliacao, sala, num_vagas, data_inicio, hora_inicio, hora_fim, disponivel_inscricao, id_area_conhecimento, id_componente_curricular, id_tipoObj_objApren_etapa} = req.body
 
-            const sql = 'UPDATE encontro SET titulo_encontro = $1, descricao_encontro = $2, criterios_avaliacao = $3, sala = $4, num_vagas = $5, data_inicio = $6, hora_inicio = $7, hora_fim = $8, repete = $9, disponivel_inscricao = $10, id_area_conhecimento = $11, id_componente_curricular = $12, id_objetivos_aprendizagem = $13 WHERE id_encontro = $14 RETURNING *'
+            const sql = 'UPDATE encontro SET titulo_encontro = $1, descricao_encontro = $2, criterios_avaliacao = $3, sala = $4, num_vagas = $5, data_inicio = $6, hora_inicio = $7, hora_fim = $8, disponivel_inscricao = $9, id_area_conhecimento = $10, id_componente_curricular = $11, id_tipoObj_objApren_etapa = $12 WHERE id_encontro = $13 RETURNING *'
 
-            const { rows } = await postgre.query(sql, [titulo_encontro, descricao_encontro, criterios_avaliacao, sala, num_vagas, data_inicio, hora_inicio, hora_fim, repete, disponivel_inscricao, id_area_conhecimento, id_componente_curricular, id_objetivos_aprendizagem, req.params.id])
+            const { rows } = await postgre.query(sql, [titulo_encontro, descricao_encontro, criterios_avaliacao, sala, num_vagas, data_inicio, hora_inicio, hora_fim, disponivel_inscricao, id_area_conhecimento, id_componente_curricular, id_tipoObj_objApren_etapa, req.params.id])
 
             return res.json({msg: "OK", data: rows[0]})
 

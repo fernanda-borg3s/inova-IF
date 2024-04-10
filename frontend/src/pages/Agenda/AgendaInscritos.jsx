@@ -1,8 +1,8 @@
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Calendario from '../../components/Calendario/Calendario';
-import Footer from '../../components/Footer/Footer';
+import Calendario from '../../components/Calendario/Calendario.jsx';
+import Footer from '../../components/Footer/Footer.jsx';
 import { userLogged } from "../../Service/userservice.js";
 import { useEffect, useState, useContext} from 'react';
 import { toast } from 'react-toastify';
@@ -53,12 +53,11 @@ export default function AgendaInscritos(){
           return {
             title: event.titulo_encontro,
             start: event.data_inicio,
-            end: event.data_fim,
-           
+            end: event.data_inicio,  
+            display: 'background',     
             backgroundColor: '#4d0043',
             borderColor:'#4d0043',
             dataInicio: event.data_inicio,
-            dataFim: event.data_fim,
             horaInicio:event.hora_inicio,
             horaFim:event.hora_fim,
             componente:event.componente_curricular,

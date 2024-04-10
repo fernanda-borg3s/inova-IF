@@ -118,15 +118,15 @@ export default function GerenciarEncontro(){
       const [myCadastroCurrentPage, setMyCadastroCurrentPage] = useState(1);
   const [allAlunoCurrentPage, setAllAlunoCurrentPage] = useState(1);
 
-  const myCadastroTotalPages = Math.ceil(myCadastrados.length / ITEMS_PER_PAGE);
-  const allAlunoTotalPages = Math.ceil(allAluno.length / ITEMS_PER_PAGE);
+  const myCadastroTotalPages = Math.ceil(myCadastrados?.length / ITEMS_PER_PAGE);
+  const allAlunoTotalPages = Math.ceil(allAluno?.length / ITEMS_PER_PAGE);
 
-  const myCadastroPaginatedData = myCadastrados.slice(
+  const myCadastroPaginatedData = myCadastrados?.slice(
     (myCadastroCurrentPage - 1) * ITEMS_PER_PAGE,
     myCadastroCurrentPage * ITEMS_PER_PAGE
   );
 
-  const allAlunoPaginatedData = allAluno.slice(
+  const allAlunoPaginatedData = allAluno?.slice(
     (allAlunoCurrentPage - 1) * ITEMS_PER_PAGE,
     allAlunoCurrentPage * ITEMS_PER_PAGE
   );
@@ -144,10 +144,25 @@ export default function GerenciarEncontro(){
         setShow(true);
         setModalId(id_encontro);
       }
-      const mostrarModalEditarEncontro = (id_encontro) => {
+    const [editEncontro, setEditEncontro] = useState([])
+
+      const mostrarModalEditarEncontro = async (id_encontro, userProf) => {
         console.log('clicou')
         setShowModalEdit(true);
-        setModalEditId(id_encontro);
+        // setModalEditId(id_encontro);
+        try {
+          const response = await axios.get(`${baseURL}/encontros/editCadastro/${userProf}/${id_encontro}`); 
+          console.log(response);
+         setEditEncontro(response.data.data);
+         console.log(editEncontro);
+
+
+        } catch (error) {
+          console.error('Erro ao recuperar dados:', error);
+          toast.error('Ocorreu um erro ao conectar com servidor, tente novamente mais tarde')
+
+         }
+      
       }
      
     return (
@@ -181,7 +196,7 @@ export default function GerenciarEncontro(){
                 <th>Descrição</th>
                 <th>Sala</th>
                 <th>Data Início</th>
-                <th>Data Fim</th>
+                <th>Se repete?</th>
                 <th>Lista de inscritos</th>
                 <th>Editar</th>
                 <th>Excluir</th>
@@ -196,7 +211,8 @@ export default function GerenciarEncontro(){
                         <td>{encontro.descricao_encontro}</td>
                         <td>{encontro.sala}</td>
                         <td>{formatDate(encontro.data_inicio)}</td>
-                        <td>{formatDate(encontro.data_fim)}</td>
+                        <td>{encontro.repete}</td>
+                        
                         <td>
                     
                     <button className="modal-button" onClick={() => mostrarModal(encontro.id_encontro)}><i className="bi bi-person-check-fill"></i></button>
@@ -204,8 +220,10 @@ export default function GerenciarEncontro(){
                     {/* {encontro.id_encontro} */}
                     </td>
                     <td>
-                        <button className="modal-button" onClick={() => mostrarModalEditarEncontro(encontro.id_encontro)}> <i className="bi bi-pencil-square" ></i></button>
-                        <ModalEditar idEncontro={modalEditId} showEdit={showModalEdit} userProf={user.id_professora} modalOpen={() => setShowModalEdit(false)}/>
+                        {/* <a className="modal-button" href='homeProfessor/editarEncontro'> <i className="bi bi-pencil-square" ></i></a> */}
+                        
+                        <button className="modal-button" onClick={() => mostrarModalEditarEncontro(encontro.id_encontro, user.id_professora)}> <i className="bi bi-pencil-square" ></i></button>
+                        <ModalEditar dataEncontro={editEncontro} showEdit={showModalEdit} modalOpen={() => setShowModalEdit(false)}/>
                     </td>
                     <td>
                       <button className="modal-button" onClick={() => excluirEncontro(encontro.id_encontro)}> <i className="bi bi-trash-fill" ></i></button>

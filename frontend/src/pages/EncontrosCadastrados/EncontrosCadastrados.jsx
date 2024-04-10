@@ -67,7 +67,7 @@ export default function EncontrosCadastrados(){
                <ListGroup.Item className="px-1">Área de conhecimento: <span>{encontro.area}({encontro.area_sigla})</span> </ListGroup.Item>
                <ListGroup.Item className="px-1">Componente Curricular: <span>{encontro.componente_curricular}</span></ListGroup.Item>
                <ListGroup.Item className="px-1">Descrição: <span>{encontro.descricao_encontro}</span></ListGroup.Item>
-                 <ListGroup.Item className="px-1">Data: <span>{formatDate(encontro.data_inicio)}</span> até <span>{formatDate(encontro.data_fim)}</span></ListGroup.Item>
+                 <ListGroup.Item className="px-1">Data: <span>{formatDate(encontro.data_inicio)}</span></ListGroup.Item>
                  <ListGroup.Item className="px-1">Horários: <span>{encontro.hora_inicio}</span> até <span>{encontro.hora_fim}</span></ListGroup.Item>
                  <ListGroup.Item className="px-1">Sala: <span>{encontro.sala}</span></ListGroup.Item>
                  <ListGroup.Item className="px-1">Professora(o): <span>{encontro.nome_professora}</span></ListGroup.Item>
