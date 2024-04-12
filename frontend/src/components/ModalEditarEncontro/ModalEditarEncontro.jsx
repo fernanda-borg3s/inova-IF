@@ -341,10 +341,7 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}
                     </Form.Group>
                     
                 </Row>
-                
-
                     <Button variant="primary" type="submit" style={{backgroundColor:'#004d2a', border:'none'}} className="w-100 p-2 mb-2 mt-3">Salvar Alterações</Button>
-                
                     <Button variant="primary" type="reset" style={{backgroundColor:'#870303', border:'none'}} className="w-100 p-2" onClick={modalOpen}>Cancelar</Button>
             </Form>
         </div>

@@ -1,14 +1,10 @@
 
 import './GerenciarEncontro.css'
-// import TableCadastro from '../../components/TableCadastro/TableCadastro';
 import Container from "react-bootstrap/esm/Container";
 import { useEffect, useState, useContext} from 'react';
 import { toast } from 'react-toastify';
 import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 import Footer from "../../components/Footer/Footer";
 import Paginacao from '../../components/Paginacao/Paginacao.jsx';
 import { UserContext } from '../../Context/UserContext.jsx'
@@ -16,7 +12,6 @@ import axios from 'axios';
 import { userLoggedProf } from "../../Service/userservice.js";
 import ModalListAluno from '../../components/ModalListAlunos/ListAlunos.jsx';
 import Table from 'react-bootstrap/Table';
-
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import ModalEditar from '../../components/ModalEditarEncontro/ModalEditarEncontro.jsx';
@@ -39,18 +34,11 @@ export default function GerenciarEncontro(){
   
     const [myCadastrados, setMyCadastrados] = useState([]);
     const [allAluno, setAllAluno] = useState([]);
-
     const [show, setShow] = useState(false);
     const [showModalEdit, setShowModalEdit] = useState(false);
     const [modalId, setModalId] = useState();
-    const [modalEditId, setModalEditId] = useState();
-
-    // const [usuario, setUsuario] = useState(null);
- 
-    // const [fetchingData, setFetchingData] = useState(true);
     const [key, setKey] = useState('meuCadastros');
    
-    // console.log(myCadastrados) 
     useEffect(() => {
       let isSubscribed = true;
       const fetchMyCadastros = async () => {
@@ -58,7 +46,7 @@ export default function GerenciarEncontro(){
           const response = await axios.get(`${baseURL}/encontros/myCadastros/${user.id_professora}`);
           if (isSubscribed) {
             setMyCadastrados(response.data.data);
-            // console.log(myCadastrados);
+
           }
 
         } catch (error) {
