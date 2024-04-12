@@ -49,7 +49,7 @@ export function NavbarProfessor(){
 {['sm'].map((expand) => (
         <Navbar key={expand} expand={expand} className="bg-body-tertiary mb-3 navStyle" >
           <Container >
-            <Navbar.Brand href="#">  
+            <Navbar.Brand href="/homeProfessor">  
             <div className="logo-inova">
                 <img src={logo} alt="Logo do inova if"/>
             </div>
@@ -65,6 +65,7 @@ export function NavbarProfessor(){
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 navLink">
                   <Nav.Link href="/homeProfessor">Início</Nav.Link>
+                  <Nav.Link href="/homeProfessor/cadastrarEncontro">Novo Encontro</Nav.Link>
                   <Nav.Link href="/homeProfessor/gerenciarEncontro">Meus Encontros</Nav.Link>
                   <Nav.Link href="/homeProfessor/EncontrosCadastrados" className='me-2'>Encontros Cadastrados</Nav.Link>
                   {user ? (

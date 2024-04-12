@@ -14,7 +14,10 @@ import { toast } from "react-toastify";
 const baseURL = 'http://localhost:3000'
 export default function CadastrarEncontro(){
     const [selectedComponente, setSelectedComponente] = useState('1');
+    //inicia com 410 (não se aplica para area BASE) para nao fazer um get sem o objetivo excolhido
+    const [selectedObjAprendizagem, setSelectedObjAprendizagem] = useState('410');
     const [objAprendizagem, setObjAprendizagem] = useState([]);
+    const [objAprenEtapa, setObjAprenEtapa] = useState([]);
   const { user } = useContext(UserContext);
 
     const [inputs, setInputs] = useState({
@@ -37,7 +40,7 @@ export default function CadastrarEncontro(){
    
         //  console.log(selectedComponente);
       useEffect(() => {
-        const fetchEncontros = async () => {
+        const fetchObjAprendizagem = async () => {
           try {
             const response = await axios.get(`${baseURL}/aprendizagem/getObjetivo/${selectedComponente}`);
             setObjAprendizagem(response.data.data);
@@ -49,17 +52,32 @@ export default function CadastrarEncontro(){
           }
         };
         
-        fetchEncontros();
+        fetchObjAprendizagem();
       }, [selectedComponente]); 
-      const onChange = e => {
 
+      useEffect(() => {
+        const fetchEtapa = async () => {
+          try {
+            const response = await axios.get(`${baseURL}/aprendizagem/getEtapa/${selectedObjAprendizagem}`);
+            setObjAprenEtapa(response.data.data);
+           
+           console.log(objAprenEtapa)
+      
+          } catch (error) {
+            console.error('Erro ao recuperar dados:', error);
+          }
+        };
+        
+        fetchEtapa();
+      }, [selectedObjAprendizagem]); 
+
+      const onChange = e => {
         if(e.target.name == 'num_vagas'){
             setInputs({ ...inputs, [e.target.name]: Number(e.target.value) });
-            // console.log([e.target.name])
         }
         setInputs({ ...inputs, [e.target.name]: e.target.value });
-  
       }
+     
       const CadastrarEncontro = async e => {
         e.preventDefault();
         console.log("form is send");
@@ -283,7 +301,7 @@ export default function CadastrarEncontro(){
                 <Form.Group as={Col} controlId="tipo_objetivo">
                         <Form.Label>Tipo de Objetivo:</Form.Label>
                      <Form.Select >
-                            <option value="">Selecione</option>
+                            <option value=''>Selecione</option>
                             {objAprendizagem.filter((aprendizagem, index, self) => 
                             index === self.findIndex((t) => t.tipo_objetivos === aprendizagem.tipo_objetivos)
                             )
@@ -299,14 +317,17 @@ export default function CadastrarEncontro(){
                     <Form.Group as={Col} controlId="objetivos_aprendizagem" className="">
                         {/* vem do banco */}
                         <Form.Label>Objetivo De aprendizagem:</Form.Label>
-                        <Form.Select required name='id_tipoObj_objApren_etapa' onChange={onChange}>
+                        <Form.Select required 
+                        value={selectedObjAprendizagem}
+                        onChange={e => setSelectedObjAprendizagem(e.target.value)}>
                         <option value=''>Selecione</option>
+                      
                         {objAprendizagem.filter((aprendizagem, index, self) => 
                         index === self.findIndex((t) => t.objetivo_aprendizagem === aprendizagem.objetivo_aprendizagem)
                         )
                       .map((aprendizagem) => (
-                        <option key={aprendizagem.id_objetivo_aprendizagem} value={aprendizagem.id_tipoobj_objapren_etapa}>
-                            {formatText(aprendizagem.objetivo_aprendizagem)}
+                        <option key={aprendizagem.id_objetivo_aprendizagem} value={aprendizagem.id_objetivo_aprendizagem}>
+                          {formatText(aprendizagem.objetivo_aprendizagem)}
                         </option>
                         ))}
                       </Form.Select>
@@ -315,14 +336,14 @@ export default function CadastrarEncontro(){
 
                     <Form.Group as={Col} controlId="etapa">
                         <Form.Label>Etapa:</Form.Label>
-                        <Form.Select >
+                        <Form.Select 
+                        name='id_tipoObj_objApren_etapa'
+                        onChange={onChange}
+                        >
                             <option value="">Selecione</option>
-                             {objAprendizagem.filter((aprendizagem, index, self) => 
-                            index === self.findIndex((t) => t.etapa === aprendizagem.etapa)
-                            )
-                            .map((aprendizagem) => (
-                            <option key={aprendizagem.id_etapa} value={aprendizagem.id_etapa}>
-                                {formatText(aprendizagem.etapa)}
+                             {objAprenEtapa?.map((etapa) => (
+                            <option key={etapa.id_etapa} value={etapa.id_tipoobj_objapren_etapa}>
+                                {formatText(etapa.etapa)}
                             </option>
                             ))
                         }

@@ -3,14 +3,9 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import brLocales from '@fullcalendar/core/locales/pt-br';
 import './Calendario.css'
 import Popover from 'react-bootstrap/Popover';
-import Button from 'react-bootstrap/Button';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
-// const events = [
-//     { title: 'Meeting', start: new Date() }
-//   ]
-//   let calendar = new Calendar(calendarEl, {
-//     locale: brLocales
-//   });
+
+
 export default function Calendario(events){
     return(
         <>
@@ -19,9 +14,7 @@ export default function Calendario(events){
             initialView='dayGridMonth'
             weekends={false}
             events={events}
-       
             eventContent={renderEventContent}
-       
             locale={brLocales}
             headerToolbar={{
                 start: "today prev,next",
@@ -31,19 +24,17 @@ export default function Calendario(events){
             }}
             
           />
-            
-      
         </>
     )
 }
 
-// a custom render function
+//formatar data do americano para brasileiro
 function formatDate(dateString) {
   const datePart = dateString.substring(0, 10);
   const parts = datePart.split("-")
   return `${parts[2]}-${parts[1]}-${parts[0]}`;
 }
-
+//funçao que renderiza o conteúdo na tela
 function renderEventContent(eventInfo) {
   const event = eventInfo.event;
   const extendedProps = event.extendedProps;
@@ -66,7 +57,7 @@ function renderEventContent(eventInfo) {
     return (
       <>
       <OverlayTrigger trigger="click" placement="bottom" overlay={popover} >
-        <h6 style={{ background, color:'#fff' }}>{event.title}</h6>
+        <h6 style={{ background, color:'#fff' }}>{event.title}<i className="bi bi-caret-down-fill px-1"></i></h6>
       </OverlayTrigger>
       
       </>

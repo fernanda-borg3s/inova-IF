@@ -223,7 +223,7 @@ export default function GerenciarEncontro(){
                         {/* <a className="modal-button" href='homeProfessor/editarEncontro'> <i className="bi bi-pencil-square" ></i></a> */}
                         
                         <button className="modal-button" onClick={() => mostrarModalEditarEncontro(encontro.id_encontro, user.id_professora)}> <i className="bi bi-pencil-square" ></i></button>
-                        <ModalEditar dataEncontro={editEncontro} showEdit={showModalEdit} modalOpen={() => setShowModalEdit(false)}/>
+                        <ModalEditar dataEncontro={editEncontro[0]} showEdit={showModalEdit} modalOpen={() => setShowModalEdit(false)}/>
                     </td>
                     <td>
                       <button className="modal-button" onClick={() => excluirEncontro(encontro.id_encontro)}> <i className="bi bi-trash-fill" ></i></button>

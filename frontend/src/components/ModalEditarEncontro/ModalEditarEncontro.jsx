@@ -12,67 +12,87 @@ import { useEffect, useState} from 'react';
 const baseURL = 'http://localhost:3000'
 
 export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}){
+      const [inputs, setInputs] = useState({
+        titulo_encontro:"",
+        descricao_encontro:"",
+        criterios_avaliacao:"",
+        sala:"",
+        num_vagas:"",
+        data_inicio:"",
+        hora_inicio:"",
+        hora_fim:"", 
+        repete: "",   
+        disponivel_inscricao:"",
+        id_area_conhecimento:"", 
+        id_tipoObj_objApren_etapa:""
+      });
 
     
     // const [editEncontro, setEditEncontro] = useState([])
     const [objAprendizagem, setObjAprendizagem] = useState([]);
-    const [inputs, setInputs] = useState({
-        titulo_encontro:"",
-         descricao_encontro:"",
-         criterios_avaliacao:"",
-         sala:"",
-         num_vagas:"",
-         data_inicio:"",
-         hora_inicio:"",
-         hora_fim:"",  
-         disponivel_inscricao:"",
-         id_area_conhecimento:"", 
-         id_tipoObj_objApren_etapa:""
-      });
+    const [objAprenEtapa, setObjAprenEtapa] = useState([]);
 
-    // useEffect(() => {
-       
-    //   const fetchUpdateEncontro = async () => {
-    //     try {
-    //       const response = await axios.get(`${baseURL}/encontros/editCadastro/${userProf}/${idEncontro}`); 
-    //       console.log(response);
-    //      setEditEncontro(response.data.data);
-    //      console.log(editEncontro);
+    useEffect(() => {
+      if (dataEncontro) {
+        setInputs({
+          titulo_encontro: dataEncontro.titulo_encontro,
+          descricao_encontro: dataEncontro.descricao_encontro,
+          criterios_avaliacao: dataEncontro.criterios_avaliacao,
+          sala: dataEncontro.sala,
+          num_vagas: dataEncontro.num_vagas,
+          data_inicio: dataEncontro.data_inicio,
+          hora_inicio: dataEncontro.hora_inicio,
+          hora_fim: dataEncontro.hora_fim,
+          disponivel_inscricao: dataEncontro.disponivel_inscricao,
+          id_componente_curricular: dataEncontro.id_componente_curricular,
+          tipo_objetivos: dataEncontro.tipo_objetivos,
+          id_area_conhecimento: dataEncontro.id_area_conhecimento,
+          id_objetivo_aprendizagem: dataEncontro.id_objetivo_aprendizagem,
+          objetivo_aprendizagem: dataEncontro.objetivo_aprendizagem,
+          id_etapa: dataEncontro.id_etapa,
+          etapa: dataEncontro.etapa,
+          id_tipoObj_objApren_etapa: dataEncontro.id_tipoobj_objapren_etapa
+        });
+      }
+    }, [dataEncontro]);
 
 
-    //     } catch (error) {
-    //       console.error('Erro ao recuperar dados:', error);
-    //       toast.error('Ocorreu um erro ao conectar com servidor, tente novamente mais tarde')
-
-    //      }
-    //   }
-    //   fetchUpdateEncontro();
-    //   }, [idEncontro]);
-
-      const [componente, setComponente] = useState(dataEncontro.id_area_conhecimento);
+      const [componente, setComponente] = useState('1');
+      const [selectedObjAprendizagem, setSelectedObjAprendizagem] = useState('');
      
 
 
       useEffect(() => {
-        const fetchEncontros = async () => {
+        const fetchObjAprendizagem = async () => {
           try {
-            const response = await axios.get(`${baseURL}/aprendizagem/getObjetivo/${componente}`);
+            const response = await axios.get(`${baseURL}/aprendizagem/getObjetivo/${inputs.id_area_conhecimento}`);
             setObjAprendizagem(response.data.data);
-           
-           
       
           } catch (error) {
-            console.error('Erro ao recuperar dados:', error);
+            console.error("Ocorreu uma erro ao conectar no servidor.");
+          }
+        };
+        fetchObjAprendizagem();
+      }, [inputs.id_area_conhecimento, dataEncontro]); 
+
+      useEffect(() => {
+        const fetchEtapa = async () => {
+          try {
+            const response = await axios.get(`${baseURL}/aprendizagem/getEtapa/${selectedObjAprendizagem}`);
+            setObjAprenEtapa(response.data.data);
+           
+          //  console.log(objAprenEtapa)
+      
+          } catch (error) {
+            console.error("Ocorreu uma erro ao conectar no servidor.");
           }
         };
         
-        fetchEncontros();
-      }, [componente]); 
+        fetchEtapa();
+      }, [selectedObjAprendizagem]); 
+
       const onChange = e => {
-        if(e.target.name == 'num_vagas'){
-            setInputs({ ...inputs, [e.target.name]: Number(e.target.value) });
-            // console.log([e.target.name])
-        }
+       
         setInputs({ ...inputs, [e.target.name]: e.target.value });
 
       }
@@ -88,15 +108,12 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}
             hora_inicio,
             hora_fim,
             disponivel_inscricao,
-            id_componente_curricular,
-         
             id_tipoObj_objApren_etapa
           } = inputs;
-          const id_area_conhecimento = componente;
           try {
-            const body = { titulo_encontro, descricao_encontro, criterios_avaliacao, sala, num_vagas, data_inicio, hora_inicio, hora_fim, disponivel_inscricao, id_area_conhecimento, id_componente_curricular, id_tipoObj_objApren_etapa };
+            const body = { titulo_encontro, descricao_encontro, criterios_avaliacao, sala, num_vagas, data_inicio, hora_inicio, hora_fim, disponivel_inscricao, id_tipoObj_objApren_etapa };
         
-            const response = await axios.post(`${baseURL}/encontros/updateEncontro/${idEncontro}`, body, {
+            const response = await axios.post(`${baseURL}/encontros/updateEncontro/${dataEncontro.id_encontro}`, body, {
               headers: {
                 "Content-type": "application/json"
               }
@@ -106,9 +123,16 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}
               toast.success("Atualização realizada com sucesso!")
              
           } catch (err) {
-            console.error(err.message);
+            console.error("Ocorreu uma erro ao conectar no servidor.");
           }
 
+      }
+      function formatText(textString){
+        if (textString?.length > 110) {
+            const truncatedText = textString.slice(0, 110);
+            return truncatedText + "...";
+          }
+          return textString;
       }
     return(
         <>
@@ -132,11 +156,16 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}
                 <Row className="mb-3">
                     <Form.Group as={Col} controlId="titulo-encontro">
                         <Form.Label>Título do Encontro</Form.Label>
-                        <Form.Control type="text" required placeholder="Digite aqui"  name="titulo_encontro"  onChange={onChange}/>
+                        <Form.Control type="text" required placeholder="Digite aqui"  
+                        name="titulo_encontro"  
+                        value={inputs.titulo_encontro}
+                        onChange={onChange}/>
                     </Form.Group>
                     <Form.Group as={Col} controlId="disponivel_inscricao" className="inscricao">
                         <Form.Label>Disponível para Inscrição?</Form.Label>
-                        <Form.Select required name="disponivel_inscricao"  onChange={onChange}>
+                        <Form.Select required name="disponivel_inscricao"  
+                        value={inputs.disponivel_inscricao}
+                        onChange={onChange}>
                         <option value="">Selecione</option>
 
                             <option value="Sim">Sim</option>
@@ -149,8 +178,8 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}
                 <Row className="mb-3"><Form.Group as={Col} controlId="id_area_conhecimento">
                       <Form.Label>Area de conhecimento:</Form.Label>
                         <Form.Select required name="id_area_conhecimento" 
-                        value={componente}
-                        onChange={e => setComponente(e.target.value)}>
+                        value={inputs.id_area_conhecimento}
+                        disabled>
 
                             <option value="1">Base de Autonomia e Emancipação</option>
                             <option value="2">Ciências da Natureza e suas Tecnologias </option>
@@ -170,7 +199,8 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}
                     <Form.Group as={Col} controlId="id_componente_curricular">
                       <Form.Label>Componente Curricular:</Form.Label>
                         <Form.Select name='id_componente_curricular'
-                         onChange={onChange}
+                        value={inputs.id_componente_curricular}
+                        disabled
                         >
                             <option value="17">Não se aplica</option>
                             <option value="1">Artes Cênicas</option>
@@ -198,14 +228,14 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}
                       <Form.Label>Critérios de Avaliação:</Form.Label>
                         <Form.Control as="textarea" placeholder="Critérios de Avaliação" 
                         name="criterios_avaliacao" 
-                       
+                       value={inputs.criterios_avaliacao}
                         onChange={onChange} />
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="descricao">                     
                       <Form.Label>Descrição do Encontro:</Form.Label>
                        <Form.Control as="textarea" placeholder="Descrição" name="descricao_encontro" 
-                       
+                       value={inputs.descricao_encontro}
                        onChange={onChange} />
                     </Form.Group>
                 </Row>
@@ -215,7 +245,7 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}
                       <Form.Label>Data de início:</Form.Label>
                         <Form.Control type="date" required 
                         name="data_inicio"
-                       
+                       value={inputs.data_inicio}
                         onChange={onChange}/>
                     </Form.Group>
 
@@ -223,14 +253,14 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}
                         <Form.Label>Hora de Início:</Form.Label>
                         <Form.Control type="time" required 
                         name="hora_inicio" 
-                  
+                      value={inputs.hora_inicio}
                         onChange={onChange}/>
                     </Form.Group>
                     <Form.Group as={Col} controlId="data-fim">
                         <Form.Label>Hora de Fim:</Form.Label>
                         <Form.Control required type="time" 
                         name="hora_fim"  
-                        
+                        value={inputs.hora_fim}
                         onChange={onChange} />
                     </Form.Group>
                 </Row>
@@ -239,7 +269,7 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}
                 <Form.Group as={Col} controlId="tipo_objetivos">
                         <Form.Label>Tipo de Objetivo:</Form.Label>
                      <Form.Select >
-                     <option value=""></option>
+                     <option value="">{inputs.tipo_objetivos}</option>
                             {objAprendizagem?.filter((aprendizagem, index, self) => 
                             index === self.findIndex((t) => t.tipo_objetivos === aprendizagem.tipo_objetivos)
                             )
@@ -249,35 +279,39 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}
                             </option>
                             ))
                         }
+                      
                           </Form.Select> 
                     </Form.Group>  
                  
                     <Form.Group as={Col} controlId="objetivos_aprendizagem" className="">
                         <Form.Label>Objetivo De aprendizagem:</Form.Label>
-                        <Form.Select required name='id_tipoObj_objApren_etapa' 
-                     
-                        onChange={onChange}>
-                            {objAprendizagem?.filter((aprendizagem, index, self) => 
+                        <Form.Select required 
+                        value={selectedObjAprendizagem}
+                        onChange={e => setSelectedObjAprendizagem(e.target.value)}>
+                        <option value={inputs.id_objetivo_aprendizagem}>{inputs.objetivo_aprendizagem}</option>
+                      
+                        {objAprendizagem.filter((aprendizagem, index, self) => 
                         index === self.findIndex((t) => t.objetivo_aprendizagem === aprendizagem.objetivo_aprendizagem)
                         )
                       .map((aprendizagem) => (
-                        <option key={aprendizagem.id_objetivo_aprendizagem} value={aprendizagem.id_tipoobj_objapren_etapa}>
-                            {formatText(aprendizagem.objetivo_aprendizagem)}
+                        <option key={aprendizagem.id_objetivo_aprendizagem} value={aprendizagem.id_objetivo_aprendizagem}>
+                          {formatText(aprendizagem.objetivo_aprendizagem)}
                         </option>
                         ))}
-                          </Form.Select>
+                      </Form.Select>
                    
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="etapa">
                         <Form.Label>Etapa:</Form.Label>
-                        <Form.Select >
-                        {objAprendizagem?.filter((aprendizagem, index, self) => 
-                            index === self.findIndex((t) => t.etapa === aprendizagem.etapa)
-                            )
-                            .map((aprendizagem) => (
-                            <option key={aprendizagem.id_etapa} value={aprendizagem.id_etapa}>
-                                {formatText(aprendizagem.etapa)}
+                        <Form.Select 
+                        name='id_tipoObj_objApren_etapa'
+                        onChange={onChange}
+                        >
+                            <option value={inputs.id_etapa} >{inputs.etapa}</option>
+                             {objAprenEtapa?.map((etapa) => (
+                            <option key={etapa.id_etapa} value={etapa.id_tipoobj_objapren_etapa}>
+                                {formatText(etapa.etapa)}
                             </option>
                             ))
                         }
@@ -294,7 +328,7 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}
                         <Form.Label>Número de vagas:</Form.Label>
                         <Form.Control type="number" required  
                         name="num_vagas" 
-                      
+                        value={inputs.num_vagas}
                         onChange={onChange}/>
                     </Form.Group>
 
@@ -302,7 +336,7 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}
                         <Form.Label>Sala:</Form.Label>
                         <Form.Control type="text" required placeholder="Digite a sala e o bloco" 
                         name="sala" 
-                    
+                        value={inputs.sala}
                         onChange={onChange} />
                     </Form.Group>
                     

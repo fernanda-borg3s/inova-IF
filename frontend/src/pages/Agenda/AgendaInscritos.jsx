@@ -53,8 +53,7 @@ export default function AgendaInscritos(){
           return {
             title: event.titulo_encontro,
             start: event.data_inicio,
-            end: event.data_inicio,  
-            display: 'background',     
+            end: event.data_inicio,    
             backgroundColor: '#4d0043',
             borderColor:'#4d0043',
             dataInicio: event.data_inicio,

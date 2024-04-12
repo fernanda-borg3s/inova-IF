@@ -24,7 +24,7 @@ export default function ModalList({ show, setModalOpen, encontroId, userProf}){
       const fetchAlunoInscritosEncontro = async () => {
         try {
           const response = await axios.get(`${baseURL}/inscricao/listInscritos/${userProf}/${encontroId}`); 
-          console.log(response);
+          // console.log(response);
           setListAlunoInscrito(response.data.data);
 
         } catch (error) {
@@ -34,7 +34,7 @@ export default function ModalList({ show, setModalOpen, encontroId, userProf}){
          }
       }
       fetchAlunoInscritosEncontro();
-      }, [encontroId]);
+      }, [encontroId, userProf]);
       useEffect(() => {
        
         const fetchAlunoNoInscritos = async () => {
@@ -50,7 +50,7 @@ export default function ModalList({ show, setModalOpen, encontroId, userProf}){
            }
         }
         fetchAlunoNoInscritos();
-        }, [encontroId]);
+        }, [encontroId, userProf]);
 
         const adicionarAluno = async(id_aluna) =>{
           const id_encontro = encontroId;
@@ -115,12 +115,12 @@ export default function ModalList({ show, setModalOpen, encontroId, userProf}){
         <>
     
         <Modal    
-    
+    backdrop="static"
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
       show={show} 
-      onClick={setModalOpen} >
+      >
         <Modal.Header closeButton>
             <Modal.Title>Editar lista de Inscritos</Modal.Title>
         </Modal.Header>
@@ -210,10 +210,6 @@ export default function ModalList({ show, setModalOpen, encontroId, userProf}){
             Cancelar
             </Button>
             <Button variant="success" >Feito</Button>
-            {/* <Button variant="secondary" onClick={handleClose}>
-            Cancelar
-            </Button>
-            <Button variant="success" onClick={addAluno}>Adicionar Aluno</Button> */}
         </Modal.Footer>
   </Modal>
       

@@ -50,7 +50,7 @@ export function NavbarC(){
     {['sm'].map((expand) => (
         <Navbar key={expand} expand={expand} className="bg-body-tertiary mb-3 navStyle" >
           <Container >
-            <Navbar.Brand href="#">  
+            <Navbar.Brand href="/home">  
             <div className="logo-inova">
                 <img src={logo} alt="Logo do inova if"/>
             </div>

@@ -7,7 +7,6 @@ import './CardHome.css'
 import { userLoggedProf } from "../../Service/userservice.js";
 import { useEffect, useState, useContext} from 'react';
 import { UserContext } from '../../Context/UserContext.jsx'
-
 import axios from 'axios';
 
 const baseURL = 'http://localhost:3000'

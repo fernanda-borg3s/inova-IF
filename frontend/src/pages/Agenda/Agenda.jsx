@@ -54,8 +54,7 @@ export default function Agenda(){
             title: event.titulo_encontro,
             start: event.data_inicio,
             end:event.data_inicio,
-            display: 'background',
-        
+            
             backgroundColor: '#02a059',
             borderColor:'#02a059',
            
