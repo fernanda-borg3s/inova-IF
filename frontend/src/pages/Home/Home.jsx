@@ -1,19 +1,14 @@
-// import { NavbarC } from "../../components/Navbar/Navbar";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
-// import Card from 'react-bootstrap/Card';
 import './Home.css'
 import CardHome from "../../components/Cards/CardHome";
 import Welcome from "../../components/Welcome/Welcome";
-// import { encontros } from "../../Data.js";
 import CalenderHome from '../../assets/Img/CalenderHome.png'
 import Footer from '../../components/Footer/Footer';
-import { useEffect, useState, useContext} from 'react';
-import { userLogged } from "../../Service/userservice.js";
-import { UserContext } from '../../Context/UserContext.jsx'
+
 
 export default function Home(){
 

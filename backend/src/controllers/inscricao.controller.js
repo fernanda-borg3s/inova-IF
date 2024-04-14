@@ -18,7 +18,7 @@ const inscricaoController ={
     },
     getEncontroInscritoById: async(req, res) => {
         try {
-            const { rows } = await postgre.query("SELECT I.id_inscricao, I.id_encontro, I.data_inscricao, E.id_encontro, E.titulo_encontro, E.descricao_encontro, E.criterios_avaliacao, E.sala, E.num_vagas, E.data_inicio, E.hora_inicio, E.hora_fim, P.nome_professora, AC.area, CC.componente_curricular, TOBJ.tipo_objetivos, OA.objetivo_aprendizagem, ET.etapa FROM inscricao AS I INNER JOIN encontro AS E ON I.id_encontro = E.id_encontro INNER JOIN professora AS P ON E.id_professora = P.id_professora INNER JOIN area_conhecimento AS AC ON E.id_area_conhecimento = AC.id_area_conhecimento INNER JOIN componente_curricular AS CC ON E.id_componente_curricular = CC.id_componente_curricular INNER JOIN tipo_objAprend_etapa AS TAE ON E.id_tipoObj_objApren_etapa = TAE.id_tipoObj_objApren_etapa INNER JOIN tipos_objetivos AS TOBJ ON TAE.id_tipo_objetivos = TOBJ.id_tipo_objetivos INNER JOIN objetivos_aprendizagem AS OA ON TAE.id_objetivo_aprendizagem = OA.id_objetivo_aprendizagem INNER JOIN etapa AS ET ON TAE.id_etapa WHERE I.id_aluna = $1", [req.params.id])
+            const { rows } = await postgre.query("SELECT I.id_inscricao, I.id_encontro, I.data_inscricao, E.id_encontro, E.titulo_encontro, E.descricao_encontro, E.criterios_avaliacao, E.sala, E.num_vagas, E.data_inicio, E.hora_inicio, E.hora_fim, P.nome_professora, AC.area, CC.componente_curricular, TOBJ.tipo_objetivos, OA.objetivo_aprendizagem, ET.etapa FROM inscricao AS I INNER JOIN encontro AS E ON I.id_encontro = E.id_encontro INNER JOIN professora AS P ON E.id_professora = P.id_professora INNER JOIN area_conhecimento AS AC ON E.id_area_conhecimento = AC.id_area_conhecimento INNER JOIN componente_curricular AS CC ON E.id_componente_curricular = CC.id_componente_curricular INNER JOIN tipo_objAprend_etapa AS TAE ON E.id_tipoObj_objApren_etapa = TAE.id_tipoObj_objApren_etapa INNER JOIN tipos_objetivos AS TOBJ ON TAE.id_tipo_objetivos = TOBJ.id_tipo_objetivos INNER JOIN objetivos_aprendizagem AS OA ON TAE.id_objetivo_aprendizagem = OA.id_objetivo_aprendizagem INNER JOIN etapa AS ET ON TAE.id_etapa = ET.id_etapa WHERE I.id_aluna = $1", [req.params.id])
 
             if (rows[0]) {
                 return res.json({msg: "OK", data: rows})
@@ -48,7 +48,7 @@ const inscricaoController ={
     },
     listInscritos: async(req, res) => {
         try {
-            const { rows } = await postgre.query("SELECT I.*, A.nome_aluna, A.mat_aluna, A.email FROM inscricao AS I INNER JOIN encontro AS E ON I.id_encontro = E.id_encontro INNER JOIN aluna AS A ON I.id_aluna = A.id_aluna INNER JOIN professora AS P ON E.id_professora = P.id_professora WHERE E.id_professora = $1 AND I.id_encontro = $2 ORDER BY A.nome_aluna ASC", [req.params.id, req.params.id_encontro])
+            const { rows } = await postgre.query("SELECT I.*, A.id_aluna, A.nome_aluna, A.mat_aluna, A.email FROM inscricao AS I INNER JOIN encontro AS E ON I.id_encontro = E.id_encontro INNER JOIN aluna AS A ON I.id_aluna = A.id_aluna INNER JOIN professora AS P ON E.id_professora = P.id_professora WHERE E.id_professora = $1 AND I.id_encontro = $2 ORDER BY A.nome_aluna ASC", [req.params.id, req.params.id_encontro])
             if (rows[0]) {
                 return res.json({msg: "OK", data: rows})
             }
@@ -61,7 +61,7 @@ const inscricaoController ={
     },
     allAlunoExceptInscritos: async(req, res) => {
         try {
-            const { rows } = await postgre.query("SELECT aluna.nome_aluna, aluna.mat_aluna, aluna.email, T.id_encontro FROM aluna LEFT JOIN (SELECT I.id_encontro, A.nome_aluna, A.mat_aluna, A.email FROM inscricao AS I INNER JOIN encontro AS E ON I.id_encontro = E.id_encontro INNER JOIN aluna AS A ON I.id_aluna = A.id_aluna INNER JOIN professora AS P ON E.id_professora = P.id_professora WHERE E.id_professora = $1 AND I.id_encontro = $2) T ON aluna.mat_aluna = T.mat_aluna WHERE T.id_encontro IS NULL", [req.params.id, req.params.id_encontro])
+            const { rows } = await postgre.query("SELECT aluna.id_aluna, aluna.nome_aluna, aluna.mat_aluna, aluna.email, T.id_encontro FROM aluna LEFT JOIN (SELECT I.id_encontro, A.nome_aluna, A.mat_aluna, A.email FROM inscricao AS I INNER JOIN encontro AS E ON I.id_encontro = E.id_encontro INNER JOIN aluna AS A ON I.id_aluna = A.id_aluna INNER JOIN professora AS P ON E.id_professora = P.id_professora WHERE E.id_professora = $1 AND I.id_encontro = $2) T ON aluna.mat_aluna = T.mat_aluna WHERE T.id_encontro IS NULL", [req.params.id, req.params.id_encontro])
             if (rows[0]) {
                 return res.json({msg: "OK", data: rows})
             }
@@ -91,10 +91,3 @@ const inscricaoController ={
     
 }
 export default inscricaoController;
-
-    //POST
-//inscreverEncontro
-    //GET
-// getAllEncontrosInscrito - todos encontros inscrito pela aluna que fez login
-    //Delete
-   // deleteInscricao

@@ -5,17 +5,17 @@ import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import './EncontrosDisponivel.css'
+import Paginacao from '../../components/Paginacao/Paginacao.jsx';
 import { toast } from "react-toastify";
 import { userLogged } from "../../Service/userservice.js";
-
 import { useEffect, useState, useContext} from 'react';
 import { UserContext } from '../../Context/UserContext.jsx'
 import axios from 'axios';
+const ITEMS_PER_PAGE = 12;
 
 const baseURL = 'http://localhost:3000'
 
 export default function EncontrosDisponivel(){
-  // console.log(encontros);
   const [encontrosDisponivel, setEncontrosDisponivel] = useState([]);
   const { user, setUser } = useContext(UserContext);
   async function findUserLogged(){
@@ -30,89 +30,95 @@ export default function EncontrosDisponivel(){
     if (localStorage.getItem("token")) findUserLogged();
   }, []);
 
-  // const {id_aluna} = user.id_aluna
-  // console.log(id_aluna)
 
   useEffect(() => {
     const fetchEncontrosDisponivel = async () => {
       try {
         const response = await axios.get(`${baseURL}/encontros/encontrosDisponivel/${user.id_aluna}`);
-        console.log(response);
-
         setEncontrosDisponivel(response.data.data);
   
       } catch (error) {
-        console.error('Erro ao recuperar dados:', error);
+        toast.error("Ocorreu um erro ao conectar ao servidor, tente novamente mais tarde!")
       }
     };
-    
-      fetchEncontrosDisponivel();
-
-   
-  }, [user]); 
-  function formatDate(dateString) {
-    const datePart = dateString.substring(0, 10);
-    const parts = datePart.split("-")
-    return `${parts[2]}-${parts[1]}-${parts[0]}`;
-  }
-  const inscreverEncontro = async (id_encontro) => {
-    const id_aluna = user.id_aluna;
-    try {
-      const bodyInscrever = {id_encontro, id_aluna}
-      const response = await axios.post(`${baseURL}/inscricao/inscrever`, bodyInscrever, {
-        headers: {
-          "Content-type": "application/json"
+      fetchEncontrosDisponivel(); 
+    }, [user]); 
+        function formatDate(dateString) {
+          const datePart = dateString.substring(0, 10);
+          const parts = datePart.split("-")
+          return `${parts[2]}-${parts[1]}-${parts[0]}`;
         }
-      });
-      console.log(response);
-      toast.success("Inscrição realizada com sucesso!")
-      const updatedEncontrosDisponiveis = encontrosDisponivel.filter(item => item.id_encontro !== id_encontro);
-                setEncontrosDisponivel(updatedEncontrosDisponiveis);
-    } catch (error) {
-      toast.error("Ocorreu um erro ao fazer inscrição, tente novamente");
-    }
-  }
+        const inscreverEncontro = async (id_encontro) => {
+          const id_aluna = user.id_aluna;
+          try {
+            const bodyInscrever = {id_encontro, id_aluna}
+            const response = await axios.post(`${baseURL}/inscricao/inscrever`, bodyInscrever, {
+              headers: {
+                "Content-type": "application/json"
+              }
+            });
+            console.log(response);
+            toast.success("Inscrição realizada com sucesso!")
+            const updatedEncontrosDisponiveis = encontrosDisponivel.filter(item => item.id_encontro !== id_encontro);
+                      setEncontrosDisponivel(updatedEncontrosDisponiveis);
+          } catch (error) {
+            toast.error("Ocorreu um erro ao fazer inscrição, tente novamente");
+          }
+        }
+        const [encontroDisponivelCurrentPage, setEncontroDisponivelCurrentPage] = useState(1);
+      
+        const encontrosDisponivelTotalPages = Math.ceil(encontrosDisponivel?.length / ITEMS_PER_PAGE);
+      
+        const encontrosDisponivelPaginatedData = encontrosDisponivel?.slice(
+          (encontroDisponivelCurrentPage - 1) * ITEMS_PER_PAGE,
+          encontroDisponivelCurrentPage * ITEMS_PER_PAGE
+        );
+        const handleDisponivelPageChange = (page) => {
+          setEncontroDisponivelCurrentPage(page);
+        };
     return (
-    <>
-    
+      <>
         <Container className="box-container mt-5">
             <h1 className='h1-encontro-disponivel'>Encontros Disponíveis para inscrição</h1>
           <Row>
-            <Col>
-             
-                {/* verificar se esta vazio */}
-       {encontrosDisponivel && encontrosDisponivel.length > 0 ? (
-           <Row xs={1} md={3} className="g-4 mt-2">
-           {encontrosDisponivel.map((encontro, index) => (
-           <Col key={index}>
-             <Card className='cardHome-container'>
-               <Card.Header className='d-flex justify-content-end card-header'>{index + 1}</Card.Header>
-               <Card.Body>
-                 <Card.Title className='py-1 '>{encontro.titulo_encontro}</Card.Title>
-                 <ListGroup className="list-group-flush">
-                 <ListGroup.Item className="px-1">Componente Curricular: <span>{encontro.componente_curricular}</span></ListGroup.Item>
-                   <ListGroup.Item className="px-1">Data: <span>{formatDate(encontro.data_inicio)}</span></ListGroup.Item>
-                   <ListGroup.Item className="px-1">Horários: <span>{encontro.hora_inicio}</span> até <span>{encontro.hora_fim}</span></ListGroup.Item>
-                   <ListGroup.Item className="px-1">Sala: <span>{encontro.sala}</span></ListGroup.Item>
-                   <ListGroup.Item className="px-1">Professora(o): <span>{encontro.nome_professora}</span></ListGroup.Item>
+            <Col>            
+                {encontrosDisponivel && encontrosDisponivel.length > 0 ? (
+                  <Row xs={1} md={3} className="g-4 mt-2">
+                    {encontrosDisponivelPaginatedData.map((encontro, index) => (
+                      <Col key={index}>
+                        <Card className='cardHome-container'>
+                          <Card.Header className='d-flex justify-content-end card-header'>{index +1}</Card.Header>
+                          <Card.Body>
+                            <Card.Title className='py-1 '>{encontro.titulo_encontro}</Card.Title>
+                            <ListGroup className="list-group-flush">
+                            <ListGroup.Item className="px-1">Componente Curricular: <span>{encontro.componente_curricular}</span></ListGroup.Item>
+                              <ListGroup.Item className="px-1">Data: <span>{formatDate(encontro.data_inicio)}</span></ListGroup.Item>
+                              <ListGroup.Item className="px-1">Horários: <span>{encontro.hora_inicio}</span> até <span>{encontro.hora_fim}</span></ListGroup.Item>
+                              <ListGroup.Item className="px-1">Sala: <span>{encontro.sala}</span></ListGroup.Item>
+                              <ListGroup.Item className="px-1">Professora(o): <span>{encontro.nome_professora}</span></ListGroup.Item>
 
-                 </ListGroup>
-                
-               </Card.Body>
-               <Card.Footer className="card-footer-disponivel"> 
-               <Button variant="success" className='' style={{fontWeight:'bold'}} onClick={() => inscreverEncontro(encontro.id_encontro)}>
-                   Inscrever
-                 </Button>
-              </Card.Footer>
-             </Card>
-           </Col>
-         ))}
-       </Row>
-      ) : (
-        <p>Não há encontros disponíveis.</p>
-     
-      )}
+                            </ListGroup>
+                            
+                          </Card.Body>
+                          <Card.Footer className="card-footer-disponivel"> 
+                          <Button variant="success" className='' style={{fontWeight:'bold'}} onClick={() => inscreverEncontro(encontro.id_encontro)}>
+                              Inscrever
+                            </Button>
+                          </Card.Footer>
+                        </Card>
+                      </Col>
+                    ))}
+                </Row>
+                ) : (
+                  <p>Não há encontros disponíveis.</p>
+              
+                )}
             </Col>
+            <Paginacao  
+              currentPage={encontroDisponivelCurrentPage}
+              totalPages={encontrosDisponivelTotalPages}
+              onPageChange={handleDisponivelPageChange} 
+              />
           </Row>
         </Container>
       

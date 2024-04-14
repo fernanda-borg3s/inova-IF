@@ -2,7 +2,6 @@
 .navStyle, .offcanvas{
     background-color: #004D2A !important;
     color: #fff;
-    /* margin-bottom: 0; */
 }
 .navbar-toggler{
     border: 1px solid #004d2a;
@@ -10,8 +9,6 @@
 .navbar-toggler-icon {
     color: white;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
-    
-    
 }
 .navbar-toggler:focus{
     box-shadow: none;
@@ -27,10 +24,7 @@ padding-left: 9px;
     left: auto !important;
     right:0;
   }
-/* .navLink{
-    padding-right: 130px;
-   
-} */
+
 .avatar-perfil{
     width: 55px;
     height: 40px;
@@ -53,17 +47,13 @@ padding-left: 9px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
- 
 }
 .btn-group>.btn, .btn-group>.btn:focus{
     background-color: transparent;
     border: 1px solid #fff;
 }
 .user-img{
-    width: 20px;
-    
-    
+    width: 20px; 
 }
 .bi-box-arrow-right{
     font-size: 18px;
@@ -71,7 +61,6 @@ padding-left: 9px;
     color: #004D2A;
     margin-right: 10px;
 }
-
 button:focus:not(:focus-visible){
     outline: none;
 }

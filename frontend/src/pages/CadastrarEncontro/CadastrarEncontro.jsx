@@ -4,6 +4,7 @@ import Col from "react-bootstrap/esm/Col";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import './CadastrarEncontro.css'
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useEffect, useState, useContext} from 'react';
 import { UserContext } from '../../Context/UserContext.jsx'
 import moment from 'moment';
@@ -13,12 +14,14 @@ import { toast } from "react-toastify";
 
 const baseURL = 'http://localhost:3000'
 export default function CadastrarEncontro(){
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
     const [selectedComponente, setSelectedComponente] = useState('1');
     //inicia com 410 (não se aplica para area BASE) para nao fazer um get sem o objetivo excolhido
     const [selectedObjAprendizagem, setSelectedObjAprendizagem] = useState('410');
     const [objAprendizagem, setObjAprendizagem] = useState([]);
     const [objAprenEtapa, setObjAprenEtapa] = useState([]);
-  const { user } = useContext(UserContext);
+
 
     const [inputs, setInputs] = useState({
         titulo_encontro:"",
@@ -34,21 +37,15 @@ export default function CadastrarEncontro(){
          id_area_conhecimento:"", 
          id_tipoObj_objApren_etapa:""
       });
-    
-     
-    
-   
-        //  console.log(selectedComponente);
+
       useEffect(() => {
         const fetchObjAprendizagem = async () => {
           try {
             const response = await axios.get(`${baseURL}/aprendizagem/getObjetivo/${selectedComponente}`);
             setObjAprendizagem(response.data.data);
-           
            console.log(objAprendizagem)
-      
           } catch (error) {
-            console.error('Erro ao recuperar dados:', error);
+            toast.error("Ocorreu um erro ao conectar ao servidor, tente novamente mais tarde")
           }
         };
         
@@ -60,11 +57,8 @@ export default function CadastrarEncontro(){
           try {
             const response = await axios.get(`${baseURL}/aprendizagem/getEtapa/${selectedObjAprendizagem}`);
             setObjAprenEtapa(response.data.data);
-           
-           console.log(objAprenEtapa)
-      
           } catch (error) {
-            console.error('Erro ao recuperar dados:', error);
+            toast.error("Ocorreu um erro ao conectar ao servidor, tente novamente mais tarde")
           }
         };
         
@@ -80,9 +74,6 @@ export default function CadastrarEncontro(){
      
       const CadastrarEncontro = async e => {
         e.preventDefault();
-        console.log("form is send");
-      
-      
         const {
           titulo_encontro,
           descricao_encontro,
@@ -99,7 +90,7 @@ export default function CadastrarEncontro(){
         } = inputs;
         const id_professora = user.id_professora;
         const id_area_conhecimento = selectedComponente;
-        console.log(inputs);
+
         const createEncontro = async (dataInicial) => {
           try {
             const body = {
@@ -126,9 +117,9 @@ export default function CadastrarEncontro(){
             });
       
             toast.success("Encontro criado com sucesso!");
-      
+            navigate('/homeProfessor/gerenciarEncontro');
           } catch (err) {
-            console.error(err.message);
+            toast.error("Ocorreu um erro ao criar encontro, tente novamente!")
           }
         }
       
@@ -166,8 +157,8 @@ export default function CadastrarEncontro(){
       }
    
       function formatText(textString){
-        if (textString.length > 110) {
-            const truncatedText = textString.slice(0, 110);
+        if (textString.length > 160) {
+            const truncatedText = textString.slice(0, 160);
             return truncatedText + "...";
           }
           return textString;
@@ -183,7 +174,7 @@ export default function CadastrarEncontro(){
                 <Button variant="success" className="me-3 p-1 btn-homeProfessor" href="/homeProfessor/gerenciarEncontro">
                 Gerenciar meus Encontros
                 </Button>
-                <Button variant="success" className=" btn-homeProfessor p-1 " href="/homeProfessor/EncontrosCadastrados">
+                <Button variant="success" className="btn-homeProfessor p-1" href="/homeProfessor/EncontrosCadastrados">
                 Todos Encontros
                 </Button>
             </div>
@@ -237,6 +228,7 @@ export default function CadastrarEncontro(){
                         <Form.Select name="id_componente_curricular"
                          onChange={onChange}
                        >
+                            <option value="">Selecione</option>
                             <option value="17">Não se aplica</option>
                             <option value="1">Artes Cênicas</option>
                             <option value="2">Artes Visuais</option>
@@ -298,7 +290,7 @@ export default function CadastrarEncontro(){
                 </Row>
     
                 <Row className="mb-3">
-                <Form.Group as={Col} controlId="tipo_objetivo">
+                {/* <Form.Group as={Col} controlId="tipo_objetivo">
                         <Form.Label>Tipo de Objetivo:</Form.Label>
                      <Form.Select >
                             <option value=''>Selecione</option>
@@ -312,7 +304,7 @@ export default function CadastrarEncontro(){
                             ))
                         }
                           </Form.Select> 
-                    </Form.Group>  
+                    </Form.Group>   */}
                  
                     <Form.Group as={Col} controlId="objetivos_aprendizagem" className="">
                         {/* vem do banco */}

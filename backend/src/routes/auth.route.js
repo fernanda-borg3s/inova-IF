@@ -1,13 +1,13 @@
 import authController from "../controllers/auth.controller.js";
-
+import authorize from "../middleware/authorize.js";
 import { Router } from "express";
 
 const authRouter = Router();
 
-authRouter.post("/loginAluna", authController.loginAluna);//funciona
-authRouter.post("/loginProfessora", authController.loginProfessora);//funciona
-authRouter.post("/cadastroAluna", authController.CadastroAluna);//funciona
-authRouter.post("/cadastroProfessora", authController.CadastroProfessora);//funciona
+authRouter.post("/loginAluna", authController.loginAluna);
+authRouter.post("/loginProfessora", authController.loginProfessora);
+authRouter.post("/cadastroAluna", authController.CadastroAluna);
+authRouter.post("/cadastroProfessora", authController.CadastroProfessora);
 authRouter.post("/verifica", authController.verificaController);
 
 

@@ -31,8 +31,6 @@ const [encontros, setEncontros] = useState([]);
       try {
         const response = await axios.get(`${baseURL}/inscricao/inscritos/${user.id_aluna}`);
         setEncontros(response.data.data);
-        // console.log(encontros);
-  
       } catch (error) {
         console.error('Erro ao recuperar dados:', error);
       }
@@ -40,13 +38,13 @@ const [encontros, setEncontros] = useState([]);
     
     fetchEncontros();
   }, []); 
+
   function formatDate(dateString) {
     const datePart = dateString.substring(0, 10);
     const parts = datePart.split("-")
     return `${parts[2]}-${parts[1]}-${parts[0]}`;
   }
     return(
-      
         <>
         {/* verificar se esta vazio */}
         {encontros && encontros.length > 0 ? (
@@ -63,12 +61,8 @@ const [encontros, setEncontros] = useState([]);
                     <ListGroup.Item className="px-1">Horários: <span>{encontro.hora_inicio}</span> até <span>{encontro.hora_fim}</span></ListGroup.Item>
                     <ListGroup.Item className="px-1">Sala: <span>{encontro.sala}</span></ListGroup.Item>
                     <ListGroup.Item className="px-1">Professora(o): <span>{encontro.nome_professora}</span></ListGroup.Item>
-
                   </ListGroup>
-                  <Button variant="danger" className='mt-3'>
-                    <i className="bi bi-trash p-1"></i>
-                    Cancelar Inscrição
-                  </Button>
+                  <Button variant="danger" className='mt-3'><i className="bi bi-trash p-1"></i>Cancelar Inscrição</Button>
                 </Card.Body>
               </Card>
           
@@ -78,8 +72,6 @@ const [encontros, setEncontros] = useState([]);
             ) : (
               <p>Não há encontros para hoje.</p>
             )}
-       
-     
     </>
   );
 }

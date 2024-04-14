@@ -1,12 +1,10 @@
 import postgre from '../../database.js';
 import bcrypt from "bcrypt";
 import generateToken from '../service/auth.service.js'
-// import authorize from '../middleware/authorize.js'
-// import validEmail from ''
+
 const authController = {
     loginAluna: async (req, res) => {
         const { matricula, password } = req.body;
-      
         try {
           const user = await postgre.query("SELECT * FROM aluna WHERE mat_aluna = $1", [
             matricula
@@ -116,20 +114,5 @@ const authController = {
 }
 }
 export default authController;
-
-// ENDPOINTS AQUI:
-    //POST
-
-    //cadastrarAluno
-    //LoginAluno
-
-
-//authRepositories
-// import User from "../models/User.js";
-
-// const loginRepository = (email) =>
-//   User.findOne({ email: email }).select("+password");
-
-// export default { loginRepository };
 
 

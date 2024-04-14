@@ -3,7 +3,6 @@ import postgre from '../../database.js';
 const aprendizagemController ={
     getObjetivoByComponente: async(req, res) => {
         try {
-        
             const { rows } = await postgre.query("SELECT AC.area_sigla, TOBJ.tipo_objetivos, TOBJ.id_tipo_objetivos, OA.id_objetivo_aprendizagem, OA.objetivo_aprendizagem FROM objetivos_aprendizagem OA INNER JOIN area_conhecimento AS AC ON AC.id_area_conhecimento = OA.id_area_conhecimento INNER JOIN tipo_objAprend_etapa as TAE on OA.id_objetivo_aprendizagem=TAE.id_objetivo_aprendizagem INNER JOIN tipos_objetivos AS TOBJ ON TAE.id_tipo_objetivos = TOBJ.id_tipo_objetivos WHERE OA.id_area_conhecimento = $1", [req.params.id])
             if (rows[0]) {
                 return res.json({msg: "OK", data: rows})
@@ -28,12 +27,3 @@ const aprendizagemController ={
     
 }
 export default aprendizagemController;
-
-// POST
-//criar objetivos de aprendizagem --- vai ver a possibildade desse
-//GET
-//objetivos ja cadastrados relacionado componente curricular e areconhecimento
-//PATCH objetivos de aprendizagem
-
-/// endpoint - filtro objetivo-aprendizagem 
-// filtro etapa, dessa etapa armazena id_tipoObk_obj...
