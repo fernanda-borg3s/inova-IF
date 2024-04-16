@@ -5,16 +5,17 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup'
 import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 import './EncontrosInscritos.css'
 import Paginacao from '../../components/Paginacao/Paginacao.jsx';
 import { userLogged } from "../../Service/userservice.js";
 import { toast } from "react-toastify";
 import { useEffect, useState, useContext} from 'react';
 import { UserContext } from '../../Context/UserContext.jsx'
-
 import axios from 'axios';
 
-const ITEMS_PER_PAGE = 12;
+const ITEMS_PER_PAGE = 24;
 
 const baseURL = 'http://localhost:3000'
 
@@ -77,18 +78,43 @@ export default function EncontrosInscritos(){
       const [encontroInscritoCurrentPage, setEncontroInscritoCurrentPage] = useState(1);
       
       const encontrosInscritoTotalPages = Math.ceil(encontrosInscrito?.length / ITEMS_PER_PAGE);
-    
-      const encontrosInscritoPaginatedData = encontrosInscrito?.slice(
+
+      const [busca, setBusca] = useState('');
+      const lowerBusca = busca.toLowerCase();
+      const filteredEncontrosInscrito = encontrosInscrito?.filter((inscrito) => {
+        return Object.values(inscrito).some(value => typeof value === 'string' && value.toLowerCase().includes(lowerBusca));
+      });
+
+      const encontrosInscritoPaginatedData = filteredEncontrosInscrito?.slice(
         (encontroInscritoCurrentPage - 1) * ITEMS_PER_PAGE,
         encontroInscritoCurrentPage * ITEMS_PER_PAGE
       );
+     
+     
+      
       const handleInscritoPageChange = (page) => {
         setEncontroInscritoCurrentPage(page);
       };
+    
+     
     return (
       <>
         <Container className="box-container mt-5">
-            <h1 className='h1-encontro-disponivel'>Meus Encontros</h1>
+        <div className="d-flex h-50  justify-content-end">
+              <InputGroup className="w-50 h-25 me-5">
+                <Form.Control
+                    type="search"
+                    placeholder="Procurar por título, componente, data, hora, sala, professora..."
+                    className="w-50"
+                    aria-label="Search"
+                    value={busca}
+                    onChange={(ev) => setBusca(ev.target.value)}
+                  />
+                <InputGroup.Text id="Search" ><i className="bi bi-search"></i></InputGroup.Text>
+              </InputGroup>
+            </div>
+        <h1 className='h1-encontro-inscrito'>Meus Encontros</h1>
+            
           <Row>
             <Col>
                 {/* verificar se esta vazio */}
@@ -96,7 +122,7 @@ export default function EncontrosInscritos(){
                 <Row xs={1} md={3} className="g-4 mt-2 ">
                   {encontrosInscritoPaginatedData.map((inscrito, index) => (
                     <Col key={index}>
-                      <Card style={{}} className='cardInscrito-container'>
+                      <Card className='cardInscrito-container'>
                       <Card.Header className='d-flex justify-content-end card-header'>{index + 1}</Card.Header>
                         <Card.Body>
                           <Card.Title className='py-1 '>{inscrito.titulo_encontro}</Card.Title>

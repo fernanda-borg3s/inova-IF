@@ -6,6 +6,7 @@ import { toast } from 'react-toastify';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Footer from "../../components/Footer/Footer";
+import InputGroup from 'react-bootstrap/InputGroup';
 import Paginacao from '../../components/Paginacao/Paginacao.jsx';
 import { UserContext } from '../../Context/UserContext.jsx'
 import axios from 'axios';
@@ -113,7 +114,13 @@ export default function GerenciarEncontro(){
   const myCadastroTotalPages = Math.ceil(myCadastrados?.length / ITEMS_PER_PAGE);
   const allAlunoTotalPages = Math.ceil(allAluno?.length / ITEMS_PER_PAGE);
 
-  const myCadastroPaginatedData = myCadastrados?.slice(
+  const [busca, setBusca] = useState('');
+      const lowerBusca = busca.toLowerCase();
+      const filteredMeusEncontros = myCadastrados?.filter((meusCadastros) => {
+        return Object.values(meusCadastros).some(value => typeof value === 'string' && value.toLowerCase().includes(lowerBusca));
+      });
+
+  const myCadastroPaginatedData = filteredMeusEncontros?.slice(
     (myCadastroCurrentPage - 1) * ITEMS_PER_PAGE,
     myCadastroCurrentPage * ITEMS_PER_PAGE
   );
@@ -177,16 +184,19 @@ export default function GerenciarEncontro(){
                     className="mb-3 list-tab"
                   >
                     <Tab eventKey="meuCadastros" title="Meus Encontros Cadastrados">
-                      <Form className="d-flex justify-content-end my-4">
+                    <div className="d-flex h-50  justify-content-end mb-3">
+                      <InputGroup className="w-50 h-25 ">
                         <Form.Control
-                          type="search"
-                          placeholder="Procurar Encontro"
-                          className="me-2 w-25"
-                          aria-label="Search"
-                        />
-                        <Button variant="outline-success">Buscar</Button>
-                      </Form>
-
+                            type="search"
+                            placeholder="Procurar por título, data, hora, sala..."
+                            className="w-50"
+                            aria-label="Search"
+                            value={busca}
+                            onChange={(ev) => setBusca(ev.target.value)}
+                          />
+                        <InputGroup.Text id="Search" ><i className="bi bi-search"></i></InputGroup.Text>
+                      </InputGroup>
+                    </div>
                         <Table striped bordered hover responsive="sm">
                             <thead>
                                 <tr>
@@ -195,7 +205,8 @@ export default function GerenciarEncontro(){
                                 <th>Descrição</th>
                                 <th>Sala</th>
                                 <th>Data Início</th>
-                                <th>Se repete?</th>
+                                <th width="80px">Horário</th>
+                                <th width="85px"> Se repete?</th>
                                 <th width="85px">Lista de inscritos</th>
                                 <th width="85px">Adicionar Aluna(o)</th>
                                 <th>Editar</th>
@@ -211,6 +222,7 @@ export default function GerenciarEncontro(){
                                       <td>{encontro.descricao_encontro}</td>
                                       <td>{encontro.sala}</td>
                                       <td>{formatDate(encontro.data_inicio)}</td>
+                                      <td>{encontro.hora_inicio} até {encontro.hora_fim}</td>
                                       <td>{encontro.repete}</td>
                                       <td>
                                         <button className="modal-button" onClick={() => mostrarModal(encontro.id_encontro)}>
@@ -239,7 +251,7 @@ export default function GerenciarEncontro(){
                                 ))
                               ) : (
                                     <tr>
-                                      <td colSpan={10}>Você ainda não realizou nenhum cadastro...</td>
+                                      <td colSpan={11}>Você ainda não realizou nenhum cadastro...</td>
                                     </tr>
                                   )}
                           

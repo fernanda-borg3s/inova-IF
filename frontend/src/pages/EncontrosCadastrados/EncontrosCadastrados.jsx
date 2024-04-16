@@ -4,13 +4,15 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup'
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 import './EncontrosCadastrados.css'
 import Paginacao from '../../components/Paginacao/Paginacao.jsx';
 import { useEffect, useState, useContext} from 'react';
 import { toast } from 'react-toastify';
 import { UserContext } from '../../Context/UserContext.jsx'
 import axios from 'axios';
-const ITEMS_PER_PAGE = 9;
+const ITEMS_PER_PAGE = 24;
 
 const baseURL = 'http://localhost:3000'
 
@@ -44,22 +46,44 @@ export default function EncontrosCadastrados(){
       
         const encontrosCadastradoTotalPages = Math.ceil(encontrosCadastrados?.length / ITEMS_PER_PAGE);
       
-        const encontrosCadastradoPaginatedData = encontrosCadastrados?.slice(
+      
+        const [busca, setBusca] = useState('');
+        const lowerBusca = busca.toLowerCase();
+        const filteredEncontrosCadastrados = encontrosCadastrados?.filter((cadastrado) => {
+          return Object.values(cadastrado).some(value => typeof value === 'string' && value.toLowerCase().includes(lowerBusca));
+        });
+    
+        const encontrosCadastradoPaginatedData = filteredEncontrosCadastrados?.slice(
           (encontroCadastradoCurrentPage - 1) * ITEMS_PER_PAGE,
           encontroCadastradoCurrentPage * ITEMS_PER_PAGE
         );
+    
         const handleCadastradoPageChange = (page) => {
           setEncontroCadastradoCurrentPage(page);
         };
     return (
       <>
-        <Container className="box-container mt-2">
+        <Container className="box-container mt-5">
+        <div className="d-flex h-50  justify-content-end">
+              <InputGroup className="w-50 h-25 me-5">
+                <Form.Control
+                    type="search"
+                    placeholder="Procurar por título, área, componente, critérios avaliativos, data, hora, sala, professora..."
+                    className="w-50"
+                    aria-label="Search"
+                    value={busca}
+                    onChange={(ev) => setBusca(ev.target.value)}
+                  />
+                <InputGroup.Text id="Search" ><i className="bi bi-search"></i></InputGroup.Text>
+              </InputGroup>
+            </div>
             <h1 className='h1-encontro-disponivel'>Todos Encontros Cadastrados</h1>
+           
           <Row>
             <Col>            
               {/* verificar se esta vazio */}
               {encontrosCadastrados && encontrosCadastrados.length > 0 ? (
-                <Row xs={1} md={3} className="g-4 mt-2">
+                <Row xs={1} md={3} className="g-3 mt-3">
                   {encontrosCadastradoPaginatedData.map((encontro, index) => (
                     <Col key={index}>
                       <Card  className='card-container'>
