@@ -38,7 +38,7 @@ export default function EncontrosDisponivel(){
       try {
         const response = await axios.get(`${baseURL}/encontros/encontrosDisponivel/${user.id_aluna}`);
         setEncontrosDisponivel(response.data.data);
-        console.log(encontrosDisponivel)
+        // console.log(encontrosDisponivel)
       } catch (error) {
         toast.error("Ocorreu um erro ao conectar ao servidor, tente novamente mais tarde!")
       }
@@ -59,7 +59,7 @@ export default function EncontrosDisponivel(){
                 "Content-type": "application/json"
               }
             });
-            console.log(response);
+          
             toast.success("Inscrição realizada com sucesso!")
             const updatedEncontrosDisponiveis = encontrosDisponivel.filter(item => item.id_encontro !== id_encontro);
                       setEncontrosDisponivel(updatedEncontrosDisponiveis);

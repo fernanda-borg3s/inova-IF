@@ -10,6 +10,7 @@ inscricaoRouter.get("/inscritos/:id", inscricaoController.getEncontroInscritoByI
 //Professora
 inscricaoRouter.get("/listInscritos/:id/:id_encontro", inscricaoController.listInscritos)
 inscricaoRouter.get("/exceptInscritos/:id/:id_encontro", inscricaoController.allAlunoExceptInscritos)
+inscricaoRouter.get("/beforeRemove/:id", inscricaoController.inscritosBeforeRemoveEncontro)
 
 //Gestor
 inscricaoRouter.delete("/deleteinscricao/:id", inscricaoController.deleteInscricao)

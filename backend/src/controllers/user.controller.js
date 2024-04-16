@@ -25,7 +25,7 @@ const userController ={
     getAllAluno: async(req, res) => {
         try {
         
-            const { rows } = await postgre.query("SELECT id_aluna, nome_aluna, mat_aluna, email FROM aluna")
+            const { rows } = await postgre.query("SELECT id_aluna, nome_aluna, mat_aluna, email FROM aluna ORDER BY nome_aluna ASC")
             if (rows[0]) {
                 return res.json({msg: "OK", data: rows})
             }

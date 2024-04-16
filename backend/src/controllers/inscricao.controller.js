@@ -72,6 +72,21 @@ const inscricaoController ={
            return res.json({msg: error.msg})
         }
     },
+    inscritosBeforeRemoveEncontro: async(req, res) => {
+        try {
+            const { rows } = await postgre.query("SELECT COUNT(*)>0 AS result FROM (SELECT id_inscricao,id_encontro FROM inscricao WHERE id_encontro = $1)", [req.params.id])
+
+            const hasInscriptions = rows[0].result;
+
+            if (hasInscriptions) {
+                return res.json({msg: "OK", data: {hasInscriptions}})
+            }
+    
+            res.json({msg: "Não há inscrições nesse encontro"})
+        } catch (error) {
+            res.json({msg: error.msg})
+        }
+    },
 
     addAluno: async(req, res) => {
         try {

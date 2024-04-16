@@ -18,7 +18,7 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import ModalEditar from '../../components/ModalEditarEncontro/ModalEditarEncontro.jsx';
 const baseURL = 'http://localhost:3000'
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 20;
 export default function GerenciarEncontro(){
   const { user, setUser } = useContext(UserContext);
   async function findUserLoggedProf(){
@@ -42,6 +42,18 @@ export default function GerenciarEncontro(){
     const [modalId, setModalId] = useState();
     const [modalId2, setModalId2] = useState();
     const [key, setKey] = useState('meuCadastros');
+
+    const handleUpdateEncontro = (updatedEncontro) => {
+      setMyCadastrados((prevCadastros) => {
+        const newCadastros = prevCadastros.map((cadastro) => {
+          if (cadastro.id_encontro === updatedEncontro.id_encontro) {
+            return updatedEncontro;
+          }
+          return cadastro;
+        });
+        return newCadastros;
+      });
+    };
    
     useEffect(() => {
       let isSubscribed = true;
@@ -51,11 +63,11 @@ export default function GerenciarEncontro(){
           if (isSubscribed) {
             
             setMyCadastrados(response.data.data);
-            console.log(myCadastrados)
+            // console.log(myCadastrados)
           }
 
         } catch (error) {
-          console.error('Erro ao recuperar dados:', error);
+          // console.error('Erro ao recuperar dados:', error);
           toast.error('Ocorreu um erro ao conectar com servidor, tente novamente mais tarde')
 
          }
@@ -79,7 +91,7 @@ export default function GerenciarEncontro(){
               setAllAluno(response.data.data);
 
           } catch (error) {
-            console.error('Erro ao recuperar dados:', error);
+            // console.error('Erro ao recuperar dados:', error);
             toast.error('Ocorreu um erro ao conectar com servidor, tente novamente mais tarde')
   
            }
@@ -93,19 +105,27 @@ export default function GerenciarEncontro(){
       }
 
       const excluirEncontro = async(id_encontro)=>{
-        if(window.confirm("Tem certeza que deseja excluir?")){
-            try {
-                const response = await axios.delete(`${baseURL}/encontros/deleteEncontro/${id_encontro}`);
-                toast.success("Encontro excluído com sucesso!")
-                const updatedMyCadastro = myCadastrados.filter(item => item.id_encontro !== id_encontro);
-                setMyCadastrados(updatedMyCadastro);
-            } catch (error) {
-                toast.error("Ocorreu um erro, tente novamente!")
-                
-            } 
-        }else{
-            return;
-        }
+        try {
+          const response = await axios.get(`${baseURL}/inscricao/beforeRemove/${id_encontro}`);
+          if (response.data.msg === "Não há inscrições nesse encontro") {
+              if (window.confirm("Tem certeza que deseja excluir?")) {
+                  try {
+                      const response = await axios.delete(`${baseURL}/encontros/deleteEncontro/${id_encontro}`);
+                      toast.success("Encontro excluído com sucesso!")
+                      const updatedMyCadastro = myCadastrados.filter(item => item.id_encontro !== id_encontro);
+                      setMyCadastrados(updatedMyCadastro);
+                  } catch (error) {
+                      toast.error("Ocorreu um erro, tente novamente!")
+                  }
+              } else {
+                  return;
+              }
+          } else {
+              toast.info("Encontro possui inscrições efetuadas. Cancele as inscrições antes de prosseguir.")
+          }
+      } catch (error) {
+          toast.error("Ocorreu um erro, tente novamente!")
+      }
      
       }
       const [myCadastroCurrentPage, setMyCadastroCurrentPage] = useState(1);
@@ -151,13 +171,13 @@ export default function GerenciarEncontro(){
         // setModalEditId(id_encontro);
         try {
           const response = await axios.get(`${baseURL}/encontros/editCadastro/${userProf}/${id_encontro}`); 
-          console.log(response);
+          
          setEditEncontro(response.data.data);
-         console.log(editEncontro);
+        //  console.log(editEncontro);
 
 
         } catch (error) {
-          console.error('Erro ao recuperar dados:', error);
+          // console.error('Erro ao recuperar dados:', error);
           toast.error('Ocorreu um erro ao conectar com servidor, tente novamente mais tarde')
 
          }
@@ -209,8 +229,8 @@ export default function GerenciarEncontro(){
                                 <th width="85px"> Se repete?</th>
                                 <th width="85px">Lista de inscritos</th>
                                 <th width="85px">Adicionar Aluna(o)</th>
-                                <th>Editar</th>
-                                <th>Excluir</th>
+                                <th width="75px">Editar</th>
+                                <th width="75px">Excluir</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -240,7 +260,7 @@ export default function GerenciarEncontro(){
                                         <button className="modal-button" onClick={() => mostrarModalEditarEncontro(encontro.id_encontro, user.id_professora)}> 
                                           <i className="bi bi-pencil-square" ></i>
                                         </button>
-                                        <ModalEditar dataEncontro={editEncontro[0]} showEdit={showModalEdit} modalOpen={() => setShowModalEdit(false)}/>
+                                        <ModalEditar dataEncontro={editEncontro[0]} showEdit={showModalEdit}  onUpdateEncontro={handleUpdateEncontro} modalOpen={() => setShowModalEdit(false)}/>
                                       </td>
                                       <td>
                                         <button className="modal-button" onClick={() => excluirEncontro(encontro.id_encontro)}>
@@ -265,16 +285,8 @@ export default function GerenciarEncontro(){
                     </Tab>
 
                   <Tab eventKey="lista"  title="Lista de Alunos Cadastrados">
-                    <Form className="d-flex justify-content-end my-4">
-                      <Form.Control
-                        type="search"
-                        placeholder="Procurar Aluno"
-                        className="me-2 w-25"
-                        aria-label="Search"
-                      />
-                      <Button variant="outline-success">Buscar</Button>
-                    </Form>
-                    <Table striped bordered hover responsive="sm">
+                  
+                    <Table striped bordered hover responsive="sm mt-4">
                       <thead>
                           <tr>
                           <th>#</th>

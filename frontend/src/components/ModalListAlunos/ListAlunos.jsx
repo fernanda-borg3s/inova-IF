@@ -24,11 +24,11 @@ export default function ModalList({ show, setModalOpen, encontroId, userProf}){
       const fetchAlunoInscritosEncontro = async () => {
         try {
           const response = await axios.get(`${baseURL}/inscricao/listInscritos/${userProf}/${encontroId}`); 
-          console.log(response);
+          // console.log(response);
 
           setListAlunoInscrito(response.data.data);
         } catch (error) {
-          console.error('Erro ao recuperar dados:', error);
+          // console.error('Erro ao recuperar dados:', error);
           toast.error('Ocorreu um erro ao conectar com servidor, tente novamente mais tarde')
          }
       }

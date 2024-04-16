@@ -38,13 +38,9 @@ export default function EncontrosInscritos(){
 
       useEffect(() => {
         const fetchEncontrosInscritos = async () => {
-    
           try {
-            const response = await axios.get(`${baseURL}/inscricao/inscritos/${user.id_aluna}`);
-            console.log(response);
+            const response = await axios.get(`${baseURL}/inscricao/inscritos/${user.id_aluna}`);      
             setEncontrosInscrito(response.data.data);
-            console.log(encontrosInscrito);
-      
           } catch (error) {
             toast.error("Ocorreu um erro ao conectar ao servidor, tente novamente mais tarde!")
           }

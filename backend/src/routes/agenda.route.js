@@ -6,6 +6,6 @@ const agendaRouter = Router();
 //agendaRouter.use(authorize) //rotas privadas, so entra se tiver token
 agendaRouter.get("/datas/:id", AgendaController.getAllDatas)
 agendaRouter.get("/dataInscrito/:id", AgendaController.getDataByUser)
-agendaRouter.get("/encontroHoje/:id", AgendaController.getEncontrosToday)
+agendaRouter.get("/encontroHoje/:id/:dataHoje", AgendaController.getEncontrosToday)
 
 export default agendaRouter;

@@ -24,9 +24,9 @@ export default function AddAluno({idEncontro, modalAddOpen, showAddAluno, userPr
           try {
             const response = await axios.get(`${baseURL}/inscricao/exceptInscritos/${userProf}/${idEncontro}`); 
             setAlunoExceptInscrito(response.data.data);
-            console.log(response);
+            // console.log(response);
           } catch (error) {
-            console.error('Erro ao recuperar dados:', error);
+            // console.error('Erro ao recuperar dados:', error);
             toast.error('Ocorreu um erro ao conectar com servidor, tente novamente mais tarde')
            }
         }
@@ -39,7 +39,7 @@ export default function AddAluno({idEncontro, modalAddOpen, showAddAluno, userPr
     
         try {
           const body = {id_encontro, id_aluna};
-          console.log(body);
+          // console.log(body);
           const response = await axios.post(`${baseURL}/inscricao/addAluno`, body, {
             headers: {
               "Content-type": "application/json"

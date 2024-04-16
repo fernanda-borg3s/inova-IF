@@ -43,7 +43,7 @@ export default function CadastrarEncontro(){
           try {
             const response = await axios.get(`${baseURL}/aprendizagem/getObjetivo/${selectedComponente}`);
             setObjAprendizagem(response.data.data);
-           console.log(objAprendizagem)
+          //  console.log(objAprendizagem)
           } catch (error) {
             toast.error("Ocorreu um erro ao conectar ao servidor, tente novamente mais tarde")
           }

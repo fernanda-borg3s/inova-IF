@@ -35,7 +35,7 @@ export default function AgendaInscritos(){
         const fetchDataEncontroInscrito = async() => {
           try{
             const response = await axios.get(`${baseURL}/agenda/dataInscrito/${user.id_aluna}`);
-            console.log(response)
+            // console.log(response)
             setDataEncontroInscrito(response.data.data)
             return
           }catch(error){

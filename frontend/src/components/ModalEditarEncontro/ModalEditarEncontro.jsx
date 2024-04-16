@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { useEffect, useState} from 'react';
 const baseURL = 'http://localhost:3000'
 
-export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}){
+export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro, onUpdateEncontro}){
       const [inputs, setInputs] = useState({
         titulo_encontro:"",
         descricao_encontro:"",
@@ -21,7 +21,7 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}
         repete: "",   
         disponivel_inscricao:"",
         id_area_conhecimento:"", 
-        id_tipoObj_objApren_etapa:""
+        id_tipoobj_objApren_etapa:""
       });
 
 
@@ -33,6 +33,7 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}
     useEffect(() => {
       if (dataEncontro) {
         setInputs({
+          id_encontro: dataEncontro.id_encontro,
           titulo_encontro: dataEncontro.titulo_encontro,
           descricao_encontro: dataEncontro.descricao_encontro,
           criterios_avaliacao: dataEncontro.criterios_avaliacao,
@@ -49,7 +50,7 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}
           objetivo_aprendizagem: dataEncontro.objetivo_aprendizagem,
           id_etapa: dataEncontro.id_etapa,
           etapa: dataEncontro.etapa,
-          id_tipoObj_objApren_etapa: dataEncontro.id_tipoobj_objapren_etapa
+          id_tipoobj_objApren_etapa: dataEncontro.id_tipoobj_objapren_etapa
         });
         setModalIsOpen(true)
       }
@@ -64,7 +65,8 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}
               const response = await axios.get(`${baseURL}/aprendizagem/getObjetivo/${inputs.id_area_conhecimento}`);
               setObjAprendizagem(response.data.data);
             } catch (error) {
-              console.error("Ocorreu uma erro ao conectar no servidor.");
+              // console.error("Ocorreu uma erro ao conectar no servidor.");
+              toast.error("Ocorreu um erro ao conectar no servidor.");
             }
           };
           fetchObjAprendizagem();
@@ -78,7 +80,8 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}
             const response = await axios.get(`${baseURL}/aprendizagem/getEtapa/${selectedObjAprendizagem}`);
             setObjAprenEtapa(response.data.data);
           } catch (error) {
-            console.error("Ocorreu uma erro ao conectar no servidor.");
+            // console.error("Ocorreu uma erro ao conectar no servidor.");
+            toast.error("Ocorreu uma erro ao conectar no servidor.");
           }
         };
         
@@ -88,12 +91,15 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}
 
       //captura valores dos inputs
       const onChange = e => {
+        if(e.target.name == 'id_tipoobj_objApren_etapa'){
+          setInputs({ ...inputs, [e.target.name]: Number(e.target.value)});
+      }
         setInputs({ ...inputs, [e.target.name]: e.target.value });
       }
 
       const UpdateEncontro = async e => {
         e.preventDefault();
-        console.log(dataEncontro.id_encontro)
+       
         const {
             titulo_encontro,
             descricao_encontro,
@@ -104,17 +110,21 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}
             hora_inicio,
             hora_fim,
             disponivel_inscricao,
-            id_tipoObj_objApren_etapa
+            id_tipoobj_objApren_etapa
           } = inputs;
           try {
-            const body = { titulo_encontro, descricao_encontro, criterios_avaliacao, sala, num_vagas, data_inicio, hora_inicio, hora_fim, disponivel_inscricao, id_tipoObj_objApren_etapa };
-            // const response = await axios.post(`${baseURL}/encontros/updateEncontro/${dataEncontro.id_encontro}`, body, {
-            //   headers: {
-            //     "Content-type": "application/json"
-            //   }
-            // }
-            // );
-            //   toast.success("Atualização realizada com sucesso!")
+         
+            const body = { titulo_encontro, descricao_encontro, criterios_avaliacao, sala, num_vagas, data_inicio, hora_inicio, hora_fim, disponivel_inscricao, id_tipoobj_objApren_etapa };
+      
+            const response = await axios.put(`${baseURL}/encontros/updateEncontro/${inputs.id_encontro}`, body, {
+              headers: {
+                "Content-type": "application/json"
+              }
+            }
+            );
+           
+              toast.success("Atualização realizada com sucesso!")
+              onUpdateEncontro(response.data.data);
           } catch (err) {
             // console.error("Ocorreu uma erro ao conectar no servidor.");
             toast.error("Ocorreu um erro ao atualizar encontro, tente novamente")
@@ -277,7 +287,7 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}
                                   value={selectedObjAprendizagem}
                                   onChange={e => setSelectedObjAprendizagem(e.target.value)}>
                                   <option value={inputs.id_objetivo_aprendizagem}>{inputs.objetivo_aprendizagem}</option>
-                                    {objAprendizagem.filter((aprendizagem, index, self) => 
+                                    {objAprendizagem?.filter((aprendizagem, index, self) => 
                                     index === self.findIndex((t) => t.objetivo_aprendizagem === aprendizagem.objetivo_aprendizagem)
                                     )
                                   .map((aprendizagem) => (
@@ -291,10 +301,10 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}
                             <Form.Group as={Col} controlId="etapa">
                                 <Form.Label>Etapa:</Form.Label>
                                 <Form.Select 
-                                name='id_tipoObj_objApren_etapa'
+                                name='id_tipoobj_objApren_etapa'
                                 onChange={onChange}
                                 >
-                                    <option value={inputs.id_etapa} >{inputs.etapa}</option>
+                                    <option value={inputs.id_tipoobj_objApren_etapa}>{inputs.etapa}</option>
                                     {objAprenEtapa?.map((etapa) => (
                                     <option key={etapa.id_etapa} value={etapa.id_tipoobj_objapren_etapa}>
                                         {formatText(etapa.etapa)}
@@ -323,7 +333,7 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro}
                             </Form.Group>
                             
                         </Row>
-                            <Button variant="primary" type="submit" style={{backgroundColor:'#004d2a', border:'none'}} className="w-100 p-2 mb-2 mt-3">Salvar Alterações</Button>
+                            <Button variant="primary" type="submit" style={{backgroundColor:'#004d2a', border:'none'}} className="w-100 p-2 mb-2 mt-3" onClick={modalOpen}>Salvar Alterações</Button>
                             <Button variant="primary" type="reset" style={{backgroundColor:'#870303', border:'none'}} className="w-100 p-2" onClick={modalOpen}>Cancelar</Button>
                     </Form>
               </div>
