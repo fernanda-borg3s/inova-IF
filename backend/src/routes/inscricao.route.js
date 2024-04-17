@@ -4,7 +4,9 @@ import { Router } from "express";
 
 const inscricaoRouter = Router();
 inscricaoRouter.post("/inscrever", inscricaoController.inscreverEncontro);
-inscricaoRouter.get("/inscritos/:id", inscricaoController.getEncontroInscritoById)
+inscricaoRouter.get("/inscritos/:id/:dataHoje", inscricaoController.getEncontroInscritoById)
+inscricaoRouter.get("/contadorNumVagas/:id", inscricaoController.contadorNumVagasByEncontro)
+inscricaoRouter.get("/conferirHorario/:id/:hora_inicio/:data_inicio", inscricaoController.conferirInscritoMesmoHorario)
 
 
 //Professora

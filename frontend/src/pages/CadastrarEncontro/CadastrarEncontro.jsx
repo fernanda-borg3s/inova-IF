@@ -72,7 +72,9 @@ export default function CadastrarEncontro(){
         setInputs({ ...inputs, [e.target.name]: e.target.value });
       }
      
+   
       const CadastrarEncontro = async e => {
+       
         e.preventDefault();
         const {
           titulo_encontro,
@@ -117,7 +119,10 @@ export default function CadastrarEncontro(){
             });
       
             toast.success("Encontro criado com sucesso!");
-            navigate('/homeProfessor/gerenciarEncontro');
+            const timer = setTimeout(() => {
+              navigate('/homeProfessor/gerenciarEncontro');
+            }, 3000);
+            
           } catch (err) {
             toast.error("Ocorreu um erro ao criar encontro, tente novamente!")
           }
@@ -163,6 +168,7 @@ export default function CadastrarEncontro(){
           }
           return textString;
       }
+      
     return(
         <>
         <Container className="mt-5">
@@ -171,10 +177,10 @@ export default function CadastrarEncontro(){
             <h1 className="h1-homeProfessor">Cadastrar novo Encontro</h1>
             </div>
             <div className="mt-2 d-flex flex-row">
-                <Button variant="success" className="me-3 p-1 btn-homeProfessor" href="/homeProfessor/gerenciarEncontro">
+                <Button variant="success" className="me-3 p-2 btn-homeProfessor" href="/homeProfessor/gerenciarEncontro">
                 Gerenciar meus Encontros
                 </Button>
-                <Button variant="success" className="btn-homeProfessor p-1" href="/homeProfessor/EncontrosCadastrados">
+                <Button variant="success" className="btn-homeProfessor p-2" href="/homeProfessor/EncontrosCadastrados">
                 Todos Encontros
                 </Button>
             </div>

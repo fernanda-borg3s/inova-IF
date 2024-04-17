@@ -35,11 +35,12 @@ export default function EncontrosInscritos(){
 
 
       const [encontrosInscrito, setEncontrosInscrito] = useState([]);
-
+      const currentDate = new Date(); // Get the current date in JavaScript
+      const dataHoje = currentDate.toISOString().split('T')[0]; // Format the date as 'YYYY-MM-DD'
       useEffect(() => {
         const fetchEncontrosInscritos = async () => {
           try {
-            const response = await axios.get(`${baseURL}/inscricao/inscritos/${user.id_aluna}`);      
+            const response = await axios.get(`${baseURL}/inscricao/inscritos/${user.id_aluna}/${dataHoje}`);  
             setEncontrosInscrito(response.data.data);
           } catch (error) {
             toast.error("Ocorreu um erro ao conectar ao servidor, tente novamente mais tarde!")
@@ -50,7 +51,7 @@ export default function EncontrosInscritos(){
           fetchEncontrosInscritos();
         }
 
-      }, [user.id_aluna]);
+      }, [user.id_aluna, dataHoje]);
       
       function formatDate(dateString) {
         const datePart = dateString.substring(0, 10);
@@ -65,8 +66,9 @@ export default function EncontrosInscritos(){
             toast.success("Inscrição excluída com sucesso!")
             //limpa o card que foi excluido
             const updatedEncontrosInscritos = encontrosInscrito.filter(item => item.id_inscricao !== id_inscricao);
-            setEncontrosDisponivel(updatedEncontrosInscritos);
+            setEncontrosInscrito(updatedEncontrosInscritos);
           } catch (error) {
+            // console.error(error);
             toast.error("Ocorreu um erro ao excluir inscrição, tente novamente");
             
           }
@@ -96,12 +98,12 @@ export default function EncontrosInscritos(){
     return (
       <>
         <Container className="box-container mt-5">
-        <div className="d-flex h-50  justify-content-end">
-              <InputGroup className="w-50 h-25 me-5">
+        <div className="d-flex h-50">
+              <InputGroup className="w-100 h-25">
                 <Form.Control
                     type="search"
-                    placeholder="Procurar por título, componente, data, hora, sala, professora..."
-                    className="w-50"
+                    placeholder="Procurar por título, componente, AAAA-MM-DD, 00:00, sala, professora..."
+                  
                     aria-label="Search"
                     value={busca}
                     onChange={(ev) => setBusca(ev.target.value)}
@@ -125,6 +127,7 @@ export default function EncontrosInscritos(){
                           <ListGroup className="list-group-flush">
                           <ListGroup.Item className="px-1">Componente Curricular: <span>{inscrito.componente_curricular}</span></ListGroup.Item>
                           <ListGroup.Item className="px-1">Descrição: <span>{inscrito.descricao_encontro}</span></ListGroup.Item>
+                          <ListGroup.Item className="px-1">Critérios de Avaliação: <span>{inscrito.criterios_avaliacao}</span></ListGroup.Item>
                             <ListGroup.Item className="px-1">Data: <span>{formatDate(inscrito.data_inicio)}</span></ListGroup.Item>
                             <ListGroup.Item className="px-1">Horários: <span>{inscrito.hora_inicio}</span> até <span>{inscrito.hora_fim}</span></ListGroup.Item>
                             <ListGroup.Item className="px-1">Sala: <span>{inscrito.sala}</span></ListGroup.Item>

@@ -11,10 +11,12 @@ const baseURL = 'http://localhost:3000'
 const ITEMS_PER_PAGE = 10;
 
 export default function ModalList({ show, setModalOpen, encontroId, userProf}){
+
     const [listAlunoInscrito, setListAlunoInscrito] = useState([])
     const [modalListOpen, setModalListOpen] = useState(false);
     useEffect(() =>{
       if(encontroId && userProf){
+       
         setModalListOpen(true);
       }
     }, [encontroId]);

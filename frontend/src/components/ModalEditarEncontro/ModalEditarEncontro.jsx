@@ -283,7 +283,7 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro,
                         
                             <Form.Group as={Col} controlId="objetivos_aprendizagem" className="">
                                 <Form.Label>Objetivo De aprendizagem:</Form.Label>
-                                <Form.Select required 
+                                <Form.Select disabled
                                   value={selectedObjAprendizagem}
                                   onChange={e => setSelectedObjAprendizagem(e.target.value)}>
                                   <option value={inputs.id_objetivo_aprendizagem}>{inputs.objetivo_aprendizagem}</option>
@@ -303,6 +303,7 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro,
                                 <Form.Select 
                                 name='id_tipoobj_objApren_etapa'
                                 onChange={onChange}
+                                disabled
                                 >
                                     <option value={inputs.id_tipoobj_objApren_etapa}>{inputs.etapa}</option>
                                     {objAprenEtapa?.map((etapa) => (

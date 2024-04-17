@@ -18,8 +18,11 @@ const ITEMS_PER_PAGE = 24;
 const baseURL = 'http://localhost:3000'
 
 export default function EncontrosDisponivel(){
-  const [encontrosDisponivel, setEncontrosDisponivel] = useState([]);
   const { user, setUser } = useContext(UserContext);
+  const [encontrosDisponivel, setEncontrosDisponivel] = useState([]);
+  // const [qtdInscritosVaga, setQtdInscritosVagas] = useState([]);
+  // const [mesmoHorario, setMesmoHorario] = useState([]);
+ 
   async function findUserLogged(){
     try {
       const response = await userLogged();
@@ -45,25 +48,39 @@ export default function EncontrosDisponivel(){
     };
       fetchEncontrosDisponivel(); 
     }, [user]); 
+ 
         function formatDate(dateString) {
           const datePart = dateString.substring(0, 10);
           const parts = datePart.split("-")
           return `${parts[2]}-${parts[1]}-${parts[0]}`;
         }
-        const inscreverEncontro = async (id_encontro) => {
-          const id_aluna = user.id_aluna;
+        
+      
+        const inscreverEncontro = async (id_encontro, num_vagas, hora_inicio, data_inicio) => {
           try {
-            const bodyInscrever = {id_encontro, id_aluna}
-            const response = await axios.post(`${baseURL}/inscricao/inscrever`, bodyInscrever, {
-              headers: {
-                "Content-type": "application/json"
+            const response1 = await axios.get(`${baseURL}/inscricao/contadorNumVagas/${id_encontro}`);
+            const qtdInscritos = response1.data.data;
+            if (Number(qtdInscritos[0]) <= num_vagas) {
+              const id_aluna = user.id_aluna;
+              const response2 = await axios.get(`${baseURL}/inscricao/conferirHorario/${id_aluna}/${hora_inicio}/${data_inicio}`);
+              const mesmoHorario = response2.data.data;
+              if (Number(mesmoHorario[0]) > 0) {
+                toast.error("Você já tem um encontro para esse mesmo horário");
+              } else {
+                const bodyInscrever = { id_encontro, id_aluna };
+                await axios.post(`${baseURL}/inscricao/inscrever`, bodyInscrever, {
+                  headers: {
+                    "Content-type": "application/json"
+                  }
+                });
+                toast.success("Inscrição realizada com sucesso!");
+                setEncontrosDisponivel(encontrosDisponivel.filter((item) => item.id_encontro !== id_encontro));
               }
-            });
-          
-            toast.success("Inscrição realizada com sucesso!")
-            const updatedEncontrosDisponiveis = encontrosDisponivel.filter(item => item.id_encontro !== id_encontro);
-                      setEncontrosDisponivel(updatedEncontrosDisponiveis);
+            } else {
+              toast.error("Não há mais vagas nesse encontro!");
+            }
           } catch (error) {
+            console.error(error);
             toast.error("Ocorreu um erro ao fazer inscrição, tente novamente");
           }
         }
@@ -90,11 +107,11 @@ export default function EncontrosDisponivel(){
       <>
         <Container className="box-container mt-5">
         <div className="d-flex h-50 justify-content-end">
-              <InputGroup className="w-50 h-25 me-5">
+              <InputGroup className="w-100 h-25">
                 <Form.Control
                     type="search"
-                    placeholder="Procurar por título, componente, data, hora, sala, professora..."
-                    className="w-50"
+                    placeholder="Procurar por título, componente, AAAA-MM-DD, 00:00, sala, professora..."
+                    
                     aria-label="Search"
                     value={busca}
                     onChange={(ev) => setBusca(ev.target.value)}
@@ -120,13 +137,14 @@ export default function EncontrosDisponivel(){
                               <ListGroup.Item className="px-1">Descrição: <span>{encontro.descricao_encontro}</span></ListGroup.Item>
                               <ListGroup.Item className="px-1">Critérios de Avaliação: <span>{encontro.criterios_avaliacao}</span></ListGroup.Item>
                               <ListGroup.Item className="px-1">Sala: <span>{encontro.sala}</span></ListGroup.Item>
+                              <ListGroup.Item className="px-1">Vagas Totais: <span>{encontro.num_vagas}</span></ListGroup.Item>
                               <ListGroup.Item className="px-1">Professora(o): <span>{encontro.nome_professora}</span></ListGroup.Item>
 
                             </ListGroup>
                             
                           </Card.Body>
                           <Card.Footer className="card-footer-disponivel"> 
-                          <Button variant="success" className='' style={{fontWeight:'bold'}} onClick={() => inscreverEncontro(encontro.id_encontro)}>
+                          <Button variant="success" style={{fontWeight:'bold'}} onClick={() => inscreverEncontro(encontro.id_encontro, encontro.num_vagas, encontro.hora_inicio, encontro.data_inicio)}>
                               Inscrever
                             </Button>
                           </Card.Footer>

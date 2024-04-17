@@ -55,7 +55,10 @@ export default function Authentication(){
                   }
                 }
                 );
-                toast.success("Usuário Criado com sucesso");      
+                toast.success("Usuário criado com sucesso, faça o login"); 
+                const timer = setTimeout(() => {
+                  window.location.reload();
+                }, 3000); 
               } catch (err) {
                 toast.error("Ocorreu um erro ao cadastrar usuário, tente novamente");
               }

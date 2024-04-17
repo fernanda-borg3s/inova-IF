@@ -18,7 +18,7 @@ const inscricaoController ={
     },
     getEncontroInscritoById: async(req, res) => {
         try {
-            const { rows } = await postgre.query("SELECT I.id_inscricao, I.id_encontro, I.data_inscricao, E.id_encontro, E.titulo_encontro, E.descricao_encontro, E.criterios_avaliacao, E.sala, E.num_vagas, E.data_inicio, E.hora_inicio, E.hora_fim, P.nome_professora, AC.area, CC.componente_curricular, TOBJ.tipo_objetivos, OA.objetivo_aprendizagem, ET.etapa FROM inscricao AS I INNER JOIN encontro AS E ON I.id_encontro = E.id_encontro INNER JOIN professora AS P ON E.id_professora = P.id_professora INNER JOIN area_conhecimento AS AC ON E.id_area_conhecimento = AC.id_area_conhecimento INNER JOIN componente_curricular AS CC ON E.id_componente_curricular = CC.id_componente_curricular INNER JOIN tipo_objAprend_etapa AS TAE ON E.id_tipoObj_objApren_etapa = TAE.id_tipoObj_objApren_etapa INNER JOIN tipos_objetivos AS TOBJ ON TAE.id_tipo_objetivos = TOBJ.id_tipo_objetivos INNER JOIN objetivos_aprendizagem AS OA ON TAE.id_objetivo_aprendizagem = OA.id_objetivo_aprendizagem INNER JOIN etapa AS ET ON TAE.id_etapa = ET.id_etapa WHERE I.id_aluna = $1", [req.params.id])
+            const { rows } = await postgre.query("SELECT I.id_inscricao, I.id_encontro, I.data_inscricao, E.id_encontro, E.titulo_encontro, E.descricao_encontro, E.criterios_avaliacao, E.sala, E.num_vagas, E.data_inicio, E.hora_inicio, E.hora_fim, P.nome_professora, AC.area, CC.componente_curricular, TOBJ.tipo_objetivos, OA.objetivo_aprendizagem, ET.etapa FROM inscricao AS I INNER JOIN encontro AS E ON I.id_encontro = E.id_encontro INNER JOIN professora AS P ON E.id_professora = P.id_professora INNER JOIN area_conhecimento AS AC ON E.id_area_conhecimento = AC.id_area_conhecimento INNER JOIN componente_curricular AS CC ON E.id_componente_curricular = CC.id_componente_curricular INNER JOIN tipo_objAprend_etapa AS TAE ON E.id_tipoObj_objApren_etapa = TAE.id_tipoObj_objApren_etapa INNER JOIN tipos_objetivos AS TOBJ ON TAE.id_tipo_objetivos = TOBJ.id_tipo_objetivos INNER JOIN objetivos_aprendizagem AS OA ON TAE.id_objetivo_aprendizagem = OA.id_objetivo_aprendizagem INNER JOIN etapa AS ET ON TAE.id_etapa = ET.id_etapa WHERE I.id_aluna = $1 AND E.data_inicio > $2", [req.params.id, req.params.dataHoje])
 
             if (rows[0]) {
                 return res.json({msg: "OK", data: rows})
@@ -61,7 +61,7 @@ const inscricaoController ={
     },
     allAlunoExceptInscritos: async(req, res) => {
         try {
-            const { rows } = await postgre.query("SELECT aluna.id_aluna, aluna.nome_aluna, aluna.mat_aluna, aluna.email, T.id_encontro FROM aluna LEFT JOIN (SELECT I.id_encontro, A.nome_aluna, A.mat_aluna, A.email FROM inscricao AS I INNER JOIN encontro AS E ON I.id_encontro = E.id_encontro INNER JOIN aluna AS A ON I.id_aluna = A.id_aluna INNER JOIN professora AS P ON E.id_professora = P.id_professora WHERE E.id_professora = $1 AND I.id_encontro = $2) T ON aluna.mat_aluna = T.mat_aluna WHERE T.id_encontro IS NULL", [req.params.id, req.params.id_encontro])
+            const { rows } = await postgre.query("SELECT aluna.id_aluna, aluna.nome_aluna, aluna.mat_aluna, aluna.email, T.id_encontro FROM aluna LEFT JOIN (SELECT I.id_encontro, A.nome_aluna, A.mat_aluna, A.email FROM inscricao AS I INNER JOIN encontro AS E ON I.id_encontro = E.id_encontro INNER JOIN aluna AS A ON I.id_aluna = A.id_aluna INNER JOIN professora AS P ON E.id_professora = P.id_professora WHERE E.id_professora = $1 AND I.id_encontro = $2) T ON aluna.mat_aluna = T.mat_aluna WHERE T.id_encontro IS NULL ORDER BY aluna.nome_aluna ASC", [req.params.id, req.params.id_encontro])
             if (rows[0]) {
                 return res.json({msg: "OK", data: rows})
             }
@@ -103,6 +103,37 @@ const inscricaoController ={
            return res.json({ msg: "Ocorreu um erro realizar inscrição" });
         }
     },
+    contadorNumVagasByEncontro: async(req, res) => {
+        try {
+            const { rows } = await postgre.query("SELECT COUNT(*) as contador FROM inscricao WHERE id_encontro = $1", [req.params.id])
+             // Verifica se o array rows não está vazio
+             if (rows.length > 0) {
+                // Retorna o valor retornado pela função COUNT(*)
+                res.json({ msg: "ok", data: rows[0].contador })
+            } else {
+                // Retorna uma mensagem de erro caso o array rows esteja vazio
+                res.json({ msg: 'Nenhuma ocorrência encontrada.' })
+            }
+        } catch (error) {
+            res.json({msg: error.msg})
+        }
+    },
+    conferirInscritoMesmoHorario: async(req, res) => {
+        try {
+            const { rows } = await postgre.query("SELECT COUNT(*) as temencontrocadastrado FROM (SELECT id_inscricao, INSC.id_encontro, id_aluna FROM inscricao AS INSC INNER JOIN encontro AS ENC ON ENC.id_encontro = INSC.id_encontro WHERE id_aluna = $1 AND ENC.hora_inicio = $2 AND ENC.data_inicio = $3)", [req.params.id, req.params.hora_inicio, req.params.data_inicio])
+            
+            if (rows.length > 0) {
+                // Retorna o valor retornado pela função COUNT(*)
+                res.json({ msg: "ok", data: rows[0].temencontrocadastrado})
+            } else {
+                // Retorna uma mensagem de erro caso o array rows esteja vazio
+                res.json({ msg: 'Nenhum Registro Encontrado' })
+            }
+        } catch (error) {
+            res.json({msg: error.msg})
+        }
+    },
+
     
 }
 export default inscricaoController;

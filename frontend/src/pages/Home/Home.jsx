@@ -8,9 +8,23 @@ import CardHome from "../../components/Cards/CardHome";
 import Welcome from "../../components/Welcome/Welcome";
 import CalenderHome from '../../assets/Img/CalenderHome.png'
 import Footer from '../../components/Footer/Footer';
+import { useEffect, useState, useContext} from 'react';
+import { userLoggedProf } from "../../Service/userservice.js";
+import { UserContext } from '../../Context/UserContext.jsx'
 
-
-export default function Home(){
+  export default function Home(){
+          const { user, setUser } = useContext(UserContext);
+          async function findUserLoggedProf(){
+            try {
+              const response = await userLoggedProf();
+              setUser(response.data);
+            } catch (error) {
+              console.log(error);
+            }
+          }
+          useEffect(() => {
+            if (localStorage.getItem("token")) findUserLoggedProf();
+          }, []);
 
     return (
     <>
@@ -24,7 +38,7 @@ export default function Home(){
           <Row xs={1} md={2} className="g-4">
             <Col>
             {/* {encontros.map((item, index) =>{<CardHome key={index} encontros={item}/>})} */}
-              <CardHome/>
+              <CardHome user={user?.id_aluna}/>
             </Col>
           </Row>
         </Container>

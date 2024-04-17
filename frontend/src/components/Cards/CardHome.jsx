@@ -5,55 +5,55 @@ import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup'
 import './CardHome.css'
 import { toast } from 'react-toastify';
-import { userLoggedProf } from "../../Service/userservice.js";
+
 import { useEffect, useState, useContext} from 'react';
-import { UserContext } from '../../Context/UserContext.jsx'
+
 import axios from 'axios';
 
 const baseURL = 'http://localhost:3000'
-export default function CardHome(){
-      const { user, setUser } = useContext(UserContext);
-      async function findUserLoggedProf(){
-        try {
-          const response = await userLoggedProf();
-          setUser(response.data);
-        } catch (error) {
-          console.log(error);
-        }
-      }
-      useEffect(() => {
-        if (localStorage.getItem("token")) findUserLoggedProf();
-      }, []);
+export default function CardHome({ user }){
 
-const [encontros, setEncontros] = useState([]);
+const [encontrosHoje, setEncontrosHoje] = useState([]);
 const currentDate = new Date(); // Get the current date in JavaScript
 const dataHoje = currentDate.toISOString().split('T')[0]; // Format the date as 'YYYY-MM-DD'
   useEffect(() => {
     const fetchEncontros = async () => {
       
       try {
-        const response = await axios.get(`${baseURL}/agenda/encontroHoje/${user.id_aluna}/${dataHoje}`);
+        const response = await axios.get(`${baseURL}/agenda/encontroHoje/${user}/${dataHoje}`);
         console.log(response)
-        setEncontros(response.data.data);
+        setEncontrosHoje(response.data.data);
+       
       } catch (error) {
         console.error('Erro ao recuperar dados:', error);
       }
     };
-    
-    fetchEncontros();
-  }, [user, dataHoje]); 
-  const removerInscricao = async (id_inscricao) => {
-        
-    try {
-      const response = await axios.delete(`${baseURL}/inscricao/deleteinscricao/${id_inscricao}`);
-      toast.success("Inscrição excluída com sucesso!")
-      //limpa o card que foi excluido
-      const updatedEncontrosInscritos = encontros.filter(item => item.id_inscricao !== id_inscricao);
-      setEncontrosDisponivel(updatedEncontrosInscritos);
-    } catch (error) {
-      toast.error("Ocorreu um erro ao excluir inscrição, tente novamente");
-      
+    if(user){
+      fetchEncontros();
+
     }
+  }, [user, dataHoje]); 
+
+  const removerInscricao = async (id_inscricao, hora_inicio) => {
+ 
+    const horaAtual = new Date().getHours();
+    const mm = Number(hora_inicio.toString().slice(0,2))
+      if (horaAtual <= mm) {
+        try {
+          const response = await axios.delete(`${baseURL}/inscricao/deleteinscricao/${id_inscricao}`);
+          toast.success("Inscrição excluída com sucesso!")
+          //limpa o card que foi excluido
+          const updatedEncontrosInscritos = encontrosHoje.filter(item => item.id_inscricao !== id_inscricao);
+          setEncontrosDisponivel(updatedEncontrosInscritos);
+        } catch (error) {
+          toast.error("Ocorreu um erro ao excluir inscrição, tente novamente");
+          
+        }
+      
+      } else {
+        toast.error("Encontro não pode ser cancelado pois já foi iniciado ou finalizado!")
+      }
+    
 }
 
   function formatDate(dateString) {
@@ -64,9 +64,9 @@ const dataHoje = currentDate.toISOString().split('T')[0]; // Format the date as 
     return(
         <>
         {/* verificar se esta vazio */}
-        {encontros && encontros.length > 0 ? (
+        {encontrosHoje && encontrosHoje.length > 0 ? (
         <Row xs={1} md={3} className="g-4">
-          {encontros.map((encontro, index) => (
+          {encontrosHoje.map((encontro, index) => (
             <Col key={index}>
               <Card className='cardHome-container'>
                 <Card.Header className='d-flex justify-content-end card-header'>{index + 1}</Card.Header>
@@ -81,7 +81,7 @@ const dataHoje = currentDate.toISOString().split('T')[0]; // Format the date as 
                     <ListGroup.Item className="px-1">Sala: <span>{encontro.sala}</span></ListGroup.Item>
                     <ListGroup.Item className="px-1">Professora(o): <span>{encontro.nome_professora}</span></ListGroup.Item>
                   </ListGroup>
-                  <Button variant="danger" className='mt-2' onClick={() => removerInscricao(encontro.id_inscricao)}>
+                  <Button variant="danger" className='mt-2' onClick={() => removerInscricao(encontro.id_inscricao, encontro.hora_inicio)}>
                   <i className="bi bi-trash p-1"></i>
                   Cancelar Inscrição
                 </Button>

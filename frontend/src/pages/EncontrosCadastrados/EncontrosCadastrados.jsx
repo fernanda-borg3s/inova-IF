@@ -65,11 +65,10 @@ export default function EncontrosCadastrados(){
       <>
         <Container className="box-container mt-5">
         <div className="d-flex h-50  justify-content-end">
-              <InputGroup className="w-50 h-25 me-5">
+              <InputGroup className="w-100 h-25 me-5">
                 <Form.Control
                     type="search"
-                    placeholder="Procurar por título, área, componente, critérios avaliativos, data, hora, sala, professora..."
-                    className="w-50"
+                    placeholder="Procurar por título, área, componente, critérios avaliativos, AAAA-MM-DD, 00:00, sala, professora..."
                     aria-label="Search"
                     value={busca}
                     onChange={(ev) => setBusca(ev.target.value)}
@@ -83,7 +82,7 @@ export default function EncontrosCadastrados(){
             <Col>            
               {/* verificar se esta vazio */}
               {encontrosCadastrados && encontrosCadastrados.length > 0 ? (
-                <Row xs={1} md={3} className="g-3 mt-3">
+                <Row  md={3} className="g-3 mt-3">
                   {encontrosCadastradoPaginatedData.map((encontro, index) => (
                     <Col key={index}>
                       <Card  className='card-container'>
