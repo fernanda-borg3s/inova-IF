@@ -15,7 +15,7 @@ encontrosRouter.put("/updateEncontro/:id", encontrosController.updateEncontroByI
 encontrosRouter.delete("/deleteEncontro/:id", encontrosController.deleteEncontroById);
 
     //ALUNO
-encontrosRouter.get("/encontrosDisponivel/:id", encontrosController.getAllEncontrosDisponivel);
+encontrosRouter.get("/encontrosDisponivel/:dataHoje/:id", encontrosController.getAllEncontrosDisponivel);
 
 
 

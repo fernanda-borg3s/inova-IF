@@ -35,11 +35,12 @@ export default function EncontrosDisponivel(){
     if (localStorage.getItem("token")) findUserLogged();
   }, []);
 
-
+  const currentDate = new Date(); // Get the current date in JavaScript
+  const dataHoje = currentDate.toISOString().split('T')[0]; // Format the date as 'YYYY-MM-DD'
   useEffect(() => {
     const fetchEncontrosDisponivel = async () => {
       try {
-        const response = await axios.get(`${baseURL}/encontros/encontrosDisponivel/${user.id_aluna}`);
+        const response = await axios.get(`${baseURL}/encontros/encontrosDisponivel/${dataHoje}/${user.id_aluna}`);
         setEncontrosDisponivel(response.data.data);
         // console.log(encontrosDisponivel)
       } catch (error) {
@@ -47,7 +48,7 @@ export default function EncontrosDisponivel(){
       }
     };
       fetchEncontrosDisponivel(); 
-    }, [user]); 
+    }, [user, dataHoje]); 
  
         function formatDate(dateString) {
           const datePart = dateString.substring(0, 10);

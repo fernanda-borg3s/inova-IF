@@ -21,7 +21,7 @@ const dataHoje = currentDate.toISOString().split('T')[0]; // Format the date as 
       
       try {
         const response = await axios.get(`${baseURL}/agenda/encontroHoje/${user}/${dataHoje}`);
-        console.log(response)
+      
         setEncontrosHoje(response.data.data);
        
       } catch (error) {

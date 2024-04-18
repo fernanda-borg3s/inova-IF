@@ -19,7 +19,7 @@ import { UserContext } from '../../Context/UserContext.jsx'
               const response = await userLoggedProf();
               setUser(response.data);
             } catch (error) {
-              console.log(error);
+              // console.log(error);
             }
           }
           useEffect(() => {

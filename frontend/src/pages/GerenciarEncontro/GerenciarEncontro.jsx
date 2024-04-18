@@ -41,6 +41,9 @@ export default function GerenciarEncontro(){
     const [showModalAdd, setShowModalAdd] = useState(false);
     const [modalId, setModalId] = useState();
     const [modalId2, setModalId2] = useState();
+    //foi criado as duas pq colocar as info do modal em uma variavel ta causando instabilidae
+    const [tituloModal, setTituloModal] = useState();
+    const [tituloDataHoraModal, setTituloDataHoraModal] = useState([]);
     const [key, setKey] = useState('meuCadastros');
 
     const handleUpdateEncontro = (updatedEncontro) => {
@@ -159,25 +162,21 @@ export default function GerenciarEncontro(){
   };
       
       //função necessaria para abrir a lista de acordo com id_encontro corretamente
-      const mostrarModal = (id_encontro) => {
+      const mostrarModal = (id_encontro, titulo_encontro, data_inicio, hora_inicio, hora_fim) => {
         setShow(true);
+        const transformDate = formatDate(data_inicio)
         setModalId(id_encontro);
+        setTituloDataHoraModal([titulo_encontro, transformDate, hora_inicio, hora_fim])
+        
       }
     const [editEncontro, setEditEncontro] = useState([])
 
       const mostrarModalEditarEncontro = async (id_encontro, userProf) => {
-      
         setShowModalEdit(true);
-        // setModalEditId(id_encontro);
         try {
-          const response = await axios.get(`${baseURL}/encontros/editCadastro/${userProf}/${id_encontro}`); 
-          
+          const response = await axios.get(`${baseURL}/encontros/editCadastro/${userProf}/${id_encontro}`);          
          setEditEncontro(response.data.data);
-        //  console.log(editEncontro);
-
-
         } catch (error) {
-          // console.error('Erro ao recuperar dados:', error);
           toast.error('Ocorreu um erro ao conectar com servidor, tente novamente mais tarde')
 
          }
@@ -185,9 +184,10 @@ export default function GerenciarEncontro(){
       }
    
 
-      const mostrarModalAddAluno = (id_encontro) => {  
+      const mostrarModalAddAluno = (id_encontro, titulo_encontro) => {  
         setShowModalAdd(true);
-        setModalId2(id_encontro);
+        setModalId2(id_encontro, titulo_encontro);
+        setTituloModal(titulo_encontro);
       
       }
      
@@ -245,16 +245,16 @@ export default function GerenciarEncontro(){
                                       <td>{encontro.hora_inicio} até {encontro.hora_fim}</td>
                                       <td>{encontro.repete}</td>
                                       <td>
-                                        <button className="modal-button" onClick={() => mostrarModal(encontro.id_encontro)}>
+                                        <button className="modal-button" onClick={() => mostrarModal(encontro.id_encontro, encontro.titulo_encontro, encontro.data_inicio, encontro.hora_inicio, encontro.hora_fim)}>
                                           <i className="bi bi-person-check-fill"></i>
                                         </button>
-                                        <ModalListAluno encontroId={modalId} show={show} setModalOpen={() => setShow(false)} userProf={user.id_professora}/>
+                                        <ModalListAluno encontroId={modalId} infoModal={tituloDataHoraModal} show={show} setModalOpen={() => setShow(false)} userProf={user.id_professora}/>
                                       </td>
                                       <td>
-                                        <button className="modal-button" onClick={() => mostrarModalAddAluno(encontro.id_encontro)}>
+                                        <button className="modal-button" onClick={() => mostrarModalAddAluno(encontro.id_encontro, encontro.titulo_encontro)}>
                                           <i className="bi bi-person-plus-fill"></i>
                                         </button>
-                                        <AddAluno idEncontro={modalId2} showAddAluno={showModalAdd} modalAddOpen={() => setShowModalAdd(false)} userProf={user.id_professora} />
+                                        <AddAluno idEncontro={modalId2} tituloModal={tituloModal} showAddAluno={showModalAdd} modalAddOpen={() => setShowModalAdd(false)} userProf={user.id_professora} />
                                       </td>
                                       <td>
                                         <button className="modal-button" onClick={() => mostrarModalEditarEncontro(encontro.id_encontro, user.id_professora)}> 

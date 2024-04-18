@@ -121,7 +121,7 @@ export default function CadastrarEncontro(){
             toast.success("Encontro criado com sucesso!");
             const timer = setTimeout(() => {
               navigate('/homeProfessor/gerenciarEncontro');
-            }, 3000);
+            }, 2200);
             
           } catch (err) {
             toast.error("Ocorreu um erro ao criar encontro, tente novamente!")

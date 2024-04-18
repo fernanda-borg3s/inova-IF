@@ -10,11 +10,12 @@ const baseURL = 'http://localhost:3000'
 
 const ITEMS_PER_PAGE = 10;
 
-export default function AddAluno({idEncontro, modalAddOpen, showAddAluno, userProf}){
+export default function AddAluno({idEncontro, tituloModal, modalAddOpen, showAddAluno, userProf}){
+  
     const [alunoExceptInscrito, setAlunoExceptInscrito] = useState([])
     const [modalAddAlunoOpen, setModalAddAlunoOpen] = useState(false);
     useEffect(() =>{
-      if(idEncontro && userProf){
+      if(idEncontro && tituloModal && userProf){
         setModalAddAlunoOpen(true);
       }
     }, [idEncontro]);
@@ -77,7 +78,7 @@ export default function AddAluno({idEncontro, modalAddOpen, showAddAluno, userPr
             >
 
             <Modal.Header >
-                  <Modal.Title>Adicionar Alunas(os) no encontro</Modal.Title>
+                  <Modal.Title>Adicionar Alunas(os) no encontro - "{tituloModal}"</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                     <Table striped bordered hover responsive="sm mb-2">

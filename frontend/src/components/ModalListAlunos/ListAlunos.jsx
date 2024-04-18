@@ -10,13 +10,15 @@ const baseURL = 'http://localhost:3000'
 
 const ITEMS_PER_PAGE = 10;
 
-export default function ModalList({ show, setModalOpen, encontroId, userProf}){
-
+export default function ModalList({ show, setModalOpen, encontroId, infoModal, userProf}){
+      const titulo_encontro = infoModal[0];
+      const data_inicio = infoModal[1];
+      const hora_inicio = infoModal[2];
+      const hora_fim = infoModal[3];
     const [listAlunoInscrito, setListAlunoInscrito] = useState([])
     const [modalListOpen, setModalListOpen] = useState(false);
     useEffect(() =>{
       if(encontroId && userProf){
-       
         setModalListOpen(true);
       }
     }, [encontroId]);
@@ -75,7 +77,6 @@ export default function ModalList({ show, setModalOpen, encontroId, userProf}){
               setAlunoEncontroCurrentPage(page);
             };
 
-            
 
     return(
         <>
@@ -87,10 +88,11 @@ export default function ModalList({ show, setModalOpen, encontroId, userProf}){
             show={show} 
             >
               <Modal.Header >
-                  <Modal.Title>Alunas(os) inscritos no encontro</Modal.Title>
+                  <Modal.Title>Alunas(os) inscritos no encontro - "{titulo_encontro}"</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-              
+              <p>Data de Início: {data_inicio} / Horário: {hora_inicio} até {hora_fim}</p>
+                  
                   <Table striped bordered hover responsive="sm mb-2">
                     <thead>
                         <tr>
