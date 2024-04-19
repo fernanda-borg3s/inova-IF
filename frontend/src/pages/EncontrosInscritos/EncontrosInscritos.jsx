@@ -42,8 +42,13 @@ export default function EncontrosInscritos(){
           try {
             const response = await axios.get(`${baseURL}/inscricao/inscritos/${user.id_aluna}/${dataHoje}`);  
             setEncontrosInscrito(response.data.data);
+            console.log(response)
+            if(response.data.msg == "Não há inscrições realizadas pelo usuário"){
+              toast.info("Não há encontros inscritos!")
+
+            }
           } catch (error) {
-            toast.error("Ocorreu um erro ao conectar ao servidor, tente novamente mais tarde!")
+            toast.error("Ocorreu um erro ao conectar ao servidor!")
           }
         };
         
@@ -65,7 +70,7 @@ export default function EncontrosInscritos(){
             const response = await axios.delete(`${baseURL}/inscricao/deleteinscricao/${id_inscricao}`);
             toast.success("Inscrição excluída com sucesso!")
             //limpa o card que foi excluido
-            const updatedEncontrosInscritos = encontrosInscrito.filter(item => item.id_inscricao !== id_inscricao);
+            const updatedEncontrosInscritos = encontrosInscrito?.filter(item => item.id_inscricao !== id_inscricao);
             setEncontrosInscrito(updatedEncontrosInscritos);
           } catch (error) {
             // console.error(error);
@@ -99,7 +104,7 @@ export default function EncontrosInscritos(){
       <>
         <Container className="box-container mt-5">
         <div className="d-flex h-50">
-              <InputGroup className="w-100 h-25">
+              <InputGroup className="w-100 h-25" style={{minWidth:'370px'}}>
                 <Form.Control
                     type="search"
                     placeholder="Procurar por título, componente, AAAA-MM-DD, 00:00, sala, professora..."
@@ -117,7 +122,7 @@ export default function EncontrosInscritos(){
             <Col>
                 {/* verificar se esta vazio */}
               {encontrosInscrito && encontrosInscrito.length > 0 ? (
-                <Row xs={1} md={3} className="g-4 mt-2 ">
+                <Row xxl={3} xl={2} lg={2} md={1}  className="g-3 mt-2 ">
                   {encontrosInscritoPaginatedData.map((inscrito, index) => (
                     <Col key={index}>
                       <Card className='cardInscrito-container'>
@@ -128,8 +133,11 @@ export default function EncontrosInscritos(){
                           <ListGroup.Item className="px-1">Componente Curricular: <span>{inscrito.componente_curricular}</span></ListGroup.Item>
                           <ListGroup.Item className="px-1">Descrição: <span>{inscrito.descricao_encontro}</span></ListGroup.Item>
                           <ListGroup.Item className="px-1">Critérios de Avaliação: <span>{inscrito.criterios_avaliacao}</span></ListGroup.Item>
-                            <ListGroup.Item className="px-1">Data: <span>{formatDate(inscrito.data_inicio)}</span></ListGroup.Item>
-                            <ListGroup.Item className="px-1">Horários: <span>{inscrito.hora_inicio}</span> até <span>{inscrito.hora_fim}</span></ListGroup.Item>
+                            <ListGroup.Item className="px-1 pe-4 d-flex flex-row justify-content-between">
+                              <div>Data: <span>{formatDate(inscrito.data_inicio)}</span></div>
+                              <div>Horário: <span>{inscrito.hora_inicio}</span> até <span>{inscrito.hora_fim}</span></div>
+                              </ListGroup.Item>
+                        
                             <ListGroup.Item className="px-1">Sala: <span>{inscrito.sala}</span></ListGroup.Item>
                             <ListGroup.Item className="px-1">Professora(o): <span>{inscrito.nome_professora}</span></ListGroup.Item>
 

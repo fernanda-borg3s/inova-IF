@@ -6,6 +6,8 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
 import './EncontrosDisponivel.css'
 import Paginacao from '../../components/Paginacao/Paginacao.jsx';
 import { toast } from "react-toastify";
@@ -42,7 +44,10 @@ export default function EncontrosDisponivel(){
       try {
         const response = await axios.get(`${baseURL}/encontros/encontrosDisponivel/${dataHoje}/${user.id_aluna}`);
         setEncontrosDisponivel(response.data.data);
-        // console.log(encontrosDisponivel)
+        if(response.data.msg == "Não há encontros disponivel para o usuário"){
+          toast.info("Não há encontros disponível!")
+
+        }
       } catch (error) {
         toast.error("Ocorreu um erro ao conectar ao servidor, tente novamente mais tarde!")
       }
@@ -124,7 +129,7 @@ export default function EncontrosDisponivel(){
           <Row>
             <Col>            
                 {encontrosDisponivel && encontrosDisponivel.length > 0 ? (
-                  <Row xs={1} md={3} className="g-4 mt-2">
+                  <Row xxl={3} xl={2} lg={2} md={1}  className="g-4 mt-2">
                     {encontrosDisponivelPaginatedData.map((encontro, index) => (
                       <Col key={index}>
                         <Card className='cardInscrito-container'>
@@ -133,12 +138,31 @@ export default function EncontrosDisponivel(){
                             <Card.Title className='py-1 '>{encontro.titulo_encontro}</Card.Title>
                             <ListGroup className="list-group-flush">
                             <ListGroup.Item className="px-1">Componente Curricular: <span>{encontro.componente_curricular}</span></ListGroup.Item>
-                              <ListGroup.Item className="px-1">Data: <span>{formatDate(encontro.data_inicio)}</span></ListGroup.Item>
-                              <ListGroup.Item className="px-1">Horários: <span>{encontro.hora_inicio}</span> até <span>{encontro.hora_fim}</span></ListGroup.Item>
+                              <ListGroup.Item className="px-1 pe-4 d-flex flex-row justify-content-between">
+                                <div>Data: <span>{formatDate(encontro.data_inicio)}</span></div>
+                                <div>Horário: <span>{encontro.hora_inicio}</span> até <span>{encontro.hora_fim}</span></div>
+                                
+                              </ListGroup.Item>
                               <ListGroup.Item className="px-1">Descrição: <span>{encontro.descricao_encontro}</span></ListGroup.Item>
                               <ListGroup.Item className="px-1">Critérios de Avaliação: <span>{encontro.criterios_avaliacao}</span></ListGroup.Item>
                               <ListGroup.Item className="px-1">Sala: <span>{encontro.sala}</span></ListGroup.Item>
-                              <ListGroup.Item className="px-1">Vagas Totais: <span>{encontro.num_vagas}</span></ListGroup.Item>
+                              <ListGroup.Item className="px-1 pe-4 d-flex flex-row justify-content-between">
+                                <div>Total de vagas: <span>{encontro.num_vagas}</span> </div>
+                                <div>Total de encontros
+                              <OverlayTrigger                        
+                                placement="bottom"
+                                overlay={
+                                  <Tooltip >
+                                    Indicação total de quantas vezes esse mesmo encontro acontece
+                                  </Tooltip>
+                                }
+                              >
+                                 <sup><i className="bi bi-question-circle-fill"></i></sup> 
+                              </OverlayTrigger>
+                             
+                              <span>: {encontro.repete!== "Não"? Number(encontro.repete) + 1 + " vezes": 1 + " vez"}</span></div>
+                              
+                              </ListGroup.Item>
                               <ListGroup.Item className="px-1">Professora(o): <span>{encontro.nome_professora}</span></ListGroup.Item>
 
                             </ListGroup>

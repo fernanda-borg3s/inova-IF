@@ -29,18 +29,22 @@ import { UserContext } from '../../Context/UserContext.jsx'
     return (
     <>
       
-        <Container className="box-container mt-5" >
+        <Container fluid className="box-container mt-5" >
           <Welcome>
             <p className='p-welcome'>Inscreva-se nos encontros disponibilizados pelas professoras no botão abaixo.</p>
             <Button className="mt-2 btn-home p-3" variant="success" href='/home/encontrosDisponivel'>Fazer inscrição no encontro</Button>
           </Welcome>
-            <h2 className="mt-5 mb-4 h2-home">Agenda para Hoje</h2>
-          <Row xs={1} md={2} className="g-4">
-            <Col>
+          {/* <Row xs={1} md={3} className="g-4"> */}
+  
             {/* {encontros.map((item, index) =>{<CardHome key={index} encontros={item}/>})} */}
-              <CardHome user={user?.id_aluna}/>
-            </Col>
-          </Row>
+        
+          {/* </Row> */}
+        </Container>
+        <Container>
+        <h2 className="mt-5 mb-4 h2-home">Agenda para Hoje</h2>
+
+        <CardHome user={user?.id_aluna}/>
+
         </Container>
         
         <Container className="box-container mt-5">

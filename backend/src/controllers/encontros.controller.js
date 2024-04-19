@@ -46,11 +46,11 @@ const encontrosController = {
     },
     getAllEncontrosDisponivel: async(req, res) => {
         try {
-            const { rows } = await postgre.query("SELECT E.id_encontro, E.titulo_encontro, E.descricao_encontro, E.criterios_avaliacao, E.sala, E.num_vagas, E.data_inicio, E.hora_inicio, E.hora_fim, P.nome_professora, AC.area, CC.componente_curricular, TOBJ.tipo_objetivos, OA.objetivo_aprendizagem, ET.etapa FROM encontro E INNER JOIN professora AS P ON E.id_professora = P.id_professora INNER JOIN area_conhecimento AS AC ON E.id_area_conhecimento = AC.id_area_conhecimento INNER JOIN componente_curricular AS CC ON E.id_componente_curricular = CC.id_componente_curricular INNER JOIN tipo_objAprend_etapa AS TAE ON E.id_tipoObj_objApren_etapa = TAE.id_tipoObj_objApren_etapa INNER JOIN tipos_objetivos AS TOBJ ON TAE.id_tipo_objetivos = TOBJ.id_tipo_objetivos INNER JOIN objetivos_aprendizagem AS OA ON TAE.id_objetivo_aprendizagem = OA.id_objetivo_aprendizagem INNER JOIN etapa AS ET ON TAE.id_etapa = ET.id_etapa WHERE E.disponivel_inscricao = 'Sim' AND E.data_inicio >= $1 AND NOT EXISTS (SELECT 1 FROM inscricao AS I WHERE E.id_encontro = I.id_encontro AND I.id_aluna = $2) ORDER BY CC.id_componente_curricular ASC", [req.params.dataHoje, req.params.id])
+            const { rows } = await postgre.query("SELECT E.id_encontro, E.titulo_encontro, E.descricao_encontro, E.criterios_avaliacao, E.sala, E.num_vagas, E.data_inicio, E.hora_inicio, E.hora_fim, E.repete, P.nome_professora, AC.area, CC.componente_curricular, TOBJ.tipo_objetivos, OA.objetivo_aprendizagem, ET.etapa FROM encontro E INNER JOIN professora AS P ON E.id_professora = P.id_professora INNER JOIN area_conhecimento AS AC ON E.id_area_conhecimento = AC.id_area_conhecimento INNER JOIN componente_curricular AS CC ON E.id_componente_curricular = CC.id_componente_curricular INNER JOIN tipo_objAprend_etapa AS TAE ON E.id_tipoObj_objApren_etapa = TAE.id_tipoObj_objApren_etapa INNER JOIN tipos_objetivos AS TOBJ ON TAE.id_tipo_objetivos = TOBJ.id_tipo_objetivos INNER JOIN objetivos_aprendizagem AS OA ON TAE.id_objetivo_aprendizagem = OA.id_objetivo_aprendizagem INNER JOIN etapa AS ET ON TAE.id_etapa = ET.id_etapa WHERE E.disponivel_inscricao = 'Sim' AND E.data_inicio >= $1 AND NOT EXISTS (SELECT 1 FROM inscricao AS I WHERE E.id_encontro = I.id_encontro AND I.id_aluna = $2) ORDER BY E.data_inicio, E.hora_inicio ASC", [req.params.dataHoje, req.params.id])
             if (rows[0]) {
                 return res.json({msg: "OK", data: rows})
             }
-            res.status(404).json({msg: "Não há encontros disponivel para o usuário"})
+            res.status(200).json({msg: "Não há encontros disponivel para o usuário"})
         } catch (error) {
             res.json({msg: error.msg})
         }
@@ -63,7 +63,7 @@ const encontrosController = {
                 return res.json({msg: "OK", data: rows})
             }
 
-           return res.json({msg: "Não há encontros cadastrados"})
+           return res.status(200).json({msg: "Não há encontros cadastrados"})
         } catch (error) {
             res.json({msg: error.msg})
         }
@@ -88,7 +88,7 @@ const encontrosController = {
                 return res.json({msg: "OK", data: rows})
             }
 
-            return res.json({msg: "Não há encontros cadastrados"})
+            return res.status(200).json({msg: "Não há encontros cadastrados"})
         } catch (error) {
             res.json({msg: error.msg})
         }
@@ -117,7 +117,7 @@ const encontrosController = {
             if (rows[0]) {
                 return res.json({msg: "OK", data: rows[0]})
             }
-            return res.status(404).json({msg: "Encontro não localizado"})
+            return res.status(200).json({msg: "Encontro não localizado"})
         } catch (error) {
             res.json({msg: error.msg})
         }

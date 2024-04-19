@@ -23,9 +23,12 @@ const dataHoje = currentDate.toISOString().split('T')[0]; // Format the date as 
         const response = await axios.get(`${baseURL}/agenda/encontroHoje/${user}/${dataHoje}`);
       
         setEncontrosHoje(response.data.data);
-       
+        if(response.data.msg == "Não encontros para data de hoje"){
+          toast.info("Não há encontros marcados para hoje!")
+
+        }
       } catch (error) {
-        console.error('Erro ao recuperar dados:', error);
+        toast.error("Ocorreu um erro ao conectar ao servidor, tente novamente mais tarde!")
       }
     };
     if(user){
@@ -43,15 +46,15 @@ const dataHoje = currentDate.toISOString().split('T')[0]; // Format the date as 
           const response = await axios.delete(`${baseURL}/inscricao/deleteinscricao/${id_inscricao}`);
           toast.success("Inscrição excluída com sucesso!")
           //limpa o card que foi excluido
-          const updatedEncontrosInscritos = encontrosHoje.filter(item => item.id_inscricao !== id_inscricao);
-          setEncontrosDisponivel(updatedEncontrosInscritos);
+          const updatedEncontrosInscritos = encontrosHoje?.filter(item => item.id_inscricao !== id_inscricao);
+          setEncontrosHoje(updatedEncontrosInscritos);
         } catch (error) {
           toast.error("Ocorreu um erro ao excluir inscrição, tente novamente");
           
         }
       
       } else {
-        toast.error("Encontro não pode ser cancelado pois já foi iniciado ou finalizado!")
+        toast.info("Encontro não pode ser cancelado pois já foi iniciado ou finalizado!")
       }
     
 }
@@ -65,7 +68,7 @@ const dataHoje = currentDate.toISOString().split('T')[0]; // Format the date as 
         <>
         {/* verificar se esta vazio */}
         {encontrosHoje && encontrosHoje.length > 0 ? (
-        <Row xs={1} md={3} className="g-4">
+        <Row lg={3} md={2} sm={1} className="g-4">
           {encontrosHoje.map((encontro, index) => (
             <Col key={index}>
               <Card className='cardHome-container'>

@@ -37,10 +37,14 @@ export default function AgendaInscritos(){
             const response = await axios.get(`${baseURL}/agenda/dataInscrito/${user.id_aluna}`);
             // console.log(response)
             setDataEncontroInscrito(response.data.data)
-            return
+            if(response.data.msg == "Não há encontros inscritos agendado"){
+              toast.info("Não há encontros inscritos")
+    
+            }
+           
           }catch(error){
-            // console.error('Erro ao recuperar dados:', error)
-            toast.info("Não há encontros inscritos")
+            toast.error("Ocorreu um erro ao conectar ao servidor, tente novamente mais tarde!")
+            
           }
         }
         if(user){

@@ -26,6 +26,11 @@ export default function EncontrosCadastrados(){
           try {
             const response = await axios.get(`${baseURL}/encontros/encontrosCadastrados/${user.id_professora}`);
             setEncontrosCadastrados(response.data.data);
+            if(response.data.msg == "Não há encontros cadastrados"){
+              toast.info("Não há encontros cadastrados!")
+    
+            }
+            
           } catch (error) {
             // console.error('Erro ao recuperar dados:', error);
             toast.error('Ocorreu um erro ao conectar com servidor, tente novamente mais tarde')

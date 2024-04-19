@@ -39,7 +39,7 @@ function renderEventContent(eventInfo) {
   const event = eventInfo.event;
   const extendedProps = event.extendedProps;
   const background = extendedProps.backgroundColor;
-  console.log(event)
+
   const popover = (
     <Popover id="popover-basic">
       <Popover.Header as="h3" className='popover-header'>{event.title}</Popover.Header>

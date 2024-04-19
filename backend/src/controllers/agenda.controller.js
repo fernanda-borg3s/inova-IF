@@ -9,7 +9,7 @@ const AgendaController = {
                 return res.json({msg: "OK", data: rows})
             }
     
-            res.json({msg: "Não encontros para data de hoje"})
+            res.status(200).json({msg: "Não encontros para data de hoje"})
         } catch (error) {
             res.json({msg: error.msg})
         }
@@ -22,7 +22,7 @@ const AgendaController = {
                 return res.json({msg: "OK", data: rows})
             }
 
-            res.status(404).json({msg: "not found"})
+            res.status(200).json({msg: "Não há encontros disponiveis agendado"})
         } catch (error) {
             res.json({msg: error.msg})
         }
@@ -35,7 +35,7 @@ const AgendaController = {
                 return res.json({msg: "OK", data: rows})
             }
 
-            return res.status(404).json({msg: "not found"})
+            res.status(200).json({msg: "Não há encontros inscritos agendado"})
         } catch (error) {
             res.json({msg: error.msg})
         }

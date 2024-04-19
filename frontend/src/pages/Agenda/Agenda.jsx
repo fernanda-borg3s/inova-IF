@@ -36,9 +36,12 @@ export default function Agenda(){
             const response = await axios.get(`${baseURL}/agenda/datas/${user.id_aluna}`)
             // console.log(response)
             setDataEncontroDisponivel(response.data.data)
-          
+            if(response.data.msg == "Não há encontros disponiveis agendado"){
+              toast.info("Não há encontros disponíveis!")
+    
+            }
           }catch(error){
-            toast.info("Não há encontros disponíveis")
+            toast.error("Ocorreu um erro ao conectar ao servidor, tente novamente mais tarde!")
           }
         }
         if(user){

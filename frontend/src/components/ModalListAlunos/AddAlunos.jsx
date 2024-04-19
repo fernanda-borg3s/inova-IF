@@ -11,7 +11,10 @@ const baseURL = 'http://localhost:3000'
 const ITEMS_PER_PAGE = 10;
 
 export default function AddAluno({idEncontro, tituloModal, modalAddOpen, showAddAluno, userProf}){
-  
+  const titulo_encontro = tituloModal[0];
+      const data_inicio = tituloModal[1];
+      const hora_inicio = tituloModal[2];
+      
     const [alunoExceptInscrito, setAlunoExceptInscrito] = useState([])
     const [modalAddAlunoOpen, setModalAddAlunoOpen] = useState(false);
     useEffect(() =>{
@@ -35,22 +38,32 @@ export default function AddAluno({idEncontro, tituloModal, modalAddOpen, showAdd
       }
         }, [modalAddAlunoOpen, idEncontro, userProf]);
 
+    
     const adicionarAluno = async(id_aluna) =>{
         const id_encontro = idEncontro;
+        const dataInicio = data_inicio;
+        const horaInicio = hora_inicio;
     
         try {
-          const body = {id_encontro, id_aluna};
-          // console.log(body);
-          const response = await axios.post(`${baseURL}/inscricao/addAluno`, body, {
-            headers: {
-              "Content-type": "application/json"
-            }
-          }
-          );
+          const response2 = await axios.get(`${baseURL}/inscricao/conferirHorario/${id_aluna}/${horaInicio}/${dataInicio}`);
+              const mesmoHorario = response2.data.data;
+              if (Number(mesmoHorario[0]) > 0) {
+                toast.error("A aluna(o) já tem encontro para essa mesma data e horário");
+                return
+              } else {
+                const body = {id_encontro, id_aluna};
+                // console.log(body);
+                const response = await axios.post(`${baseURL}/inscricao/addAluno`, body, {
+                  headers: {
+                    "Content-type": "application/json"
+                  }
+                }
+                );
         
-            toast.success("Aluna(o) adicionado ao encontro!")
-            const updatedNewAluno = alunoExceptInscrito.filter(item => item.id_aluna !== id_aluna);
-            setAlunoExceptInscrito(updatedNewAluno);
+                toast.success("Aluna(o) adicionado ao encontro!")
+                const updatedNewAluno = alunoExceptInscrito.filter(item => item.id_aluna !== id_aluna);
+                setAlunoExceptInscrito(updatedNewAluno);
+        }
             
         } catch (error) {
           toast.error("Ocorreu um erro ao adicionar aluno ao encontro, tente novamente mais tarde")
@@ -78,7 +91,7 @@ export default function AddAluno({idEncontro, tituloModal, modalAddOpen, showAdd
             >
 
             <Modal.Header >
-                  <Modal.Title>Adicionar Alunas(os) no encontro - "{tituloModal}"</Modal.Title>
+                  <Modal.Title>Adicionar Alunas(os) no encontro - "{titulo_encontro}"</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                     <Table striped bordered hover responsive="sm mb-2">

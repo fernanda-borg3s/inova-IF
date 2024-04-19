@@ -42,7 +42,7 @@ export default function GerenciarEncontro(){
     const [modalId, setModalId] = useState();
     const [modalId2, setModalId2] = useState();
     //foi criado as duas pq colocar as info do modal em uma variavel ta causando instabilidae
-    const [tituloModal, setTituloModal] = useState();
+    const [tituloModal, setTituloModal] = useState([]);
     const [tituloDataHoraModal, setTituloDataHoraModal] = useState([]);
     const [key, setKey] = useState('meuCadastros');
 
@@ -184,10 +184,10 @@ export default function GerenciarEncontro(){
       }
    
 
-      const mostrarModalAddAluno = (id_encontro, titulo_encontro) => {  
+      const mostrarModalAddAluno = (id_encontro, titulo_encontro, data_inicio, hora_inicio) => {  
         setShowModalAdd(true);
-        setModalId2(id_encontro, titulo_encontro);
-        setTituloModal(titulo_encontro);
+        setModalId2(id_encontro);
+        setTituloModal([titulo_encontro, data_inicio, hora_inicio]);
       
       }
      
@@ -251,7 +251,7 @@ export default function GerenciarEncontro(){
                                         <ModalListAluno encontroId={modalId} infoModal={tituloDataHoraModal} show={show} setModalOpen={() => setShow(false)} userProf={user.id_professora}/>
                                       </td>
                                       <td>
-                                        <button className="modal-button" onClick={() => mostrarModalAddAluno(encontro.id_encontro, encontro.titulo_encontro)}>
+                                        <button className="modal-button" onClick={() => mostrarModalAddAluno(encontro.id_encontro, encontro.titulo_encontro, encontro.data_inicio, encontro.hora_inicio)}>
                                           <i className="bi bi-person-plus-fill"></i>
                                         </button>
                                         <AddAluno idEncontro={modalId2} tituloModal={tituloModal} showAddAluno={showModalAdd} modalAddOpen={() => setShowModalAdd(false)} userProf={user.id_professora} />
