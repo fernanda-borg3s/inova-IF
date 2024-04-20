@@ -1,7 +1,7 @@
 .card-container{
     width: 23.3rem;
     min-height: 550px;
-    /* flex-wrap: wrap; */
+
 
 }
 .card-titulo{
@@ -16,8 +16,3 @@
     font-size: 16px;
     color: #2051a0;
 }
-/* @media(max-width: 1190px){
-    .row-card{
-        flex-wrap: wrap;
-    }
-} */
