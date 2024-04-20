@@ -1,37 +1,50 @@
-// import { NavbarC } from "../../components/Navbar/Navbar";
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
-// import Card from 'react-bootstrap/Card';
 import './Home.css'
 import CardHome from "../../components/Cards/CardHome";
 import Welcome from "../../components/Welcome/Welcome";
-// import { encontros } from "../../Data.js";
 import CalenderHome from '../../assets/Img/CalenderHome.png'
 import Footer from '../../components/Footer/Footer';
 import { useEffect, useState, useContext} from 'react';
-import { userLogged } from "../../Service/userservice.js";
+import { userLoggedProf } from "../../Service/userservice.js";
 import { UserContext } from '../../Context/UserContext.jsx'
 
-export default function Home(){
+  export default function Home(){
+          const { user, setUser } = useContext(UserContext);
+          async function findUserLoggedProf(){
+            try {
+              const response = await userLoggedProf();
+              setUser(response.data);
+            } catch (error) {
+              // console.log(error);
+            }
+          }
+          useEffect(() => {
+            if (localStorage.getItem("token")) findUserLoggedProf();
+          }, []);
 
     return (
     <>
       
-        <Container className="box-container mt-5" >
+        <Container fluid className="box-container mt-5" >
           <Welcome>
             <p className='p-welcome'>Inscreva-se nos encontros disponibilizados pelas professoras no botão abaixo.</p>
             <Button className="mt-2 btn-home p-3" variant="success" href='/home/encontrosDisponivel'>Fazer inscrição no encontro</Button>
           </Welcome>
-            <h2 className="mt-5 mb-4 h2-home">Agenda para Hoje</h2>
-          <Row xs={1} md={2} className="g-4">
-            <Col>
+          {/* <Row xs={1} md={3} className="g-4"> */}
+  
             {/* {encontros.map((item, index) =>{<CardHome key={index} encontros={item}/>})} */}
-              <CardHome/>
-            </Col>
-          </Row>
+        
+          {/* </Row> */}
+        </Container>
+        <Container>
+        <h2 className="mt-5 mb-4 h2-home">Agenda para Hoje</h2>
+
+        <CardHome user={user?.id_aluna}/>
+
         </Container>
         
         <Container className="box-container mt-5">

@@ -39,7 +39,7 @@ function renderEventContent(eventInfo) {
   const event = eventInfo.event;
   const extendedProps = event.extendedProps;
   const background = extendedProps.backgroundColor;
-  console.log(event)
+
   const popover = (
     <Popover id="popover-basic">
       <Popover.Header as="h3" className='popover-header'>{event.title}</Popover.Header>
@@ -56,7 +56,7 @@ function renderEventContent(eventInfo) {
   );
     return (
       <>
-      <OverlayTrigger trigger="click" placement="bottom" overlay={popover} >
+      <OverlayTrigger  placement="bottom" overlay={popover} delay={{ show: 250, hide: 400 }}>
         <h6 style={{ background, color:'#fff' }}>{event.title}<i className="bi bi-caret-down-fill px-1"></i></h6>
       </OverlayTrigger>
       

@@ -3,7 +3,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Calendario from '../../components/Calendario/Calendario.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
-import { userLogged } from "../../Service/userservice.js";
+// import { userLogged } from "../../Service/userservice.js";
 import { useEffect, useState, useContext} from 'react';
 import { toast } from 'react-toastify';
 import { UserContext } from '../../Context/UserContext.jsx'
@@ -35,12 +35,16 @@ export default function AgendaInscritos(){
         const fetchDataEncontroInscrito = async() => {
           try{
             const response = await axios.get(`${baseURL}/agenda/dataInscrito/${user.id_aluna}`);
-            console.log(response)
+            // console.log(response)
             setDataEncontroInscrito(response.data.data)
-            return
+            if(response.data.msg == "Não há encontros inscritos agendado"){
+              toast.info("Não há encontros inscritos")
+    
+            }
+           
           }catch(error){
-            // console.error('Erro ao recuperar dados:', error)
-            toast.info("Não há encontros inscritos")
+            toast.error("Ocorreu um erro ao conectar ao servidor, tente novamente mais tarde!")
+            
           }
         }
         if(user){

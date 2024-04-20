@@ -17,7 +17,7 @@
 
 .btn-homeProfessor button{
     font-weight: bold;
-    width: 100%;
+    width: 100px;
     /* background-color: #004d2a; */
 }
 
@@ -46,11 +46,25 @@
     min-width: 120px;
 }
 
-/* @media (max-width: 500px){
-    .componentImg{
-        width:350px;
-    }
+@media (max-width: 600px){
+ 
     .container-cadastrar{
         min-width: 400px;
+        display: flex;
+        flex-direction: column;
     }
-} */
+    .container-cadastrar .row{
+       
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 740px){
+ 
+    .container-cadastrar .row{
+       
+        display: flex;
+        flex-direction: column;
+    }
+}

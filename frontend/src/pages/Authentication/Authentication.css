@@ -1,12 +1,7 @@
-/* .container-global{
-	
-}  */
 
 .h1-login {
-	font-weight: bold;
-	
+	font-weight: bold;	
 }
-
 p {
 	font-size: 14px;
 	font-weight: 100;
@@ -17,7 +12,6 @@ p {
 span {
 	font-size: 12px;
 }
-
 .link-sobre {
 	color: #004d2a;
 	font-size: 16px;
@@ -28,9 +22,7 @@ span {
 }
 .link-sobre span{
 	font-size: 20px;
-
 }
-
 button {
 	border-radius: 20px;
 	border: 1px solid #004d2a;
@@ -43,20 +35,16 @@ button {
 	text-transform: uppercase;
 	transition: transform 80ms ease-in;
 }
-
 button:active {
 	transform: scale(0.95);
 }
-
 button:focus {
 	outline: none;
 }
-
 button.ghost {
 	background-color: transparent;
 	border-color: #FFFFFF;
 }
-
 .form-login {
 	background-color: #FFFFFF;
 	display: flex;
@@ -67,7 +55,6 @@ button.ghost {
 	height: 75%;
 	text-align: center;
 }
-
 .form-login input {
 	background-color: #eee;
 	border: none;
@@ -75,14 +62,12 @@ button.ghost {
 	margin: 8px 0;
 	width: 100%;
 }
-
 .box {
 	background-color: #fff;
 	border-radius: 10px;
   	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
 			0 10px 10px rgba(0,0,0,0.22);
 	position: relative;
-	/* overflow: hidden; */
 	width: 768px;
 	max-width: 100%;
 	min-height: 480px;
@@ -96,24 +81,20 @@ button.ghost {
 	height: 100%;
 	transition: all 0.6s ease-in-out;
 }
-
 .sign-in-container {
 	left: 0;
 	width: 50%;
 	z-index: 2;
 }
-
 .box.right-panel-active .sign-in-container {
 	transform: translateX(100%);
 }
-
 .sign-up-container {
 	left: 0;
 	width: 50%;
 	opacity: 0;
 	z-index: 1;
 }
-
 .box.right-panel-active .sign-up-container {
 	transform: translateX(100%);
 	opacity: 1;
@@ -237,38 +218,3 @@ button.ghost {
 	font-size: 15px;
  }
 }
-
-/* .container-form-login{
-    background-color: #fff;
-    width: 450px;
-    height: 300px;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-    border-radius: 10px;
-}
-.logo-login{
-    width: 200px;
-}
-h1{
-    text-transform: uppercase;
-    color:#004d2a;
-    font-weight: bold;
-    
-}
-.btn-link-cadastro{
-    color:#2B9EB3;
-    font-weight: bold;
-
-}
-.btn-entrar{
-    width: 100%;
-    background-color:#004d2a;
-    font-weight: bold;
-    color:#fff;
-}
-.btn-entrar:hover{
-    background-color:#01361e;
-    color:#fff;
-    width: 155px;
-
-
-} */

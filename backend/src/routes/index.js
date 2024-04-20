@@ -6,8 +6,6 @@ import agendaRouter from './agenda.route.js'
 import inscricaoRouter from './inscricao.route.js';
 import userRouter from './user.route.js'
 
-
-
 const router = Router();
 router.use("/auth", authRouter);
 router.use("/encontros", encontrosRouter);
