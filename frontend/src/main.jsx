@@ -23,63 +23,63 @@ import CadastrarEncontro from './pages/CadastrarEncontro/CadastrarEncontro.jsx'
 
 const router = createBrowserRouter([
   {
-    path: 'https://inovaif-theta.vercel.app/',
+    path: '/',
     element: <Authentication/>,
     errorElement:<ErrorPage/>,
     
   },
   {
-    path: 'https://inovaif-theta.vercel.app/sobre',
+    path: '/sobre',
     element: <Sobre/>,
   },
   
   {
-    path:"https://inovaif-theta.vercel.app/home",
+    path:"/home",
     element: <NavbarC/>,
     errorElement:<ErrorPage/>,
     children: [
       {
-        path: "https://inovaif-theta.vercel.app/home",
+        path: "/home",
         element:<Home/>,
       },
       {
-        path:"https://inovaif-theta.vercel.app/home/encontrosDisponivel",
+        path:"/home/encontrosDisponivel",
         element:<EncontrosDisponivel/>
       },
       {
-        path:"https://inovaif-theta.vercel.app/home/encontrosInscritos",
+        path:"/home/encontrosInscritos",
         element:<EncontrosInscritos/>
       },
       {
-        path:"https://inovaif-theta.vercel.app/home/agenda",
+        path:"/home/agenda",
         element:<Agenda/>
       },
       {
-        path:"https://inovaif-theta.vercel.app/home/agendaInscrito",
+        path:"/home/agendaInscrito",
         element: <AgendaInscritos/>
       }
    
     ]
   },
   {
-    path:"https://inovaif-theta.vercel.app/homeProfessor",
+    path:"/homeProfessor",
     element: <NavbarProfessor/>,
     errorElement:<ErrorPage/>,
     children: [
       {
-        path:"https://inovaif-theta.vercel.app/homeProfessor",
+        path:"/homeProfessor",
         element: <HomeProfessor/>,
       },
       {
-        path:"https://inovaif-theta.vercel.app/homeProfessor/cadastrarEncontro",
+        path:"/homeProfessor/cadastrarEncontro",
         element: <CadastrarEncontro/>,
       },
       {
-        path:"https://inovaif-theta.vercel.app/homeProfessor/gerenciarEncontro",
+        path:"/homeProfessor/gerenciarEncontro",
         element: <GerenciarEncontro/>,
       },
       {
-        path:"https://inovaif-theta.vercel.app/homeProfessor/EncontrosCadastrados",
+        path:"/homeProfessor/EncontrosCadastrados",
         element: <EncontrosCadastrados/>,
       }
     ]
