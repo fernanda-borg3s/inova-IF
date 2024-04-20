@@ -59,11 +59,13 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro,
     }, [dataEncontro]);
 
     useEffect(() => {
+      if (modalIsOpen && dataEncontro) {
       const fetchHaveInscritos = async () => {
 
         try {
           const response1 = await axios.get(`${baseURL}/inscricao/contadorNumVagas/${inputs.id_encontro}`);    
-          const qtdInscritos = response1.data.data;    
+          const qtdInscritos = response1.data.data;  
+          
           if (Number(qtdInscritos[0]) > 0) {
             setButtonDisabled(true);
             return
@@ -72,11 +74,14 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro,
             return
           }
         } catch (error) {
+       
           toast.error("Ocorreu um erro ao conectar no servidor.");
         }
       };
         fetchHaveInscritos();
-    }, [inputs.id_encontro]);
+    }
+    }, [dataEncontro, modalIsOpen]);
+
 
       useEffect(() => {
         if (modalIsOpen && dataEncontro) {
