@@ -29,6 +29,7 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro,
     const [selectedObjAprendizagem, setSelectedObjAprendizagem] = useState('');
     const [objAprenEtapa, setObjAprenEtapa] = useState([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [buttonDisabled, setButtonDisabled] = useState(false);
 
     useEffect(() => {
       if (dataEncontro) {
@@ -57,7 +58,26 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro,
       
     }, [dataEncontro]);
 
-     
+    useEffect(() => {
+      const fetchHaveInscritos = async () => {
+
+        try {
+          const response1 = await axios.get(`${baseURL}/inscricao/contadorNumVagas/${inputs.id_encontro}`);    
+          const qtdInscritos = response1.data.data;    
+          if (Number(qtdInscritos[0]) > 0) {
+            setButtonDisabled(true);
+            return
+          } else {
+            setButtonDisabled(false);
+            return
+          }
+        } catch (error) {
+          toast.error("Ocorreu um erro ao conectar no servidor.");
+        }
+      };
+        fetchHaveInscritos();
+    }, [inputs.id_encontro]);
+
       useEffect(() => {
         if (modalIsOpen && dataEncontro) {
           const fetchObjAprendizagem = async () => {
@@ -234,6 +254,7 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro,
                             <Form.Group as={Col} controlId="descricao">                     
                               <Form.Label>Descrição do Encontro:</Form.Label>
                               <Form.Control as="textarea" placeholder="Descrição" name="descricao_encontro" 
+                              
                               value={inputs.descricao_encontro}
                               onChange={onChange} />
                             </Form.Group>
@@ -244,6 +265,7 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro,
                               <Form.Label>Data de início:</Form.Label>
                                 <Form.Control type="date" required 
                                 name="data_inicio"
+                                disabled={buttonDisabled}
                               value={inputs.data_inicio}
                                 onChange={onChange}/>
                             </Form.Group>
@@ -252,6 +274,7 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro,
                                 <Form.Label>Hora de Início:</Form.Label>
                                 <Form.Control type="time" required 
                                 name="hora_inicio" 
+                                disabled={buttonDisabled}
                               value={inputs.hora_inicio}
                                 onChange={onChange}/>
                             </Form.Group>
@@ -259,6 +282,7 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro,
                                 <Form.Label>Hora de Fim:</Form.Label>
                                 <Form.Control required type="time" 
                                 name="hora_fim"  
+                                disabled={buttonDisabled}
                                 value={inputs.hora_fim}
                                 onChange={onChange} />
                             </Form.Group>
@@ -335,7 +359,7 @@ export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro,
                             
                         </Row>
                             <Button variant="primary" type="submit" style={{backgroundColor:'#004d2a', border:'none'}} className="w-100 p-2 mb-2 mt-3" onClick={modalOpen}>Salvar Alterações</Button>
-                            <Button variant="primary" type="reset" style={{backgroundColor:'#870303', border:'none'}} className="w-100 p-2" onClick={modalOpen}>Cancelar</Button>
+                            <Button variant="primary"  style={{backgroundColor:'#870303', border:'none'}} className="w-100 p-2" onClick={modalOpen}>Cancelar</Button>
                     </Form>
               </div>
             </Modal.Body>  

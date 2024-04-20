@@ -29,7 +29,7 @@ const AgendaController = {
     },
     getDataByUser: async(req, res) => {
         try {
-            const { rows } = await postgre.query("SELECT E.titulo_encontro, E.sala, E.data_inicio, E.hora_inicio, E.hora_fim, P.nome_professora, CC.componente_curricular FROM encontro E INNER JOIN inscricao AS I ON E.id_encontro = I.id_encontro INNER JOIN professora AS P ON E.id_professora = P.id_professora INNER JOIN componente_curricular AS CC ON E.id_componente_curricular = CC.id_componente_curricular WHERE I.id_aluna = $1", [req.params.id])
+            const { rows } = await postgre.query("SELECT E.titulo_encontro, E.sala, E.data_inicio, E.hora_inicio, E.hora_fim, E.descricao_encontro, E.criterios_avaliacao, P.nome_professora, CC.componente_curricular FROM encontro E INNER JOIN inscricao AS I ON E.id_encontro = I.id_encontro INNER JOIN professora AS P ON E.id_professora = P.id_professora INNER JOIN componente_curricular AS CC ON E.id_componente_curricular = CC.id_componente_curricular WHERE I.id_aluna = $1", [req.params.id])
 
             if (rows[0]) {
                 return res.json({msg: "OK", data: rows})

@@ -112,7 +112,7 @@ const inscricaoController ={
                 res.json({ msg: "ok", data: rows[0].contador })
             } else {
                 // Retorna uma mensagem de erro caso o array rows esteja vazio
-                res.json({ msg: 'Nenhuma ocorrência encontrada.' })
+                res.status(200).json({ msg: 'Nenhuma ocorrência encontrada.' })
             }
         } catch (error) {
             res.json({msg: error.msg})

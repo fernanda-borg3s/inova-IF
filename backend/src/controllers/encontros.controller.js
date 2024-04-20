@@ -76,7 +76,7 @@ const encontrosController = {
                 return res.json({msg: "OK", data: rows})
             }
 
-            return res.json({msg: "Não há encontros cadastrados"})
+            return res.status(200).json({msg: "Não há encontros cadastrados"})
         } catch (error) {
             res.json({msg: error.msg})
         }
