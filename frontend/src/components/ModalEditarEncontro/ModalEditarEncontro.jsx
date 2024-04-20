@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/esm/Row';
 import Col from 'react-bootstrap/Col';
 import { toast } from "react-toastify";
 import { useEffect, useState} from 'react';
-const baseURL = 'http://localhost:3000'
+const baseURL = 'https://inova-if-api.vercel.app'
 
 export default function ModalEditarEncontro({ showEdit, modalOpen, dataEncontro, onUpdateEncontro}){
       const [inputs, setInputs] = useState({

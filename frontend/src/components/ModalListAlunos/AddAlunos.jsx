@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import Paginacao from '../../components/Paginacao/Paginacao.jsx';
 import { useEffect, useState} from 'react';
 import './ModalList.css'
-const baseURL = 'http://localhost:3000'
+const baseURL = 'https://inova-if-api.vercel.app'
 
 const ITEMS_PER_PAGE = 10;
 
