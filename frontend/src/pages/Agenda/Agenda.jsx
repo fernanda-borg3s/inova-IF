@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import { UserContext } from '../../Context/UserContext.jsx'
 import axios from 'axios';
 
-const baseURL = 'http://localhost:3000'
+const baseURL = 'https://inova-if-api.vercel.app'
 
 
 export default function Agenda(){

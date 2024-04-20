@@ -17,7 +17,7 @@ import Table from 'react-bootstrap/Table';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import ModalEditar from '../../components/ModalEditarEncontro/ModalEditarEncontro.jsx';
-const baseURL = 'http://localhost:3000'
+const baseURL = 'https://inova-if-api.vercel.app'
 const ITEMS_PER_PAGE = 20;
 export default function GerenciarEncontro(){
   const { user, setUser } = useContext(UserContext);
@@ -63,14 +63,11 @@ export default function GerenciarEncontro(){
       const fetchMyCadastros = async () => {
         try {
           const response = await axios.get(`${baseURL}/encontros/myCadastros/${user.id_professora}`);
-          if (isSubscribed) {
-            
+          if (isSubscribed) {   
             setMyCadastrados(response.data.data);
-            // console.log(myCadastrados)
           }
 
         } catch (error) {
-          // console.error('Erro ao recuperar dados:', error);
           toast.error('Ocorreu um erro ao conectar com servidor, tente novamente mais tarde')
 
          }

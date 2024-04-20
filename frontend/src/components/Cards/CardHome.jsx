@@ -10,7 +10,7 @@ import { useEffect, useState, useContext} from 'react';
 
 import axios from 'axios';
 
-const baseURL = 'http://localhost:3000'
+const baseURL = 'https://inova-if-api.vercel.app'
 export default function CardHome({ user }){
 
 const [encontrosHoje, setEncontrosHoje] = useState([]);

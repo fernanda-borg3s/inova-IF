@@ -17,13 +17,12 @@ import { UserContext } from '../../Context/UserContext.jsx'
 import axios from 'axios';
 const ITEMS_PER_PAGE = 24;
 
-const baseURL = 'http://localhost:3000'
+const baseURL = 'https://inova-if-api.vercel.app'
 
 export default function EncontrosDisponivel(){
   const { user, setUser } = useContext(UserContext);
   const [encontrosDisponivel, setEncontrosDisponivel] = useState([]);
-  // const [qtdInscritosVaga, setQtdInscritosVagas] = useState([]);
-  // const [mesmoHorario, setMesmoHorario] = useState([]);
+
  
   async function findUserLogged(){
     try {

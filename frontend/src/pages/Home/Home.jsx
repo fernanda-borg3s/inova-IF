@@ -8,7 +8,7 @@ import CardHome from "../../components/Cards/CardHome";
 import Welcome from "../../components/Welcome/Welcome";
 import CalenderHome from '../../assets/Img/CalenderHome.png'
 import Footer from '../../components/Footer/Footer';
-import { useEffect, useState, useContext} from 'react';
+import { useEffect, useContext} from 'react';
 import { userLoggedProf } from "../../Service/userservice.js";
 import { UserContext } from '../../Context/UserContext.jsx'
 
@@ -34,11 +34,6 @@ import { UserContext } from '../../Context/UserContext.jsx'
             <p className='p-welcome'>Inscreva-se nos encontros disponibilizados pelas professoras no botão abaixo.</p>
             <Button className="mt-2 btn-home p-3" variant="success" href='/home/encontrosDisponivel'>Fazer inscrição no encontro</Button>
           </Welcome>
-          {/* <Row xs={1} md={3} className="g-4"> */}
-  
-            {/* {encontros.map((item, index) =>{<CardHome key={index} encontros={item}/>})} */}
-        
-          {/* </Row> */}
         </Container>
         <Container>
         <h2 className="mt-5 mb-4 h2-home">Agenda para Hoje</h2>

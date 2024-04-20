@@ -2,7 +2,7 @@ import { useRouteError } from "react-router-dom";
 import './ErrorPage.css'
 export default function ErrorPage() {
   const error = useRouteError();
-  console.error(error);
+  // console.error(error);
 
   return (
     <div id="error-page">
@@ -15,7 +15,7 @@ export default function ErrorPage() {
       <p className="p-errorPage mt-4">Oops! Ocorreu algo inesperado. Alguma coisa não esta funcionado corretamente.</p>
       <p className="p-errorPage mb-4">Por favor, entre em contato com o adiministrador</p>
       <p>
-        <i>{error.statusText || error.message}</i>
+        {/* <i>{error.statusText || error.message}</i> */}
       </p>
       <button className="a-errorPage"><a href="/" >Voltar para o inicío</a></button>
       </div>

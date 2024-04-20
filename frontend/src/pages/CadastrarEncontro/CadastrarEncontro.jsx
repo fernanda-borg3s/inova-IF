@@ -12,7 +12,7 @@ import moment from 'moment';
 import axios from 'axios';
 import { toast } from "react-toastify";
 
-const baseURL = 'http://localhost:3000'
+const baseURL = 'https://inova-if-api.vercel.app'
 export default function CadastrarEncontro(){
   const { user } = useContext(UserContext);
   const navigate = useNavigate();

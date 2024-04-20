@@ -3,17 +3,15 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Calendario from '../../components/Calendario/Calendario.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
-// import { userLogged } from "../../Service/userservice.js";
 import { useEffect, useState, useContext} from 'react';
 import { toast } from 'react-toastify';
 import { UserContext } from '../../Context/UserContext.jsx'
 import axios from 'axios';
 
-const baseURL = 'http://localhost:3000'
+const baseURL = 'https://inova-if-api.vercel.app'
 
 
 export default function AgendaInscritos(){
-    //   const { user, setUser } = useContext(UserContext);
   const { user } = useContext(UserContext);
 
     //   async function findUserLoggedAluno(){

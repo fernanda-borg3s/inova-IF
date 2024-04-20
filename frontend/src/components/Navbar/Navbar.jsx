@@ -9,14 +9,12 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import UserLogo from '../../assets/Img/UserLogo.png'
 import { Outlet, useNavigate } from 'react-router-dom';
 import './Navbar.css'
-import { useEffect, useContext, useState} from 'react';
+import { useEffect, useContext} from 'react';
 import { toast } from 'react-toastify';
 import { userLogged } from "../../Service/userservice.js";
 import { UserContext } from '../../Context/UserContext.jsx'
 
 
-
-const baseURL = 'http://localhost:3000'
 
 export function NavbarC(){
   const { user, setUser } = useContext(UserContext);
