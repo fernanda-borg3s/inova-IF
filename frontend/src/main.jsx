@@ -31,8 +31,6 @@ const router = createBrowserRouter([
   {
     path: 'https://inovaif-theta.vercel.app/sobre',
     element: <Sobre/>,
-  
-    
   },
   
   {
@@ -87,7 +85,6 @@ const router = createBrowserRouter([
     ]
   }
 ])
-const notify = () => toast.success("Wow so easy !");
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <UserProvider>

@@ -18,22 +18,9 @@
 .btn-homeProfessor button{
     font-weight: bold;
     width: 100px;
-    /* background-color: #004d2a; */
 }
 
-
-/* .vagas, .repeticoes, .repeteC, .inscricao{
-    width: 140px;
-    min-width: 100px;
-} */
-/* .disponivel_inscricao{
-    width: 140px;
-    min-width: 120px;
-
-} */
 .radioCadastro-check input[type="radio"] {
-    /* width: 0; */
-    /* padding: 10px; */
 	margin: 5px;
 	border:0.5px solid #004d2a8a;
 	background-color: transparent;
@@ -47,7 +34,6 @@
 }
 
 @media (max-width: 600px){
- 
     .container-cadastrar{
         min-width: 400px;
         display: flex;
@@ -61,7 +47,6 @@
 }
 
 @media (max-width: 740px){
- 
     .container-cadastrar .row{
        
         display: flex;
