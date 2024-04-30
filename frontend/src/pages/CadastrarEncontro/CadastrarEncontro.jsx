@@ -14,8 +14,8 @@ import { toast } from "react-toastify";
 const baseURL = 'http://localhost:3000'
 export default function CadastrarEncontro(){
     const [selectedComponente, setSelectedComponente] = useState('1');
-    //inicia com 410 (não se aplica para area BASE) para nao fazer um get sem o objetivo excolhido
-    const [selectedObjAprendizagem, setSelectedObjAprendizagem] = useState('410');
+    //inicia com 758 (não se aplica para area CNT) para nao fazer um get sem o objetivo excolhido
+    const [selectedObjAprendizagem, setSelectedObjAprendizagem] = useState('758');
     const [objAprendizagem, setObjAprendizagem] = useState([]);
     const [objAprenEtapa, setObjAprenEtapa] = useState([]);
   const { user } = useContext(UserContext);
@@ -215,19 +215,13 @@ export default function CadastrarEncontro(){
                         <Form.Select required name="id_area_conhecimento" 
                          value={selectedComponente}
                          onChange={e => setSelectedComponente(e.target.value)}
-                       >
-
-                            <option value="1">Base de Autonomia e Emancipação</option>
+                       >               
                             <option value="2">Ciências da Natureza e suas Tecnologias </option>
                             <option value="3">Ciências Humanas e Sociais Aplicadas </option>
                             <option value="4">Conhecimentos da Área Técnica </option>
                             <option value="5">Língua Portuguesa e suas Literaturas </option>
                             <option value="6">Linguagens e suas Tecnologias </option>
                             <option value="7">Matemática e suas Tecnologias </option>
-                            <option value="8">Oficina de Línguas Estrangeiras </option>
-                            <option value="9">Oficinas da Área Técnica </option>
-                            <option value="10">Oficinas Livres do Ensino Médio</option>
-                            <option value="11">Projetos Integradores </option>
                         </Form.Select>
 
                           
@@ -247,8 +241,6 @@ export default function CadastrarEncontro(){
                             <option value="7">Física</option>
                             <option value="8">Geografia</option>
                             <option value="9">História</option>
-                            <option value="10">Língua Espanhola e suas literaturas</option>
-                            <option value="11">Língua Inglesa e suas literaturas</option>
                             <option value="12">Língua Portuguesa e suas literaturas</option>
                             <option value="13">Matemática</option>
                             <option value="14">Música</option>
@@ -259,6 +251,11 @@ export default function CadastrarEncontro(){
                 </Row>
          
                 <Row className="mb-3">   
+                
+                <Form.Group as={Col} controlId="descricao">                     
+                      <Form.Label>Descrição do Encontro:</Form.Label>
+                       <Form.Control as="textarea" placeholder="Descrição" name="descricao_encontro" onChange={onChange} />
+                    </Form.Group>
                     <Form.Group as={Col} controlId="criterios_avaliacao">
                       <Form.Label>Critérios de Avaliação:</Form.Label>
                         <Form.Control as="textarea" placeholder="Critérios de Avaliação" name="criterios_avaliacao" onChange={onChange} />
