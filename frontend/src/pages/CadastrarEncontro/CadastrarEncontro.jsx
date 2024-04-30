@@ -298,7 +298,7 @@ export default function CadastrarEncontro(){
                         onChange={e => setSelectedObjAprendizagem(e.target.value)}>
                         <option value=''>Selecione</option>
                       
-                        {objAprendizagem.filter((aprendizagem, index, self) => 
+                        {objAprendizagem?.filter((aprendizagem, index, self) => 
                         index === self.findIndex((t) => t.objetivo_aprendizagem === aprendizagem.objetivo_aprendizagem)
                         )
                       .map((aprendizagem) => (
