@@ -16,7 +16,6 @@ import EncontrosCadastrados from './pages/EncontrosCadastrados/EncontrosCadastra
 import UserProvider from './Context/UserContext.jsx'
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import EditarEncontro from './pages/EditarEncontro/EditarEncontro.jsx'
 import AgendaInscritos from './pages/Agenda/AgendaInscritos.jsx'
 import HomeProfessor from './pages/HomeProfessor/HomeProfessor.jsx'
 import CadastrarEncontro from './pages/CadastrarEncontro/CadastrarEncontro.jsx'
@@ -32,8 +31,6 @@ const router = createBrowserRouter([
   {
     path: '/sobre',
     element: <Sobre/>,
-  
-    
   },
   
   {
@@ -84,22 +81,17 @@ const router = createBrowserRouter([
       {
         path:"/homeProfessor/EncontrosCadastrados",
         element: <EncontrosCadastrados/>,
-      },
-      {
-        path:"/homeProfessor/editarEncontro",
-        element: <EditarEncontro/>,
       }
     ]
   }
 ])
-const notify = () => toast.success("Wow so easy !");
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <UserProvider>
     <RouterProvider router={router} />
     <ToastContainer
      position="top-right"
-     autoClose={3000}
+     autoClose={2500}
      hideProgressBar={false}
      newestOnTop={false}
      closeOnClick

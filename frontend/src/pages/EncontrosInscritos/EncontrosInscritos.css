@@ -1,6 +1,7 @@
 .cardInscrito-container{
     min-height:500px ;
-    width: 22rem;
+    max-height: auto;
+    width: 26rem;
 }
 .cardInscrito-container span{
     font-weight: 500;
@@ -9,4 +10,19 @@
 }
 .card-footer-inscrito{
 background-color: #fff!important;
+}
+.h1-encontro-inscrito {
+    color: #004D2A;
+    margin-top: 30px;
+    font-weight: bold;
+}
+#Search{
+    background-color: #004D2A;
+    color: #fff;
+    border: 1px solid #004D2A;
+   
+}
+input[type="search"], input[type="search"]:focus{
+    border: 0.1px solid #004d2ab0;
+   
 }

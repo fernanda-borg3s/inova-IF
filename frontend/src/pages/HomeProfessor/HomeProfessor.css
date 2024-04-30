@@ -1,5 +1,5 @@
 .container-homeProfessor{
-    height: 90vh;
+    min-height: 90vh;
 }
 .btn-homeProfessor{
     width: 50%;

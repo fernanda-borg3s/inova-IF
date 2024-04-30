@@ -11,7 +11,7 @@ import { UserContext } from '../../Context/UserContext.jsx'
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-const baseURL = 'http://localhost:3000'
+const baseURL = 'https://inova-if-api.vercel.app'
 
 export default function Authentication(){
   const navigate = useNavigate();
@@ -55,14 +55,12 @@ export default function Authentication(){
                   }
                 }
                 );
-                // console.log(response.data.data);
-                toast.success("Usuário Criado com sucesso");
-
-               
+                toast.success("Usuário criado com sucesso, faça o login"); 
+                const timer = setTimeout(() => {
+                  window.location.reload();
+                }, 3000); 
               } catch (err) {
-                // console.error(err.message);
                 toast.error("Ocorreu um erro ao cadastrar usuário, tente novamente");
-
               }
         }
     
@@ -106,9 +104,7 @@ export default function Authentication(){
             if (isAluna) {
               navigate("/home");
             } else if (isProfessora) {
-              navigate("/homeProfessor");
-             
-              
+              navigate("/homeProfessor");     
               
             }
             toast.success("Login realizado com sucesso!");
@@ -123,7 +119,7 @@ export default function Authentication(){
     return (
         <>
         
-        <Container className="d-flex align-items-center justify-content-center flex-column" style={{height: '100vh', marginTop:'90px'}}>
+        <Container className="d-flex align-items-center justify-content-center flex-column" style={{minHeight: '100vh', marginTop:'90px'}}>
         <div  ref={containerRef} className='box'>
             <div className="form-container sign-up-container">
             <Image src={Logoif} style={{width:'150px'}} className="p-3 mb-2"/>
@@ -199,7 +195,6 @@ export default function Authentication(){
                 name="password"
                 value={password}
                 onChange={e => onChange(e)} />
-                {/* <a href="#">Forgot your password?</a> */}
                 <button type="submit" className="mt-3" >Entrar</button>
                 </form>
                
