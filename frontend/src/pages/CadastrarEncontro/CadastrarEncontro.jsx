@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 
 const baseURL = 'https://inova-if-api.vercel.app'
 export default function CadastrarEncontro(){
-    const [selectedComponente, setSelectedComponente] = useState('1');
+    const [selectedComponente, setSelectedComponente] = useState('2');
     //inicia com 758 (não se aplica para area CNT) para nao fazer um get sem o objetivo excolhido
     const [selectedObjAprendizagem, setSelectedObjAprendizagem] = useState('758');
     const [objAprendizagem, setObjAprendizagem] = useState([]);
@@ -228,20 +228,20 @@ export default function CadastrarEncontro(){
                        >
                             <option value="">Selecione</option>
                             <option value="17">Não se aplica</option>
-                            <option value="1">Artes Cênicas</option>
-                            <option value="2">Artes Visuais</option>
-                            <option value="3">Biologia</option>
-                            <option value="4">Dança</option>
-                            <option value="5">Educação Física</option>
-                            <option value="6">Filosofia</option>
-                            <option value="7">Física</option>
-                            <option value="8">Geografia</option>
-                            <option value="9">História</option>
-                            <option value="12">Língua Portuguesa e suas literaturas</option>
-                            <option value="13">Matemática</option>
-                            <option value="14">Música</option>
-                            <option value="15">Química</option>
-                            <option value="16">Sociologia</option>
+                            <option value="1">Artes Cênicas (LIN)</option>
+                            <option value="2">Artes Visuais (LIN)</option>
+                            <option value="3">Biologia (CNT)</option>
+                            <option value="4">Dança (LIN)</option>
+                            <option value="5">Educação Física (LIN)</option>
+                            <option value="6">Filosofia (HUM)</option>
+                            <option value="7">Física (CNT)</option>
+                            <option value="8">Geografia (HUM)</option>
+                            <option value="9">História (HUM)</option>
+                            <option value="12">Língua Portuguesa e suas literaturas (PORT)</option>
+                            <option value="13">Matemática (MAT)</option>
+                            <option value="14">Música (LIN)</option>
+                            <option value="15">Química (CNT)</option>
+                            <option value="16">Sociologia (HUM)</option>
                         </Form.Select>
                     </Form.Group>
                 </Row>
@@ -298,7 +298,7 @@ export default function CadastrarEncontro(){
                         onChange={e => setSelectedObjAprendizagem(e.target.value)}>
                         <option value=''>Selecione</option>
                       
-                        {objAprendizagem?.filter((aprendizagem, index, self) => 
+                        {objAprendizagem.filter((aprendizagem, index, self) => 
                         index === self.findIndex((t) => t.objetivo_aprendizagem === aprendizagem.objetivo_aprendizagem)
                         )
                       .map((aprendizagem) => (
