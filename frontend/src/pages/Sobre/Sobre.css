@@ -26,9 +26,11 @@
     line-height: 1.5;
 }
 .referencias_sobre p {
-    max-width: 80%;
+    max-width: 90%;
     font-size: 15px;
-    text-indent: none;
+    text-indent: 0;
+    margin-top: 5px;
+
 }
 .a-sobre{
      border-radius: 5px;
