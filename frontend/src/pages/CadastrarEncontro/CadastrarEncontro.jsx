@@ -14,13 +14,7 @@ import { toast } from "react-toastify";
 
 const baseURL = 'https://inova-if-api.vercel.app'
 export default function CadastrarEncontro(){
-<<<<<<< HEAD
     const [selectedComponente, setSelectedComponente] = useState('1');
-=======
-  const { user } = useContext(UserContext);
-  const navigate = useNavigate();
-    const [selectedComponente, setSelectedComponente] = useState('2');
->>>>>>> f26b955347f97b63214b6d05f33a1d3dfc46f45f
     //inicia com 758 (não se aplica para area CNT) para nao fazer um get sem o objetivo excolhido
     const [selectedObjAprendizagem, setSelectedObjAprendizagem] = useState('758');
     const [objAprendizagem, setObjAprendizagem] = useState([]);
@@ -216,12 +210,7 @@ export default function CadastrarEncontro(){
                         <Form.Select required name="id_area_conhecimento" 
                          value={selectedComponente}
                          onChange={e => setSelectedComponente(e.target.value)}
-<<<<<<< HEAD
-                       >               
-=======
                        >
-
->>>>>>> f26b955347f97b63214b6d05f33a1d3dfc46f45f
                             <option value="2">Ciências da Natureza e suas Tecnologias </option>
                             <option value="3">Ciências Humanas e Sociais Aplicadas </option>
                             <option value="4">Conhecimentos da Área Técnica </option>
@@ -258,10 +247,7 @@ export default function CadastrarEncontro(){
                 </Row>
          
                 <Row className="mb-3">   
-<<<<<<< HEAD
                 
-=======
->>>>>>> f26b955347f97b63214b6d05f33a1d3dfc46f45f
                 <Form.Group as={Col} controlId="descricao">                     
                       <Form.Label>Descrição do Encontro:</Form.Label>
                        <Form.Control as="textarea" placeholder="Descrição" name="descricao_encontro" onChange={onChange} />

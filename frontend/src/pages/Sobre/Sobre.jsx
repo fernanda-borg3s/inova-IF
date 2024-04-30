@@ -26,19 +26,13 @@ export default function Sobre(){
 </p>
             <p>O objetivo principal do projeto é desenvolver artefatos para o módulo agenda  INOVA IF - sistema de gerenciamento educacional para cursos inovadores baseado na experiência de reconfiguração pedagógica do EMI-Eventos do IFB. O desenvolvimento deste sistema permitirá que as alunas coloquem em prática os conhecimentos e habilidades desenvolvidos na sua formação.</p>
             <h2>Referências</h2>
-<<<<<<< HEAD
             <div className='referencias_sobre'>
-=======
->>>>>>> f26b955347f97b63214b6d05f33a1d3dfc46f45f
             <p>FELIX, C.; FERNANDES, C. O futuro da educação é on-line? Discussão sobre tecnologia e educação a partir de uma visão crítica. Acervo, [S. l.], v. 35, n. 1, p. 1–14, 2022. Disponível em: https://revista.an.gov.br/index.php/revistaacervo/article/view/1776. Acesso em: 28 set. 2023.</p>
             <p>INSTITUTO FEDERAL DE BRASÍLIA. Plano de Curso Técnico em Eventos Integrado ao Ensino Médio. Brasília, 2023. Disponível em: https://www.ifb.edu.br/attachments/article/33357/Plano%20de%20Curso%20T%C3%A9cnico%20em%20Eventos%20Integrado%20ao%20Ensino%20M%C3%A9dio.pdf. Acesso em: 25 ago. 2023.</p>
            <p>PACHECO, J.. Inovar é assumir um compromisso ético com a educação. São Paulo: Vozes, 2019.</p>
            <p>TESSARO, F. O.; FAORO, R. R.; MIRI. D. H.; GILBERT, V. S.; FRIZZO, P.  V.; FOCHESATTO, L. B.; MATTE, J.; CHAIS, C.; GANZER P. P.; OLEA, P.  M.. A Tecnologia da Informação na Educação: uma Revisão Bibliográfica. XVII  Mostra de Iniciação Cientifica, Pós-Graduação, Pesquisa e Extensão. Programa de Pós Graduação em Administração – UCS. Nov. 2018. Disponível em: http://www.ucs.br/etc/conferencias/index.php/mostraucsppga/xviiimostrappga/paper/viewFile/5941/2041 Acesso em 09 Set. 2023. </p>
-<<<<<<< HEAD
             </div>
             
-=======
->>>>>>> f26b955347f97b63214b6d05f33a1d3dfc46f45f
             <button className='a-sobre'><a href='/'>VOLTAR</a></button>
             
         </div>
