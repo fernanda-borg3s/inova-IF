@@ -13,6 +13,7 @@ import { userLoggedProf } from "../../Service/userservice.js";
 import { UserContext } from '../../Context/UserContext.jsx'
 
   export default function Home(){
+    //PQ ESSE CARALHO TA CHAMANDO O USER PROFESSOR
           const { user, setUser } = useContext(UserContext);
           async function findUserLoggedProf(){
             try {
